@@ -43,4 +43,75 @@
   </div>
 </section>
 
+
+ {{-- Alur Pendaftaran --}}
+<section id="alur" class="bg-white py-16 -mt-8 sm:py-20">
+  <div class="px-4 mx-auto max-w-screen-xl">
+    <h2 class="text-4xl sm:text-4xl font-bold text-center text-gray-900 mb-8">
+      Alur Pendaftaran
+    </h2>
+
+    <div id="accordion-color" data-accordion="collapse" data-active-classes="bg-blue-100 dark:bg-gray-800 text-blue-600">
+      
+      <!-- Step 1 -->
+      <h2 id="accordion-color-heading-1">
+        <button type="button" 
+          class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-b-0 border-gray-200 rounded-t-xl focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-800 dark:border-gray-700 dark:text-gray-400 hover:bg-blue-100 dark:hover:bg-gray-800 gap-3"
+          data-accordion-target="#accordion-color-body-1" aria-expanded="true" aria-controls="accordion-color-body-1">
+          <span>1. Mengisi Formulir Pendaftaran</span>
+          <svg data-accordion-icon class="w-3 h-3 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
+          </svg>
+        </button>
+      </h2>
+      <div id="accordion-color-body-1" class="hidden" aria-labelledby="accordion-color-heading-1">
+        <div class="p-5 border border-b-0 border-gray-200 dark:border-gray-700">
+          <p class="text-gray-500 dark:text-gray-400">
+            Calon siswa mengisi formulir pendaftaran secara online dengan data yang lengkap dan benar.
+          </p>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <h2 id="accordion-color-heading-2">
+        <button type="button" 
+          class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-b-0 border-gray-200 focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-800 dark:border-gray-700 dark:text-gray-400 hover:bg-blue-100 dark:hover:bg-gray-800 gap-3"
+          data-accordion-target="#accordion-color-body-2" aria-expanded="false" aria-controls="accordion-color-body-2">
+          <span>2. Verifikasi Data</span>
+          <svg data-accordion-icon class="w-3 h-3 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
+          </svg>
+        </button>
+      </h2>
+      <div id="accordion-color-body-2" class="hidden" aria-labelledby="accordion-color-heading-2">
+        <div class="p-5 border border-b-0 border-gray-200 dark:border-gray-700">
+          <p class="text-gray-500 dark:text-gray-400">
+            Tim panitia akan memverifikasi data dan dokumen yang telah dikirim oleh calon siswa.
+          </p>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <h2 id="accordion-color-heading-3">
+        <button type="button" 
+          class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-gray-200 focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-800 dark:border-gray-700 dark:text-gray-400 hover:bg-blue-100 dark:hover:bg-gray-800 gap-3"
+          data-accordion-target="#accordion-color-body-3" aria-expanded="false" aria-controls="accordion-color-body-3">
+          <span>3. Pengumuman Hasil Seleksi</span>
+          <svg data-accordion-icon class="w-3 h-3 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
+          </svg>
+        </button>
+      </h2>
+      <div id="accordion-color-body-3" class="hidden" aria-labelledby="accordion-color-heading-3">
+        <div class="p-5 border border-t-0 border-gray-200 dark:border-gray-700">
+          <p class="text-gray-500 dark:text-gray-400">
+            Calon siswa dapat melihat hasil seleksi melalui website PPDB Online atau pemberitahuan resmi dari sekolah.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
 @endsection
