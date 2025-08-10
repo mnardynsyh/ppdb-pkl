@@ -43,75 +43,143 @@
   </div>
 </section>
 
+<section class="max-w-full mx-auto p-4 bg-gray-100">
+    <h2 class="text-3xl text-center font-bold mb-6 py-2 bg-blue-200 rounded-lg">Alur Pendaftaran PPDB</h2>
 
- {{-- Alur Pendaftaran --}}
-<section id="alur" class="bg-white py-16 -mt-8 sm:py-20">
-  <div class="px-4 mx-auto max-w-screen-xl">
-    <h2 class="text-4xl sm:text-4xl font-bold text-center text-gray-900 mb-8">
-      Alur Pendaftaran
-    </h2>
-
-    <div id="accordion-color" data-accordion="collapse" data-active-classes="bg-blue-100 dark:bg-gray-800 text-blue-600">
-      
-      <!-- Step 1 -->
-      <h2 id="accordion-color-heading-1">
-        <button type="button" 
-          class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-b-0 border-gray-200 rounded-t-xl focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-800 dark:border-gray-700 dark:text-gray-400 hover:bg-blue-100 dark:hover:bg-gray-800 gap-3"
-          data-accordion-target="#accordion-color-body-1" aria-expanded="true" aria-controls="accordion-color-body-1">
-          <span>1. Mengisi Formulir Pendaftaran</span>
-          <svg data-accordion-icon class="w-3 h-3 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
-          </svg>
-        </button>
-      </h2>
-      <div id="accordion-color-body-1" class="hidden" aria-labelledby="accordion-color-heading-1">
-        <div class="p-5 border border-b-0 border-gray-200 dark:border-gray-700">
-          <p class="text-gray-500 dark:text-gray-400">
-            Calon siswa mengisi formulir pendaftaran secara online dengan data yang lengkap dan benar.
-          </p>
+    <div id="alurAccordion" data-accordion="collapse" class="space-y-2">
+        
+        <!-- Tahap 1 -->
+        <div class="border rounded-lg">
+            <h2>
+                <button type="button" class="flex items-center justify-between w-full p-4 font-medium text-left text-gray-500 border-b border-gray-200 rounded-t-lg hover:bg-gray-100"
+                    data-accordion-target="#tahap1" aria-expanded="false" aria-controls="tahap1">
+                    <span>Tahap 1: Pra-Pendaftaran & Pembuatan Akun</span>
+                    <svg data-accordion-icon class="w-3 h-3 rotate-0 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </button>
+            </h2>
+            <div id="tahap1" class="hidden p-4 border-b border-gray-200">
+                <p><strong>Mengunjungi Website PPDB:</strong> Buka alamat website PPDB resmi sekolah.</p>
+                <p><strong>Mencari Informasi:</strong> Baca jadwal, persyaratan dokumen, dan alur pendaftaran.</p>
+                <p><strong>Membuat Akun:</strong> Isi NISN, email aktif, password, lalu verifikasi via email.</p>
+                <p><strong>Hasil:</strong> Akun siap digunakan untuk login.</p>
+            </div>
         </div>
-      </div>
 
-      <!-- Step 2 -->
-      <h2 id="accordion-color-heading-2">
-        <button type="button" 
-          class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-b-0 border-gray-200 focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-800 dark:border-gray-700 dark:text-gray-400 hover:bg-blue-100 dark:hover:bg-gray-800 gap-3"
-          data-accordion-target="#accordion-color-body-2" aria-expanded="false" aria-controls="accordion-color-body-2">
-          <span>2. Verifikasi Data</span>
-          <svg data-accordion-icon class="w-3 h-3 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
-          </svg>
-        </button>
-      </h2>
-      <div id="accordion-color-body-2" class="hidden" aria-labelledby="accordion-color-heading-2">
-        <div class="p-5 border border-b-0 border-gray-200 dark:border-gray-700">
-          <p class="text-gray-500 dark:text-gray-400">
-            Tim panitia akan memverifikasi data dan dokumen yang telah dikirim oleh calon siswa.
-          </p>
+        <!-- Tahap 2 -->
+        <div class="border rounded-lg">
+            <h2>
+                <button type="button" class="flex items-center justify-between w-full p-4 font-medium text-left text-gray-500 border-b border-gray-200 hover:bg-gray-100"
+                    data-accordion-target="#tahap2" aria-expanded="false" aria-controls="tahap2">
+                    <span>Tahap 2: Login & Pengisian Formulir</span>
+                    <svg data-accordion-icon class="w-3 h-3 rotate-0 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </button>
+            </h2>
+            <div id="tahap2" class="hidden p-4 border-b border-gray-200">
+                <p><strong>Login:</strong> Masukkan email/NISN dan password.</p>
+                <p><strong>Dashboard Siswa:</strong> Lihat progres pendaftaran.</p>
+                <p><strong>Isi Formulir:</strong> Data diri siswa, orang tua, sekolah asal, nilai, jalur, dan jurusan.</p>
+                <p><strong>Hasil:</strong> Semua data tersimpan di sistem.</p>
+            </div>
         </div>
-      </div>
 
-      <!-- Step 3 -->
-      <h2 id="accordion-color-heading-3">
-        <button type="button" 
-          class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-gray-200 focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-800 dark:border-gray-700 dark:text-gray-400 hover:bg-blue-100 dark:hover:bg-gray-800 gap-3"
-          data-accordion-target="#accordion-color-body-3" aria-expanded="false" aria-controls="accordion-color-body-3">
-          <span>3. Pengumuman Hasil Seleksi</span>
-          <svg data-accordion-icon class="w-3 h-3 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
-          </svg>
-        </button>
-      </h2>
-      <div id="accordion-color-body-3" class="hidden" aria-labelledby="accordion-color-heading-3">
-        <div class="p-5 border border-t-0 border-gray-200 dark:border-gray-700">
-          <p class="text-gray-500 dark:text-gray-400">
-            Calon siswa dapat melihat hasil seleksi melalui website PPDB Online atau pemberitahuan resmi dari sekolah.
-          </p>
+        <!-- Tahap 3 -->
+        <div class="border rounded-lg">
+            <h2>
+                <button type="button" class="flex items-center justify-between w-full p-4 font-medium text-left text-gray-500 border-b border-gray-200 hover:bg-gray-100"
+                    data-accordion-target="#tahap3" aria-expanded="false" aria-controls="tahap3">
+                    <span>Tahap 3: Mengunggah Berkas (Upload Dokumen)</span>
+                    <svg data-accordion-icon class="w-3 h-3 rotate-0 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </button>
+            </h2>
+            <div id="tahap3" class="hidden p-4 border-b border-gray-200">
+                <p><strong>Siapkan Dokumen:</strong> KK, Akta, Ijazah/SKL, Pas Foto, KIP/KKS (jika ada), Sertifikat (jika ada).</p>
+                <p><strong>Upload ke Sistem:</strong> Unggah file PDF/JPG sesuai ketentuan.</p>
+                <p><strong>Hasil:</strong> Dokumen tersimpan di sistem panitia.</p>
+            </div>
         </div>
-      </div>
 
+        <!-- Tahap 4 -->
+        <div class="border rounded-lg">
+            <h2>
+                <button type="button" class="flex items-center justify-between w-full p-4 font-medium text-left text-gray-500 border-b border-gray-200 hover:bg-gray-100"
+                    data-accordion-target="#tahap4" aria-expanded="false" aria-controls="tahap4">
+                    <span>Tahap 4: Finalisasi & Cetak Bukti Pendaftaran</span>
+                    <svg data-accordion-icon class="w-3 h-3 rotate-0 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </button>
+            </h2>
+            <div id="tahap4" class="hidden p-4 border-b border-gray-200">
+                <p><strong>Review Data:</strong> Periksa semua data dan dokumen.</p>
+                <p><strong>Finalisasi:</strong> Kunci data, tidak dapat diubah lagi.</p>
+                <p><strong>Cetak Bukti:</strong> Unduh PDF bukti pendaftaran.</p>
+                <p><strong>Hasil:</strong> Bukti resmi pendaftaran di tangan.</p>
+            </div>
+        </div>
+
+        <!-- Tahap 5 -->
+        <div class="border rounded-lg">
+            <h2>
+                <button type="button" class="flex items-center justify-between w-full p-4 font-medium text-left text-gray-500 border-b border-gray-200 hover:bg-gray-100"
+                    data-accordion-target="#tahap5" aria-expanded="false" aria-controls="tahap5">
+                    <span>Tahap 5: Menunggu Verifikasi & Pengumuman</span>
+                    <svg data-accordion-icon class="w-3 h-3 rotate-0 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </button>
+            </h2>
+            <div id="tahap5" class="hidden p-4 border-b border-gray-200">
+                <p><strong>Verifikasi Panitia:</strong> Panitia memeriksa data dan dokumen.</p>
+                <p><strong>Pantau Status:</strong> Lihat status di dashboard.</p>
+                <p><strong>Pengumuman:</strong> Cek hasil kelulusan sesuai jadwal.</p>
+            </div>
+        </div>
+
+        <!-- Tahap 6 -->
+        <div class="border rounded-lg">
+            <h2>
+                <button type="button" class="flex items-center justify-between w-full p-4 font-medium text-left text-gray-500 border-b border-gray-200 hover:bg-gray-100"
+                    data-accordion-target="#tahap6" aria-expanded="false" aria-controls="tahap6">
+                    <span>Tahap 6: Daftar Ulang (Bagi yang Lulus)</span>
+                    <svg data-accordion-icon class="w-3 h-3 rotate-0 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </button>
+            </h2>
+            <div id="tahap6" class="hidden p-4 border-b border-gray-200">
+                <p><strong>Baca Info Daftar Ulang:</strong> Ikuti prosedur sesuai jadwal.</p>
+                <p><strong>Proses Daftar Ulang:</strong> Konfirmasi online atau datang langsung.</p>
+                <p><strong>Hasil:</strong> Resmi diterima sebagai siswa baru.</p>
+            </div>
+        </div>
     </div>
-  </div>
 </section>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll('[data-accordion-target]').forEach(button => {
+        button.setAttribute("aria-expanded", "false");
+
+        const targetId = button.getAttribute("data-accordion-target");
+        const target = document.querySelector(targetId);
+        if (target) target.classList.add("hidden");
+
+        const icon = button.querySelector("[data-accordion-icon]");
+        if (icon) {
+            icon.classList.remove("rotate-180");
+            icon.style.transform = "";
+        }
+    });
+});
+</script>
+
+
+
 
 @endsection
