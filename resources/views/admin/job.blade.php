@@ -24,7 +24,7 @@
     {{-- Tabel --}}
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table class="w-full text-sm text-left rtl:text-right text-gray-600 dark:text-gray-300">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-300">
+            <thead class="text-s text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-300">
                 <tr>
                     <th class="px-6 py-3 w-16">No</th>
                     <th class="px-6 py-3">Nama Pekerjaan</th>
@@ -32,11 +32,11 @@
                 </tr>
             </thead>
             <tbody>
-                @forelse($jobs as $i => $job)
+                @forelse($job as $i => $job)
                     <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
-                        <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ $i+1 }}</td>
-                        <td class="px-6 py-4">{{ $job->pekerjaan }}</td>
-                        <td class="px-6 py-4">
+                        <td class="px-6 py-2 font-medium text-gray-900 dark:text-white">{{ $i+1 }}</td>
+                        <td class="px-6 py-2">{{ $job->pekerjaan }}</td>
+                        <td class="px-6 py-2">
                             <div class="flex items-center gap-3">
                                 <button type="button"
                                     onclick="openEditModal({{ $job->id }}, @js($job->pekerjaan))"

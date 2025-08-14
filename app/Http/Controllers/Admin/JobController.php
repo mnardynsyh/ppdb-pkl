@@ -10,8 +10,8 @@ class JobController extends Controller
 {
     public function index()
     {
-        $jobs = Job::latest()->get();
-        return view('admin.job', compact('jobs'));
+        $job = Job::latest()->get();
+        return view('admin.job', compact('job'));
     }
 
     public function store(Request $request)
