@@ -11,8 +11,7 @@
             </svg>
          </button>
         <a href="https://flowbite.com" class="flex ms-2 md:me-24">
-          <img src="https://flowbite.com/docs/images/logo.svg" class="h-8 me-3" alt="FlowBite Logo" />
-          <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">Flowbite</span>
+          <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">PPDB Online</span>
         </a>
       </div>
       <div class="flex items-center">
@@ -33,19 +32,26 @@
                 </p>
               </div>
               <ul class="py-1" role="none">
-                <li>
-                  <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Dashboard</a>
-                </li>
-                <li>
-                  <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Settings</a>
-                </li>
-                <li>
-                  <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Earnings</a>
-                </li>
-                <li>
-                  <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Sign out</a>
-                </li>
-              </ul>
+              <li>
+                <a href="{{ route('admin.dashboard') }}"
+                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                  role="menuitem">
+                  Dashboard
+                </a>
+              </li>
+
+              <li>
+                <form action="{{ route('logout') }}" method="POST">
+                  @csrf
+                  <button type="submit"
+                          class="w-full text-left block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                          role="menuitem">
+                    Sign out
+                  </button>
+                </form>
+              </li>
+            </ul>
+
             </div>
           </div>
         </div>
