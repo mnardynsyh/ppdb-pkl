@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\JobController;
+use App\Http\Controllers\Admin\PenghasilanController;
+use App\Http\Controllers\Admin\AgamaController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -28,14 +30,24 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
         return view('admin.dashboard');
     })->name('dashboard');
 
-    // CRUD Job (pakai modal)
+    // CRUD Job
     Route::get('/job', [JobController::class, 'index'])->name('job.index');
     Route::post('/job', [JobController::class, 'store'])->name('job.store');
     Route::put('/job/{id}', [JobController::class, 'update'])->name('job.update');
     Route::delete('/job/{id}', [JobController::class, 'destroy'])->name('job.destroy');
+
+    // CRUD Penghasilan
+    Route::get('/penghasilan', [PenghasilanController::class, 'index'])->name('penghasilan.index');
+    Route::post('/penghasilan', [PenghasilanController::class, 'store'])->name('penghasilan.store');
+    Route::put('/penghasilan/{id}', [PenghasilanController::class, 'update'])->name('penghasilan.update');
+    Route::delete('/penghasilan/{id}', [PenghasilanController::class, 'destroy'])->name('penghasilan.destroy');
+    // CRUD Agama
+    Route::get('/agama', [AgamaController::class, 'index'])->name('agama.index');
+    Route::post('/agama', [AgamaController::class, 'store'])->name('agama.store');
+    Route::put('/agama/{id}', [AgamaController::class, 'update'])->name('agama.update');
+    Route::delete('/agama/{id}', [AgamaController::class, 'destroy'])->name('agama.destroy');
+
 });
-
-
 
 
 // Student Dashboard

@@ -104,13 +104,13 @@
             </a>
         </li>
         <li>
-            <a href="/admin/kanban/board1" class="flex items-center w-full p-2 pl-11 text-gray-900 transition duration-75 rounded-lg 
+            <a href="{{route ('admin.penghasilan.index')}}" class="flex items-center w-full p-2 pl-11 text-gray-900 transition duration-75 rounded-lg 
                 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
                 Penghasilan Orang Tua
             </a>
         </li>
         <li>
-            <a href="/admin/kanban/board2" class="flex items-center w-full p-2 pl-11 text-gray-900 transition duration-75 rounded-lg 
+            <a href="{{route ('admin.agama.index')}}" class="flex items-center w-full p-2 pl-11 text-gray-900 transition duration-75 rounded-lg 
                 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
                 Agama
             </a>
