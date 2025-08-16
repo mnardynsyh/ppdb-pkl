@@ -39,11 +39,11 @@
                         <td class="px-6 py-2">
                             <div class="flex items-center gap-3">
                                 <button type="button"
-                                    onclick="openEditModal({{ $p->id }}, @js($p->penghasilan))"
+                                    onclick="openEditModal({{ $p->id_penghasilan }}, @js($p->penghasilan))"
                                     class="text-white bg-yellow-400 hover:bg-yellow-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-3.5 py-2.5 mb-2">
                                     Edit
                                 </button>
-                                <form action="{{ route('admin.penghasilan.destroy', $p->id) }}" method="POST"
+                                <form action="{{ route('admin.penghasilan.destroy', $p->id_penghasilan) }}" method="POST"
                                       onsubmit="return confirm('Yakin ingin menghapus?')">
                                     @csrf
                                     @method('DELETE')
@@ -80,7 +80,7 @@
         </div>
         <form action="{{ route('admin.penghasilan.store') }}" method="POST">
             @csrf
-            <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Range Penghasilan</label>
+            <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Pendidikan</label>
             <input type="text" name="penghasilan" required
                    class="mb-4 w-full rounded border border-gray-300 p-2 text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
 

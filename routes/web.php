@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\JobController;
 use App\Http\Controllers\Admin\PenghasilanController;
 use App\Http\Controllers\Admin\AgamaController;
+use App\Http\Controllers\Admin\PendidikanController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -41,11 +42,18 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('/penghasilan', [PenghasilanController::class, 'store'])->name('penghasilan.store');
     Route::put('/penghasilan/{id}', [PenghasilanController::class, 'update'])->name('penghasilan.update');
     Route::delete('/penghasilan/{id}', [PenghasilanController::class, 'destroy'])->name('penghasilan.destroy');
+    
     // CRUD Agama
     Route::get('/agama', [AgamaController::class, 'index'])->name('agama.index');
     Route::post('/agama', [AgamaController::class, 'store'])->name('agama.store');
     Route::put('/agama/{id}', [AgamaController::class, 'update'])->name('agama.update');
     Route::delete('/agama/{id}', [AgamaController::class, 'destroy'])->name('agama.destroy');
+
+    // CRUD Pendidikan
+    Route::get('/pendidikan', [PendidikanController::class, 'index'])->name('pendidikan.index');
+    Route::post('/pendidikan', [PendidikanController::class, 'store'])->name('pendidikan.store');
+    Route::put('/pendidikan/{id}', [PendidikanController::class, 'update'])->name('pendidikan.update');
+    Route::delete('/pendidikan/{id}', [PendidikanController::class, 'destroy'])->name('pendidikan.destroy');
 
 });
 
