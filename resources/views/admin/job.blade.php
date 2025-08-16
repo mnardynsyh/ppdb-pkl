@@ -9,8 +9,8 @@
 
         {{-- Buka Modal Tambah --}}
         <button type="button"
-            onclick="openAddModal()"
-            class="px-4 py-2 text-white bg-blue-600 rounded-lg shadow hover:bg-blue-700 focus:ring-4 focus:ring-blue-300">
+                onclick="openAddModal()"
+                class="px-4 py-2 text-white bg-blue-600 rounded-lg shadow hover:bg-blue-700 focus:ring-4 focus:ring-blue-300">
             + Tambah Pekerjaan
         </button>
     </div>
@@ -39,15 +39,15 @@
                         <td class="px-6 py-2">
                             <div class="flex items-center gap-3">
                                 <button type="button"
-                                    onclick="openEditModal({{ $job->id }}, @js($job->pekerjaan))"
-                                    class="text-white bg-yellow-400 hover:bg-yellow-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-3.5 py-2.5 mb-2">
+                                        onclick="openEditModal({{ $job->id_job }}, @js($job->pekerjaan))"
+                                        class="text-white bg-yellow-400 hover:bg-yellow-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-3.5 py-2.5 mb-2">
                                     Edit
                                 </button>
-                                <form action="{{ route('admin.job.destroy', $job->id) }}" method="POST"
+                                <form action="{{ route('admin.job.destroy', $job) }}" method="POST"
                                       onsubmit="return confirm('Yakin ingin menghapus?')">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="text-white bg-red-600 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-2.5 py-2.5 text-center mb-2   ">
+                                    <button type="submit" class="text-white bg-red-600 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-2.5 py-2.5 text-center mb-2">
                                         Hapus
                                     </button>
                                 </form>
@@ -75,7 +75,7 @@
         <div class="mb-4 flex items-start justify-between">
             <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-100">Tambah Pekerjaan</h2>
             <button type="button" onclick="closeAddModal()" aria-label="Tutup"
-                class="rounded p-1 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700">
+                    class="rounded p-1 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700">
                 ✕
             </button>
         </div>
@@ -107,7 +107,7 @@
         <div class="mb-4 flex items-start justify-between">
             <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-100">Edit Pekerjaan</h2>
             <button type="button" onclick="closeEditModal()" aria-label="Tutup"
-                class="rounded p-1 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700">
+                    class="rounded p-1 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700">
                 ✕
             </button>
         </div>
@@ -143,7 +143,8 @@
 
     function openEditModal(id, pekerjaan) {
         editInput.value = pekerjaan;
-        editForm.action = `/admin/job/${id}`;
+        // URL di-generate berdasarkan route yang sudah menggunakan {job}
+        editForm.action = `{{ url('admin/job') }}/${id}`;
         editModal.classList.remove('hidden');
     }
     function closeEditModal() { editModal.classList.add('hidden'); }

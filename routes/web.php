@@ -33,8 +33,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     // CRUD Job
     Route::get('/job', [JobController::class, 'index'])->name('job.index');
     Route::post('/job', [JobController::class, 'store'])->name('job.store');
-    Route::put('/job/{id}', [JobController::class, 'update'])->name('job.update');
-    Route::delete('/job/{id}', [JobController::class, 'destroy'])->name('job.destroy');
+    Route::put('/job/{job}', [JobController::class, 'update'])->name('job.update');
+    Route::delete('/job/{job}', [JobController::class, 'destroy'])->name('job.destroy');
 
     // CRUD Penghasilan
     Route::get('/penghasilan', [PenghasilanController::class, 'index'])->name('penghasilan.index');

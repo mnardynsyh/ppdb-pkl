@@ -27,13 +27,16 @@ class JobController extends Controller
         return redirect()->route('admin.job.index')->with('success', 'Pekerjaan berhasil ditambahkan');
     }
 
-    public function update(Request $request, $id)
+    /**
+     * Update data pekerjaan.
+     * Laravel akan secara otomatis menemukan $job berdasarkan id_job dari URL.
+     */
+    public function update(Request $request, Job $job)
     {
         $request->validate([
             'pekerjaan' => 'required|string|max:100',
         ]);
 
-        $job = Job::findOrFail($id);
         $job->update([
             'pekerjaan' => $request->pekerjaan,
         ]);
@@ -41,9 +44,12 @@ class JobController extends Controller
         return redirect()->route('admin.job.index')->with('success', 'Pekerjaan berhasil diperbarui');
     }
 
-    public function destroy($id)
+    /**
+     * Hapus data pekerjaan.
+     * Laravel akan secara otomatis menemukan $job berdasarkan id_job dari URL.
+     */
+    public function destroy(Job $job)
     {
-        $job = Job::findOrFail($id);
         $job->delete();
 
         return redirect()->route('admin.job.index')->with('success', 'Pekerjaan berhasil dihapus');
