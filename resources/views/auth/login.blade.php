@@ -44,5 +44,10 @@
         Masuk
       </button>
     </form>
+    <div class="mt-4 text-center">
+            <a href="{{ route('home') }}" class="inline-flex items-center text-sm font-medium text-gray-600 hover:text-blue-600">
+                ← Kembali ke Dashboard
+            </a>
+        </div>
   </div>
 </div>

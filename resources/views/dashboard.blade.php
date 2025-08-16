@@ -23,7 +23,7 @@
       data-aos-delay="200"
     >
       Selamat Datang di PPDB Online <br>
-      SMK Muhammadiyah Bumiayu
+      SDN 03 Jatisawit
     </h1>
     
     <p 
@@ -41,7 +41,7 @@
       data-aos-delay="600"
     >
       <a 
-        href="/daftar" 
+        href="{{route('wali.register')}}" 
         class="inline-flex justify-center items-center py-2 px-4 text-sm sm:text-base font-medium text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300"
       >
         Daftar Sekarang

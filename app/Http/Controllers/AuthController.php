@@ -13,42 +13,53 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
-    // Proses login admin
+    // Proses login untuk admin & wali
     public function login(Request $request)
     {
-        // Validasi input
         $request->validate([
             'email' => 'required|email',
             'password' => 'required|min:5',
         ]);
 
-        // Coba login menggunakan guard default (admin di tabel users)
-        if (Auth::attempt([
-            'email' => $request->email,
-            'password' => $request->password,
-            'role' => 'admin'
-        ], $request->remember)) {
-            // Regenerate session untuk keamanan
+        // Login sebagai admin
+        if (Auth::guard('web')->attempt(
+            ['email' => $request->email, 'password' => $request->password],
+            $request->remember
+        )) {
             $request->session()->regenerate();
-
-            return redirect()->route('admin.dashboard')
-                ->with('success', 'Login berhasil. Selamat datang!');
+            return redirect()->route('admin.dashboard')->with('success', 'Login berhasil sebagai Admin');
+        } else {
+            dd('Gagal login web', $request->email, $request->password);
         }
 
-        // Jika gagal login
+        // Login sebagai wali
+        if (Auth::guard('wali')->attempt(
+            ['email' => $request->email, 'password' => $request->password],
+            $request->remember
+        )) {
+            $request->session()->regenerate();
+            return redirect()->route('wali.dashboard')->with('success', 'Login berhasil sebagai Wali');
+        }
+
         return back()->withErrors([
             'email' => 'Email atau password salah.',
         ])->onlyInput('email');
     }
 
-    // Logout admin
+    // Logout (untuk kedua guard)
     public function logout(Request $request)
     {
-        Auth::logout();
+        if (Auth::guard('web')->check()) {
+            Auth::guard('web')->logout();
+        }
+
+        if (Auth::guard('wali')->check()) {
+            Auth::guard('wali')->logout();
+        }
+
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('login')
-            ->with('success', 'Anda telah logout.');
+        return redirect()->route('login')->with('success', 'Anda telah logout.');
     }
 }

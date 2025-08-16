@@ -41,16 +41,24 @@ return [
         'provider' => 'users',
     ],
 
-    'admin' => [
+    'wali' => [
         'driver' => 'session',
-        'provider' => 'users',
-        ],
-
-    'student' => [
-        'driver' => 'session',
-        'provider' => 'students',
-        ],
+        'provider' => 'wali',
     ],
+],
+
+'providers' => [
+    'users' => [
+        'driver' => 'eloquent',
+        'model' => App\Models\User::class,
+    ],
+
+    'wali' => [
+        'driver' => 'eloquent',
+        'model' => App\Models\Wali::class,
+    ],
+],
+
 
     /*
     |--------------------------------------------------------------------------

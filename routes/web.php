@@ -7,60 +7,58 @@ use App\Http\Controllers\Admin\JobController;
 use App\Http\Controllers\Admin\PenghasilanController;
 use App\Http\Controllers\Admin\AgamaController;
 use App\Http\Controllers\Admin\PendidikanController;
+use App\Http\Controllers\WaliController;
+use App\Http\Controllers\HomeController;
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+/*
+|--------------------------------------------------------------------------
+| Public Routes
+|--------------------------------------------------------------------------
+*/
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::get('/', function () {
-    return view('dashboard');
+// Auth
+Route::controller(AuthController::class)->group(function () {
+    Route::get('/login', 'showLoginForm')->name('login');
+    Route::post('/login/proses', 'login')->name('login.process');
+    Route::post('/logout', 'logout')->name('logout');
+});
+
+// Wali Registration
+Route::prefix('wali')->name('wali.')->group(function () {
+    Route::get('/register', [WaliController::class, 'create'])->name('register');
+    Route::post('/register', [WaliController::class, 'store'])->name('store');
 });
 
 
-Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-
-// Proses login
-Route::post('/login', [AuthController::class, 'login'])->name('login.process');
-
-// Logout
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-
-
+/*
+|--------------------------------------------------------------------------
+| Admin Routes
+|--------------------------------------------------------------------------
+*/
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('admin.dashboard');
-    })->name('dashboard');
 
-    // CRUD Job
-    Route::get('/job', [JobController::class, 'index'])->name('job.index');
-    Route::post('/job', [JobController::class, 'store'])->name('job.store');
-    Route::put('/job/{job}', [JobController::class, 'update'])->name('job.update');
-    Route::delete('/job/{job}', [JobController::class, 'destroy'])->name('job.destroy');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    // CRUD Penghasilan
-    Route::get('/penghasilan', [PenghasilanController::class, 'index'])->name('penghasilan.index');
-    Route::post('/penghasilan', [PenghasilanController::class, 'store'])->name('penghasilan.store');
-    Route::put('/penghasilan/{id}', [PenghasilanController::class, 'update'])->name('penghasilan.update');
-    Route::delete('/penghasilan/{id}', [PenghasilanController::class, 'destroy'])->name('penghasilan.destroy');
-    
-    // CRUD Agama
-    Route::get('/agama', [AgamaController::class, 'index'])->name('agama.index');
-    Route::post('/agama', [AgamaController::class, 'store'])->name('agama.store');
-    Route::put('/agama/{id}', [AgamaController::class, 'update'])->name('agama.update');
-    Route::delete('/agama/{id}', [AgamaController::class, 'destroy'])->name('agama.destroy');
+    // Job
+    Route::resource('job', JobController::class)->only(['index', 'store', 'update', 'destroy']);
 
-    // CRUD Pendidikan
-    Route::get('/pendidikan', [PendidikanController::class, 'index'])->name('pendidikan.index');
-    Route::post('/pendidikan', [PendidikanController::class, 'store'])->name('pendidikan.store');
-    Route::put('/pendidikan/{id}', [PendidikanController::class, 'update'])->name('pendidikan.update');
-    Route::delete('/pendidikan/{id}', [PendidikanController::class, 'destroy'])->name('pendidikan.destroy');
+    // Penghasilan
+    Route::resource('penghasilan', PenghasilanController::class)->only(['index', 'store', 'update', 'destroy']);
 
+    // Agama
+    Route::resource('agama', AgamaController::class)->only(['index', 'store', 'update', 'destroy']);
+
+    // Pendidikan
+    Route::resource('pendidikan', PendidikanController::class)->only(['index', 'store', 'update', 'destroy']);
 });
 
 
-// Student Dashboard
-Route::middleware('student')->group(function () {
-    Route::get('student/dashboard', function () {
-        return view('student.dashboard');
-    })->name('student.dashboard');
+/*
+|--------------------------------------------------------------------------
+| Wali Routes
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth', 'wali'])->prefix('wali')->name('wali.')->group(function () {
+    Route::get('/dashboard', [WaliController::class, 'dashboard'])->name('dashboard');
 });
