@@ -13,7 +13,6 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
-    // Proses login untuk admin & wali
     public function login(Request $request)
     {
         $request->validate([

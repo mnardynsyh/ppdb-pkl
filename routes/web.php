@@ -12,58 +12,42 @@ use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
-| Public Routes
+| Public Routes (Guest Only)
 |--------------------------------------------------------------------------
 */
-Route::get('/', [HomeController::class, 'index'])->name('home');
-
 Route::middleware('guest')->group(function () {
-    Route::get('/', [AuthController::class, 'showLogin'])->name('login');
-    Route::post('/login', [AuthController::class, 'login']);
-});
+    Route::get('/', [HomeController::class, 'index'])->name('home');
 
-// Auth
-Route::controller(AuthController::class)->group(function () {
-    Route::get('/login', 'showLoginForm')->name('login');
-    Route::post('/login/proses', 'login')->name('login.process');
-    Route::post('/logout', 'logout')->name('logout');
-});
+    // Login
+    Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [AuthController::class, 'login'])->name('login.process');
 
-// Wali Registration
-Route::prefix('wali')->name('wali.')->group(function () {
-    Route::get('/register', [WaliController::class, 'create'])->name('register');
-    Route::post('/register', [WaliController::class, 'store'])->name('store');
+    // registrasi wali
+    Route::prefix('wali')->name('wali.')->group(function () {
+        Route::get('/register', [WaliController::class, 'create'])->name('register');
+        Route::post('/register', [WaliController::class, 'store'])->name('store');
+    });
 });
-
 
 /*
 |--------------------------------------------------------------------------
-| Admin Routes
+| Authenticated Routes (Admin / Wali)
 |--------------------------------------------------------------------------
 */
+
+// Logout
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// Admin
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
-
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
-    // Job
     Route::resource('job', JobController::class)->only(['index', 'store', 'update', 'destroy']);
-
-    // Penghasilan
     Route::resource('penghasilan', PenghasilanController::class)->only(['index', 'store', 'update', 'destroy']);
-
-    // Agama
     Route::resource('agama', AgamaController::class)->only(['index', 'store', 'update', 'destroy']);
-
-    // Pendidikan
     Route::resource('pendidikan', PendidikanController::class)->only(['index', 'store', 'update', 'destroy']);
 });
 
-
-/*
-|--------------------------------------------------------------------------
-| Wali Routes
-|--------------------------------------------------------------------------
-*/
+// Wali
 Route::middleware(['auth', 'wali'])->prefix('wali')->name('wali.')->group(function () {
     Route::get('/dashboard', [WaliController::class, 'dashboard'])->name('dashboard');
 });

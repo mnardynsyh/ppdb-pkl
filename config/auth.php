@@ -47,18 +47,6 @@ return [
     ],
 ],
 
-'providers' => [
-    'users' => [
-        'driver' => 'eloquent',
-        'model' => App\Models\User::class,
-    ],
-
-    'wali' => [
-        'driver' => 'eloquent',
-        'model' => App\Models\Wali::class,
-    ],
-],
-
 
     /*
     |--------------------------------------------------------------------------
@@ -83,9 +71,9 @@ return [
         'model' => App\Models\User::class,
         ],
 
-    'students' => [
+    'wali' => [
         'driver' => 'eloquent',
-        'model' => App\Models\Student::class,
+        'model' => App\Models\Wali::class,
         ],
     ],
 
