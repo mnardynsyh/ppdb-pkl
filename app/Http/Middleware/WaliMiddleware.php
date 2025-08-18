@@ -9,9 +9,10 @@ class WaliMiddleware
 {
     public function handle($request, Closure $next)
     {
-        if (Auth::check() && Auth::user()->role === 'wali') {
+        if (Auth::guard('wali')->check()) {
             return $next($request);
         }
+
         return redirect()->route('login');
     }
 }

@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\AgamaController;
 use App\Http\Controllers\Admin\PendidikanController;
 use App\Http\Controllers\WaliController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Wali\DashboardWali;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,6 +49,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 });
 
 // Wali
-Route::middleware(['auth', 'wali'])->prefix('wali')->name('wali.')->group(function () {
-    Route::get('/dashboard', [WaliController::class, 'dashboard'])->name('dashboard');
+Route::middleware(['wali'])->prefix('wali')->name('wali.')->group(function () {
+    Route::get('/dashboard', [DashboardWali::class, 'index'])->name('dashboard');
 });
+

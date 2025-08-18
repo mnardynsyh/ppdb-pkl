@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
-class Wali extends Model
+class Wali extends Authenticatable
 {
-    use HasFactory;
+    use HasFactory, Notifiable;
 
     protected $table = 'wali';
 
@@ -17,6 +18,11 @@ class Wali extends Model
         'password',
         'no_hp',
         'alamat',
+    ];
+
+    protected $hidden = [
+        'password',
+        'remember_token',
     ];
 
     // Relasi: 1 wali bisa punya banyak siswa

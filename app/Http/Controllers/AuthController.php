@@ -27,8 +27,6 @@ class AuthController extends Controller
         )) {
             $request->session()->regenerate();
             return redirect()->route('admin.dashboard')->with('success', 'Login berhasil sebagai Admin');
-        } else {
-            dd('Gagal login web', $request->email, $request->password);
         }
 
         // Login sebagai wali
