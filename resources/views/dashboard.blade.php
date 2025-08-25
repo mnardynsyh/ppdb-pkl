@@ -61,7 +61,7 @@
 
 
 <!-- Section Fitur -->
-<section class="py-16 bg-white">
+<section class="py-16 bg-white" id="alur">
   <div class="max-w-screen-xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-8">
     
     <div class="text-center" data-aos="fade-up" data-aos-delay="100">

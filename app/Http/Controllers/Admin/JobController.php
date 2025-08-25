@@ -29,7 +29,6 @@ class JobController extends Controller
 
     /**
      * Update data pekerjaan.
-     * Laravel akan secara otomatis menemukan $job berdasarkan id_job dari URL.
      */
     public function update(Request $request, Job $job)
     {
@@ -46,7 +45,6 @@ class JobController extends Controller
 
     /**
      * Hapus data pekerjaan.
-     * Laravel akan secara otomatis menemukan $job berdasarkan id_job dari URL.
      */
     public function destroy(Job $job)
     {
