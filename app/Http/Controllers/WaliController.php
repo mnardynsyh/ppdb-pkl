@@ -33,6 +33,6 @@ class WaliController extends Controller
             'alamat'    => $request->alamat,
         ]);
 
-        return redirect()->route('auth.login')->with('success', 'Akun wali berhasil dibuat, silakan login.');
+        return redirect()->route('login')->with('success', 'Akun wali berhasil dibuat, silakan login.');
     }
 }

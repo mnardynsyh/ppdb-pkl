@@ -2,14 +2,15 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\JobController;
-use App\Http\Controllers\Admin\PenghasilanController;
-use App\Http\Controllers\Admin\AgamaController;
-use App\Http\Controllers\Admin\PendidikanController;
-use App\Http\Controllers\WaliController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\WaliController;
+use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\Wali\DashboardWali;
+use App\Http\Controllers\Admin\JobController;
+use App\Http\Controllers\Admin\AgamaController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\PendidikanController;
+use App\Http\Controllers\Admin\PenghasilanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,8 +49,14 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::resource('pendidikan', PendidikanController::class)->only(['index', 'store', 'update', 'destroy']);
 });
 
+
 // Wali
 Route::middleware(['wali'])->prefix('wali')->name('wali.')->group(function () {
     Route::get('/dashboard', [DashboardWali::class, 'index'])->name('dashboard');
+
+    Route::get('/input-siswa', [SiswaController::class, 'create'])->name('input-siswa');
+    Route::post('/input-siswa', [SiswaController::class, 'store'])->name('input-siswa.store');
 });
+
+
 
