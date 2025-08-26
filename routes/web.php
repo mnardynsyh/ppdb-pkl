@@ -1,61 +1,68 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Admin\AuthController as AdminAuth;
+use App\Http\Controllers\Siswa\AuthController as SiswaAuth;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\SiswaController;
-use App\Http\Controllers\Wali\DashboardWali;
 use App\Http\Controllers\Admin\JobController;
 use App\Http\Controllers\Admin\AgamaController;
-use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
+use App\Http\Controllers\Siswa\DashboardController as SiswaDashboard;
 use App\Http\Controllers\Admin\PendidikanController;
 use App\Http\Controllers\Admin\PenghasilanController;
 
 /*
 |--------------------------------------------------------------------------
-| Public Routes (Guest Only)
+| Rute Publik (Guest)
 |--------------------------------------------------------------------------
 */
-
-// Guest routes (hanya bisa diakses kalau belum login)
-Route::middleware('guest')->group(function () {
-    // Landing page
+Route::middleware(['guest:web', 'guest:siswa'])->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
-
-    // Login untuk admin & siswa
-    Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-    Route::post('/login', [AuthController::class, 'login'])->name('login.process');
-
-    // Registrasi siswa
-    Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('siswa.register');
-    Route::post('/register', [AuthController::class, 'register'])->name('siswa.register.submit');
-
 });
 
 
 /*
 |--------------------------------------------------------------------------
-| Authenticated Routes (Admin / Wali)
+| Route Siswa
 |--------------------------------------------------------------------------
 */
+Route::name('siswa.')->group(function () {
+    // jika belum login sebagai siswa
+    Route::middleware('guest:siswa')->controller(SiswaAuth::class)->group(function () {
+        Route::get('/register', 'showRegisterForm')->name('register');
+        Route::post('/register', 'register')->name('register.submit');
+        Route::get('/login', 'showLoginForm')->name('login');
+        Route::post('/login', 'login')->name('login.submit');
+    });
 
-// Logout
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-
-// Admin
-Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::resource('job', JobController::class)->only(['index', 'store', 'update', 'destroy']);
-    Route::resource('penghasilan', PenghasilanController::class)->only(['index', 'store', 'update', 'destroy']);
-    Route::resource('agama', AgamaController::class)->only(['index', 'store', 'update', 'destroy']);
-    Route::resource('pendidikan', PendidikanController::class)->only(['index', 'store', 'update', 'destroy']);
+    // jika sudah login sebagai siswa
+    Route::middleware('auth:siswa')->group(function () {
+        Route::post('/logout', [SiswaAuth::class, 'logout'])->name('logout');
+        Route::get('/dashboard', [SiswaDashboard::class, 'index'])->name('dashboard');
+    });
 });
 
 
-// Wali
-Route::middleware(['siswa'])->prefix('wali')->name('wali.')->group(function () {
-    Route::get('/dashboard', [DashboardWali::class, 'index'])->name('dashboard');
+/*
+|--------------------------------------------------------------------------
+| Route Admin
+|--------------------------------------------------------------------------
+*/
+Route::prefix('admin')->name('admin.')->group(function () {
+    // jika belum login sebagai admin
+    Route::middleware('guest:web')->controller(AdminAuth::class)->group(function () {
+        Route::get('/login', 'showLoginForm')->name('login');
+        Route::post('/login', 'login')->name('login.submit');
+    });
+
+    // jika sudah login sebagai admin
+    Route::middleware('auth:web')->group(function () {
+        Route::post('/logout', [AdminAuth::class, 'logout'])->name('logout');
+        Route::get('/dashboard', [AdminDashboard::class, 'index'])->name('dashboard');
+        
+        Route::resource('job', JobController::class)->only(['index', 'store', 'update', 'destroy']);
+        Route::resource('penghasilan', PenghasilanController::class)->only(['index', 'store', 'update', 'destroy']);
+        Route::resource('agama', AgamaController::class)->only(['index', 'store', 'update', 'destroy']);
+        Route::resource('pendidikan', PendidikanController::class)->only(['index', 'store', 'update', 'destroy']);
+    });
 });
-
-
-

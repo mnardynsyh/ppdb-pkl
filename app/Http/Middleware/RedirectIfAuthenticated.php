@@ -8,26 +8,16 @@ use Illuminate\Support\Facades\Auth;
 
 class RedirectIfAuthenticated
 {
-    /**
-     * Handle an incoming request.
-     */
     public function handle(Request $request, Closure $next, ...$guards)
     {
-        $guards = empty($guards) ? [null] : $guards;
+        // Cek guard admin
+        if (Auth::guard('web')->check()) {
+            return redirect()->route('admin.dashboard');
+        }
 
-        foreach ($guards as $guard) {
-            if (Auth::guard($guard)->check()) {
-                // Kalau user sudah login, arahkan ke dashboard sesuai role
-                $user = Auth::user();
-
-                if ($user->id_role == 1) {
-                    return redirect()->route('admin.dashboard');
-                } elseif ($user->id_role == 2) {
-                    return redirect()->route('siswa.dashboard');
-                }
-
-                return redirect('/home'); // fallback
-            }
+        // Cek guard siswa
+        if (Auth::guard('siswa')->check()) {
+            return redirect()->route('siswa.dashboard');
         }
 
         return $next($request);

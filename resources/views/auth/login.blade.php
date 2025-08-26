@@ -1,53 +1,73 @@
-@vite(['resources/css/app.css', 'resources/js/app.js'])
+@extends('layouts.app')
 
+@section('title', 'Login Siswa')
 
-<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-blue-100 dark:from-gray-900 dark:to-gray-800 px-4">
-  <div class="w-full max-w-md bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 space-y-6 border border-gray-100 dark:border-gray-700">
-    
-    <!-- Logo / Branding -->
-    <div class="text-center">
-      <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-100 dark:bg-blue-900 mb-4">
-        <svg class="w-8 h-8 text-blue-600 dark:text-blue-400" fill="currentColor" viewBox="0 0 20 20">
-          <path d="M2 5a2 2 0 012-2h3.5a.5.5 0 01.5.5V5H16a2 2 0 012 2v1H2V5zM2 9h16v6a2 2 0 01-2 2H4a2 2 0 01-2-2V9z"/>
-        </svg>
-      </div>
-      <h2 class="text-2xl font-extrabold text-gray-900 dark:text-white">PPDB Online</h2>
-      <p class="text-sm text-gray-500 dark:text-gray-400">Masuk ke akun admin Anda</p>
-    </div>
+@section('content')
+<div class="min-h-screen flex items-center justify-center bg-gray-100 py-12 px-4">
+    <div class="w-full max-w-md bg-white rounded-lg shadow-xl p-8 space-y-8">
+        <div>
+            <h2 class="text-center text-3xl font-extrabold text-gray-900">
+                Login Calon Siswa
+            </h2>
+            <p class="mt-2 text-center text-sm text-gray-600">
+                Belum punya akun?
+                <a href="{{ route('siswa.register') }}" class="font-medium text-blue-600 hover:text-blue-500">
+                    Daftar di sini
+                </a>
+            </p>
+        </div>
 
-    <!-- Form -->
-    <form action="{{ route('login.process') }}" method="POST" class="space-y-5">
-      @csrf
-      <div>
-        <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
-        <input type="email" id="email" name="email" placeholder="name@example.com" required
-          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white transition-all duration-200" />
-      </div>
+        {{-- Menampilkan notifikasi sukses jika ada --}}
+        @if (session('success'))
+            <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4" role="alert">
+                <p class="font-bold">Berhasil</p>
+                <p>{{ session('success') }}</p>
+            </div>
+        @endif
 
-      <div>
-        <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-        <input type="password" id="password" name="password" required
-          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white transition-all duration-200" />
-      </div>
+        <form class="mt-8 space-y-6" action="{{ route('siswa.login.submit') }}" method="POST">
+            @csrf
+            <div class="rounded-md shadow-sm -space-y-px">
+                <div>
+                    <label for="nisn" class="sr-only">NISN</label>
+                    <input id="nisn" name="nisn" type="text" value="{{ old('nisn') }}" required
+                        class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+                        placeholder="Nomor Induk Siswa Nasional (NISN)">
+                </div>
+                <div>
+                    <label for="password" class="sr-only">Password</label>
+                    <input id="password" name="password" type="password" required
+                        class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+                        placeholder="Password">
+                </div>
+            </div>
 
-      <div class="flex items-center justify-between">
-        <label class="flex items-center">
-          <input id="remember" name="remember" type="checkbox"
-            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600">
-          <span class="ml-2 text-sm text-gray-900 dark:text-gray-300">Ingat saya</span>
-        </label>
-        <a href="#" class="text-sm text-blue-600 hover:underline dark:text-blue-400">Lupa password?</a>
-      </div>
+            @error('nisn')
+                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+            @enderror
 
-      <button type="submit"
-        class="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-3 text-center transition-all duration-200 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-700">
-        Masuk
-      </button>
-    </form>
-    <div class="mt-4 text-center">
-            <a href="{{ route('home') }}" class="inline-flex items-center text-sm font-medium text-gray-600 hover:text-blue-600">
-                ← Kembali ke Dashboard
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <input id="remember" name="remember" type="checkbox"
+                        class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                    <label for="remember" class="ml-2 block text-sm text-gray-900">
+                        Ingat saya
+                    </label>
+                </div>
+            </div>
+
+            <div>
+                <button type="submit"
+                    class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                    Login
+                </button>
+            </div>
+        </form>
+        <div class="text-center">
+             <a href="{{ route('home') }}" class="text-sm font-medium text-gray-600 hover:text-gray-500">
+                &larr; Kembali ke Halaman Utama
             </a>
         </div>
-  </div>
+    </div>
 </div>
+@endsection
