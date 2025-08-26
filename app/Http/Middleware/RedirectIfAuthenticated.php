@@ -23,7 +23,7 @@ class RedirectIfAuthenticated
                 if ($user->id_role == 1) {
                     return redirect()->route('admin.dashboard');
                 } elseif ($user->id_role == 2) {
-                    return redirect()->route('wali.dashboard');
+                    return redirect()->route('siswa.dashboard');
                 }
 
                 return redirect('/home'); // fallback

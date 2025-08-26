@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\WaliController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\Wali\DashboardWali;
 use App\Http\Controllers\Admin\JobController;
@@ -17,19 +16,22 @@ use App\Http\Controllers\Admin\PenghasilanController;
 | Public Routes (Guest Only)
 |--------------------------------------------------------------------------
 */
+
+// Guest routes (hanya bisa diakses kalau belum login)
 Route::middleware('guest')->group(function () {
+    // Landing page
     Route::get('/', [HomeController::class, 'index'])->name('home');
 
-    // Login
+    // Login untuk admin & siswa
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [AuthController::class, 'login'])->name('login.process');
 
-    // registrasi wali
-    Route::prefix('wali')->name('wali.')->group(function () {
-        Route::get('/register', [WaliController::class, 'create'])->name('register');
-        Route::post('/register', [WaliController::class, 'store'])->name('store');
-    });
+    // Registrasi siswa
+    Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('siswa.register');
+    Route::post('/register', [AuthController::class, 'register'])->name('siswa.register.submit');
+
 });
+
 
 /*
 |--------------------------------------------------------------------------
@@ -51,11 +53,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
 
 // Wali
-Route::middleware(['wali'])->prefix('wali')->name('wali.')->group(function () {
+Route::middleware(['siswa'])->prefix('wali')->name('wali.')->group(function () {
     Route::get('/dashboard', [DashboardWali::class, 'index'])->name('dashboard');
-
-    Route::get('/input-siswa', [SiswaController::class, 'create'])->name('input-siswa');
-    Route::post('/input-siswa', [SiswaController::class, 'store'])->name('input-siswa.store');
 });
 
 

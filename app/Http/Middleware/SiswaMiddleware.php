@@ -5,11 +5,18 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
-class WaliMiddleware
+class SiswaMiddleware
 {
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @return mixed
+     */
     public function handle($request, Closure $next)
     {
-        if (Auth::guard('wali')->check()) {
+        if (Auth::check() && Auth::user()->id_role == 2) {
             return $next($request);
         }
 

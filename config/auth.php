@@ -41,9 +41,9 @@ return [
         'provider' => 'users',
     ],
 
-    'wali' => [
+    'siswa' => [
         'driver' => 'session',
-        'provider' => 'wali',
+        'provider' => 'siswa',
     ],
 ],
 
@@ -71,9 +71,9 @@ return [
         'model' => App\Models\User::class,
         ],
 
-    'wali' => [
+    'siswa' => [
         'driver' => 'eloquent',
-        'model' => App\Models\Wali::class,
+        'model' => App\Models\Siswa::class,
         ],
     ],
 

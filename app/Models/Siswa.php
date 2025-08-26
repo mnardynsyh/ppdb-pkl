@@ -3,25 +3,40 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Siswa extends Model
+class Siswa extends Authenticatable
 {
     use HasFactory;
 
     protected $table = 'siswa';
-    protected $primaryKey = 'id_siswa';
 
     protected $fillable = [
-        'id_wali',
-        'nama_siswa',
+        'email',
+        'password',
+        'nama_lengkap',
+        'nik',
+        'nisn',
         'tanggal_lahir',
         'tempat_lahir',
         'jenis_kelamin',
         'alamat',
-        'id_pendidikan',
-        'id_pekerjaan',
-        'id_penghasilan',
-        'id_agama'
+        'asal_sekolah',
+        'anak_ke',
+        'agama_id',
+        'tahun_lulus',
+        'pas_foto',
+        'status_pendaftaran',
     ];
+
+
+    protected $hidden = [
+        'password',
+    ];
+
+    // Relasi ke tabel agama
+    public function agama()
+    {
+        return $this->belongsTo(Agama::class, 'agama_id');
+    }
 }
