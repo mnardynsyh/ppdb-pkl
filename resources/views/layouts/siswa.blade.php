@@ -8,9 +8,9 @@
 </head>
 <body class="bg-gray-100 dark:bg-gray-900">
 
-    @include('partials.sidebar-wali')
+    @include('partials.nav-siswa')
 
-    <main class="p-4 sm:ml-64">
+    <main class="container mx-auto mt-8 px-4">
         @yield('content')
     </main>
 
