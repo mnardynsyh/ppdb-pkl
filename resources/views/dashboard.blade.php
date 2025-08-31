@@ -87,10 +87,8 @@
       <h3 class="text-lg font-semibold">Pengumuman</h3>
       <p class="text-gray-500 mt-2">Lihat hasil seleksi secara online tanpa harus datang ke sekolah.</p>
     </div>
-
   </div>
 </section>
-
 
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>

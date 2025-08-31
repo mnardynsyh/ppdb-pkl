@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('siswa', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('role_id');
             $table->string('email')->unique();
             $table->string('password');
             $table->string('nama_lengkap');
@@ -32,6 +33,7 @@ return new class extends Migration
 
             // Relasi ke tabel agama
             $table->foreign('agama_id')->references('id')->on('agama')->onDelete('cascade');
+            $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
         });
     }
 

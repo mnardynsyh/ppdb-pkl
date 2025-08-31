@@ -4,39 +4,34 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class SiswaSeeder extends Seeder
 {
     public function run(): void
     {
+        $siswaRoleId = DB::table('roles')->where('name', 'siswa')->value('id') ?? 2;
+        // Pastikan ada agama dengan id = 1, atau sesuaikan agama_id
         DB::table('siswa')->insert([
             [
-                'id_wali'        => 1, // pastikan wali dengan id 1 sudah ada
-                'nama_siswa'     => 'Budi Santoso',
-                'tanggal_lahir'  => '2010-05-12',
-                'tempat_lahir'   => 'Jakarta',
-                'jenis_kelamin'  => 'L',
-                'alamat'         => 'Jl. Melati No. 45, Jakarta',
-                'id_pendidikan'  => null,
-                'id_pekerjaan'   => null,
-                'id_penghasilan' => null,
-                'id_agama'       => null,
-                'created_at'     => now(),
-                'updated_at'     => now(),
-            ],
-            [
-                'id_wali'        => 2,
-                'nama_siswa'     => 'Siti Aminah',
-                'tanggal_lahir'  => '2012-08-21',
-                'tempat_lahir'   => 'Bandung',
-                'jenis_kelamin'  => 'P',
-                'alamat'         => 'Jl. Melati No. 45, Jakarta',
-                'id_pendidikan'  => null,
-                'id_pekerjaan'   => null,
-                'id_penghasilan' => null,
-                'id_agama'       => null,
-                'created_at'     => now(),
-                'updated_at'     => now(),
+                'email' => 'siswa1@example.com',
+                'password' => Hash::make('password123'),
+                'nama_lengkap' => 'Siswa Satu',
+                'nik' => '1234567890123456',
+                'nisn' => '1234567890',
+                'tanggal_lahir' => '2005-01-01',
+                'tempat_lahir' => 'Jakarta',
+                'jenis_kelamin' => 'L',
+                'alamat' => 'Jl. Contoh No.1',
+                'asal_sekolah' => 'SMP Contoh',
+                'anak_ke' => 1,
+                'agama_id' => 1,
+                'tahun_lulus' => 2023,
+                'pas_foto' => null,
+                'role_id' => $siswaRoleId,
+                'status_pendaftaran' => 'pending',
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
         ]);
     }
