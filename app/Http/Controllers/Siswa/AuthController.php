@@ -40,6 +40,7 @@ class AuthController extends Controller
         ]);
 
         Siswa::create([
+            'role_id'       => 2, // siswa default role
             'email'         => $request->email,
             'password'      => Hash::make($request->password),
             'nama_lengkap'  => $request->nama_lengkap,
@@ -53,7 +54,8 @@ class AuthController extends Controller
             'agama_id'      => $request->agama_id,
         ]);
 
-        return redirect()->route('login')->with('success', 'Registrasi berhasil! Silakan login.');
+
+        return redirect()->route('siswa.login')->with('success', 'Registrasi berhasil! Silakan login.');
     }
 
     /**

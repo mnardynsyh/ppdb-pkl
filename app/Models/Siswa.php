@@ -39,4 +39,8 @@ class Siswa extends Authenticatable
     {
         return $this->belongsTo(Agama::class, 'agama_id');
     }
+    public function orangTuaWali()
+    {
+        return $this->hasOne(OrangTuaWali::class);
+    }
 }

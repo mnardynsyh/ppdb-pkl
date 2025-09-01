@@ -39,8 +39,15 @@ Route::name('siswa.')->group(function () {
     Route::middleware('auth:siswa')->group(function () {
         Route::post('/logout', [SiswaAuth::class, 'logout'])->name('logout');
         Route::get('/dashboard', [SiswaDashboard::class, 'index'])->name('dashboard');
+
+        // Multi-step form
+        Route::prefix('form')->name('form.')->controller(SiswaDashboard::class)->group(function () {
+            Route::get('/step/{step}', 'showStep')->name('step');
+            Route::post('/step/{step}', 'processStep')->name('process');
+        });
     });
 });
+
 
 
 /*

@@ -5,7 +5,7 @@
 @section('content')
 
 <section 
-  style="background-image: url('{{ asset('img/bg-sekolah.jpg') }}')" 
+  style="background-image: url('{{ asset('img/bg-sekolah.png') }}')" 
   class="bg-cover bg-center bg-no-repeat w-full h-[90vh] sm:h-[90vh] min-h-[500px] relative"
 >
   <!-- Overlay -->
