@@ -1,24 +1,72 @@
 <div x-show="step === 4" class="space-y-6 animate-fade-in">
-    <h3 class="text-xl font-semibold text-gray-800 border-b pb-2">Langkah 4: Unggah Berkas Pendaftaran</h3>
-    <div class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4" role="alert">
+    <h3 class="text-xl font-semibold text-gray-800 border-b pb-2">Langkah 4: Unggah Berkas Lampiran</h3>
+    
+    {{-- Kotak Informasi --}}
+    <div class="p-4 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 rounded-md" role="alert">
         <p class="font-bold">Perhatian!</p>
-        <p>Pastikan file yang diunggah adalah format <span class="font-semibold">.jpg, .jpeg,</span> atau <span class="font-semibold">.png</span>. Ukuran maksimal 2MB.</p>
+        <ul class="list-disc list-inside text-sm">
+            <li>Format file yang diizinkan adalah: <strong>JPG, JPEG, PNG, PDF</strong>.</li>
+            <li>Ukuran file maksimal: <strong>2 MB</strong> per file.</li>
+            <li>Jika Anda mengunggah file baru, file lama akan otomatis terganti.</li>
+            <li>Pastikan dokumen yang diunggah dapat terbaca dengan jelas.</li>
+        </ul>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-            <label for="pas_foto" class="block mb-2 text-sm font-medium text-gray-900">Pas Foto (3x4)</label>
-            <input type="file" id="pas_foto" name="pas_foto" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none">
+
+    @php
+        // Helper ini digunakan untuk memudahkan pengecekan dan penampilan berkas yang sudah ada.
+        // 'keyBy' akan mengubah koleksi menjadi array asosiatif dengan 'jenis_berkas' sebagai kuncinya.
+        $berkasTersimpan = $siswa->Lampiran->keyBy('jenis_berkas');
+    @endphp
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-8">
+        
+        <!-- Input untuk Pas Foto -->
+        <div class="border p-4 rounded-lg shadow-sm bg-gray-50">
+            <label for="pas_foto" class="block mb-2 text-sm font-medium text-gray-900">Pas Foto 3x4</label>
+            <input type="file" id="pas_foto" name="berkas[pas_foto]" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-white focus:outline-none">
+            
+            @if($file = $berkasTersimpan->get('pas_foto'))
+                <div class="mt-2 text-sm">
+                    <p class="text-gray-600">File saat ini:
+                        <a href="{{ asset('storage/' . $file->path_file) }}" target="_blank" class="text-blue-600 hover:underline">{{ $file->nama_file_asli }}</a>
+                    </p>
+                </div>
+            @endif
+             @error('berkas.pas_foto') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
         </div>
-        <div>
-            <label for="scan_kk" class="block mb-2 text-sm font-medium text-gray-900">Scan Kartu Keluarga</label>
-            <input type="file" id="scan_kk" name="scan_kk" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none">
+
+        <!-- Input untuk Kartu Keluarga -->
+        <div class="border p-4 rounded-lg shadow-sm bg-gray-50">
+            <label for="kartu_keluarga" class="block mb-2 text-sm font-medium text-gray-900">Scan Kartu Keluarga (KK)</label>
+            <input type="file" id="kartu_keluarga" name="berkas[kartu_keluarga]" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-white focus:outline-none">
+
+            @if($file = $berkasTersimpan->get('kartu_keluarga'))
+                <div class="mt-2 text-sm">
+                    <p class="text-gray-600">File saat ini:
+                        <a href="{{ asset('storage/' . $file->path_file) }}" target="_blank" class="text-blue-600 hover:underline">{{ $file->nama_file_asli }}</a>
+                    </p>
+                </div>
+            @endif
+            @error('berkas.kartu_keluarga') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
         </div>
-        <div>
-            <label for="scan_akta" class="block mb-2 text-sm font-medium text-gray-900">Scan Akta Kelahiran</t_sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none">
+
+        <!-- Input untuk Ijazah -->
+        <div class="border p-4 rounded-lg shadow-sm bg-gray-50">
+            <label for="ijazah" class="block mb-2 text-sm font-medium text-gray-900">Scan Ijazah SMP/Sederajat</label>
+            <input type="file" id="ijazah" name="berkas[ijazah]" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-white focus:outline-none">
+
+            @if($file = $berkasTersimpan->get('ijazah'))
+                <div class="mt-2 text-sm">
+                    <p class="text-gray-600">File saat ini:
+                        <a href="{{ asset('storage/' . $file->path_file) }}" target="_blank" class="text-blue-600 hover:underline">{{ $file->nama_file_asli }}</a>
+                    </p>
+                </div>
+            @endif
+            @error('berkas.ijazah') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
         </div>
-        <div>
-            <label for="scan_ijazah" class="block mb-2 text-sm font-medium text-gray-900">Scan Ijazah / SKL</label>
-            <input type="file" id="scan_ijazah" name="scan_ijazah" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none">
-        </div>
+
+        {{-- Anda bisa menambahkan input file lain di sini jika diperlukan --}}
+
     </div>
 </div>
+
