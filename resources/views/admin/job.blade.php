@@ -39,11 +39,11 @@
                         <td class="px-6 py-2">
                             <div class="flex items-center gap-3">
                                 <button type="button"
-                                        onclick="openEditModal({{ $job->id_job }}, @js($job->pekerjaan))"
+                                        onclick="openEditModal({{ $job->id }}, @js($job->pekerjaan))"
                                         class="text-white bg-yellow-400 hover:bg-yellow-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-3.5 py-2.5 mb-2">
                                     Edit
                                 </button>
-                                <form action="{{ route('admin.job.destroy', $job) }}" method="POST"
+                                <form action="{{ route('admin.job.destroy', ['job' => $job->id]) }}" method="POST"
                                       onsubmit="return confirm('Yakin ingin menghapus?')">
                                     @csrf
                                     @method('DELETE')
@@ -137,19 +137,23 @@
     const editForm  = document.getElementById('editForm');
     const editInput = document.getElementById('editPekerjaan');
 
+    const updateUrlTemplate = "{{ route('admin.job.update', ':id') }}";
+
     function openAddModal()  { addModal.classList.remove('hidden'); }
     function closeAddModal() { addModal.classList.add('hidden'); }
 
-    function openEditModal(id, pekerjaan) {
-        editInput.value = pekerjaan;
-        editForm.action = `{{ url('admin/job') }}/${id}`;
+    function openEditModal(id, pendidikan) {
+        editInput.value = pendidikan;
+        editForm.action = updateUrlTemplate.replace(':id', id);
         editModal.classList.remove('hidden');
     }
     function closeEditModal() { editModal.classList.add('hidden'); }
 
+    // Klik backdrop untuk menutup
     addModal?.addEventListener('click', (e) => { if (e.target === addModal) closeAddModal(); });
     editModal?.addEventListener('click', (e) => { if (e.target === editModal) closeEditModal(); });
 
+    // ESC untuk menutup
     window.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') { closeAddModal(); closeEditModal(); }
     });
