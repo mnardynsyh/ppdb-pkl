@@ -10,7 +10,7 @@ class PendidikanController extends Controller
 {
     public function index()
     {
-        $pendidikan = Pendidikan::orderBy('id_pendidikan', 'asc')->get();
+        $pendidikan = Pendidikan::orderBy('id', 'asc')->get();
         return view('admin.pendidikan', compact('pendidikan'));
     }
 

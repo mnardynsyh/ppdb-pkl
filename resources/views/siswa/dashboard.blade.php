@@ -7,6 +7,14 @@
     <h1 class="text-3xl font-bold mb-2 text-center text-gray-800">Formulir Pendaftaran Siswa Baru</h1>
     <p class="text-center text-gray-500 mb-8">Silakan lengkapi semua data dengan benar.</p>
 
+    <form action="{{ route('siswa.logout') }}" method="POST" class="inline">
+    @csrf
+    <button type="submit"
+        class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition duration-300">
+        Logout
+    </button>
+</form>
+
     <!-- Memanggil Stepper Partial -->
     @include('partials.siswa.stepper')
 

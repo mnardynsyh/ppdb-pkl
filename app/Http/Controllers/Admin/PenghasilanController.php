@@ -10,7 +10,7 @@ class PenghasilanController extends Controller
 {
     public function index()
     {
-        $penghasilan = Penghasilan::orderBy('id_penghasilan', 'asc')->get();
+        $penghasilan = Penghasilan::orderBy('id', 'asc')->get();
         return view('admin.penghasilan', compact('penghasilan'));
     }
 

@@ -39,18 +39,21 @@
                         <td class="px-6 py-2">
                             <div class="flex items-center gap-3">
                                 <button type="button"
-                                    onclick="openEditModal({{ $p->id_penghasilan }}, @js($p->penghasilan))"
+                                    onclick="openEditModal({{ $p->id }}, @js($p->penghasilan))"
                                     class="text-white bg-yellow-400 hover:bg-yellow-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-3.5 py-2.5 mb-2">
                                     Edit
                                 </button>
-                                <form action="{{ route('admin.penghasilan.destroy', $p->id_penghasilan) }}" method="POST"
-                                      onsubmit="return confirm('Yakin ingin menghapus?')">
+
+                                <form action="{{ route('admin.penghasilan.destroy', ['penghasilan' => $p->id]) }}" method="POST"
+                                    onsubmit="return confirm('Yakin ingin menghapus?')">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="text-white bg-red-600 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-2.5 py-2.5 text-center mb-2">
                                         Hapus
                                     </button>
                                 </form>
+
+
                             </div>
                         </td>
                     </tr>
@@ -130,19 +133,20 @@
     </div>
 </div>
 
-{{-- Script modal --}}
 <script>
     const addModal  = document.getElementById('addModal');
     const editModal = document.getElementById('editModal');
     const editForm  = document.getElementById('editForm');
     const editInput = document.getElementById('editPenghasilan');
 
+    const updateUrlTemplate = "{{ route('admin.penghasilan.update', ':id') }}";
+
     function openAddModal()  { addModal.classList.remove('hidden'); }
     function closeAddModal() { addModal.classList.add('hidden'); }
 
     function openEditModal(id, range_penghasilan) {
         editInput.value = range_penghasilan;
-        editForm.action = `/admin/penghasilan/${id}`;
+        editForm.action = updateUrlTemplate.replace(':id', id);
         editModal.classList.remove('hidden');
     }
     function closeEditModal() { editModal.classList.add('hidden'); }
@@ -156,4 +160,5 @@
         if (e.key === 'Escape') { closeAddModal(); closeEditModal(); }
     });
 </script>
+
 @endsection
