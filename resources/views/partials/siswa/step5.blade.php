@@ -12,3 +12,4 @@
         <label for="konfirmasi-checkbox" class="ml-2 text-sm font-medium text-gray-900">Saya menyatakan bahwa seluruh data yang saya isikan adalah benar dan dapat dipertanggungjawabkan.</label>
     </div>
 </div>
+

@@ -20,6 +20,8 @@ Route::middleware(['guest:web', 'guest:siswa'])->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
 });
 
+Route::get('/login', [SiswaAuth::class, 'showLoginForm'])->middleware('guest:siswa')->name('login');
+
 
 /*
 |--------------------------------------------------------------------------
@@ -38,13 +40,12 @@ Route::name('siswa.')->group(function () {
     // jika sudah login sebagai siswa
     Route::middleware('auth:siswa')->group(function () {
         Route::post('/logout', [SiswaAuth::class, 'logout'])->name('logout');
+        
+        // Route untuk menampilkan halaman dashboard (form)
         Route::get('/dashboard', [SiswaDashboard::class, 'index'])->name('dashboard');
 
-        // Multi-step form
-        Route::prefix('form')->name('form.')->controller(SiswaDashboard::class)->group(function () {
-            Route::get('/step/{step}', 'showStep')->name('step');
-            Route::post('/step/{step}', 'processStep')->name('process');
-        });
+        // Route untuk menyimpan data dari form pendaftaran
+        Route::post('/dashboard', [SiswaDashboard::class, 'store'])->name('dashboard.store');
     });
 });
 
@@ -73,3 +74,4 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('pendidikan', PendidikanController::class)->only(['index', 'store', 'update', 'destroy']);
     });
 });
+

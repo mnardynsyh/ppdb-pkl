@@ -83,7 +83,7 @@
         </div>
         <form action="{{ route('admin.penghasilan.store') }}" method="POST">
             @csrf
-            <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Pendidikan</label>
+            <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Range Penghasilan</label>
             <input type="text" name="penghasilan" required
                    class="mb-4 w-full rounded border border-gray-300 p-2 text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
 

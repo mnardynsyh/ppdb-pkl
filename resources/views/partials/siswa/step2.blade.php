@@ -136,7 +136,50 @@
                     <label for="nik_wali" class="block mb-2 text-sm font-medium text-gray-900">NIK Wali</label>
                     <input type="text" id="nik_wali" name="nik_wali" value="{{ old('nik_wali', $siswa->orangTuaWali->nik_wali ?? '') }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" placeholder="16 Digit NIK">
                 </div>
-                <!-- Tambahkan sisa input untuk Wali di sini, dengan pola yang sama -->
+                <div>
+                <label for="tempat_lahir_wali" class="block mb-2 text-sm font-medium text-gray-900">Tempat Lahir Wali</label>
+                <input type="text" id="tempat_lahir_wali" name="tempat_lahir_wali" value="{{ old('tempat_lahir_wali', $siswa->orangTuaWali->tempat_lahir_wali ?? '') }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">
+            </div>
+            <div>
+                <label for="tanggal_lahir_wali" class="block mb-2 text-sm font-medium text-gray-900">Tanggal Lahir Wali</label>
+                <input type="date" id="tanggal_lahir_wali" name="tanggal_lahir_wali" value="{{ old('tanggal_lahir_wali', $siswa->orangTuaWali->tanggal_lahir_ibu ?? '') }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">
+            </div>
+            <div>
+                <label for="pendidikan_wali_id" class="block mb-2 text-sm font-medium text-gray-900">Pendidikan Terakhir Wali</label>
+                <select id="pendidikan_wali_id" name="pendidikan_wali_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">
+                    <option value="" disabled selected>-- Pilih Pendidikan --</option>
+                    @foreach($pendidikans as $pendidikan)
+                        <option value="{{ $pendidikan->id }}" @if(old('pendidikan_wali_id', $siswa->orangTuaWali->pendidikan_wali_id ?? '') == $pendidikan->id) selected @endif>{{ $pendidikan->pendidikan }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div>
+                <label for="pekerjaan_wali_id" class="block mb-2 text-sm font-medium text-gray-900">Pekerjaan Wali</label>
+                <select id="pekerjaan_wali_id" name="pekerjaan_wali_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">
+                    <option value="" disabled selected>-- Pilih Pekerjaan --</option>
+                    @foreach($pekerjaans as $pekerjaan)
+                        <option value="{{ $pekerjaan->id }}" @if(old('pekerjaan_wali_id', $siswa->orangTuaWali->pekerjaan_wali_id ?? '') == $pekerjaan->id) selected @endif>{{ $pekerjaan->pekerjaan }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div>
+                <label for="penghasilan_wali_id" class="block mb-2 text-sm font-medium text-gray-900">Penghasilan Wali</label>
+                <select id="penghasilan_wali_id" name="penghasilan_wali_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">
+                    <option value="" disabled selected>-- Pilih Penghasilan --</option>
+                    @foreach($penghasilans as $penghasilan)
+                        <option value="{{ $penghasilan->id }}" @if(old('penghasilan_wali_id', $siswa->orangTuaWali->penghasilan_wali_id ?? '') == $penghasilan->id) selected @endif>{{ $penghasilan->penghasilan }}</option>
+                    @endforeach
+                </select>
+            </div>
+             <div>
+                <label for="agama_wali_id" class="block mb-2 text-sm font-medium text-gray-900">Agama Wali</label>
+                <select id="agama_wali_id" name="agama_wali_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">
+                    <option value="" disabled selected>-- Pilih Agama --</option>
+                    @foreach($agamas as $agama)
+                        <option value="{{ $agama->id }}" @if(old('agama_wali_id', $siswa->orangTuaWali->agama_wali_id ?? '') == $agama->id) selected @endif>{{ $agama->agama }}</option>
+                    @endforeach
+                </select>
+            </div>
             </div>
         </div>
     </div>
