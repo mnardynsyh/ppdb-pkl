@@ -58,23 +58,76 @@ class OrangTuaWali extends Model
         return $this->belongsTo(Siswa::class);
     }
 
-    // Anda bisa menambahkan relasi lain di sini jika diperlukan, contohnya:
+    // ===================================================================
+    // RELASI UNTUK DATA AYAH
+    // ===================================================================
 
-    /**
-     * Mendapatkan data pekerjaan ayah.
-     */
+    public function agamaAyah(): BelongsTo
+    {
+        return $this->belongsTo(Agama::class, 'agama_ayah_id');
+    }
+
+    public function pendidikanAyah(): BelongsTo
+    {
+        return $this->belongsTo(Pendidikan::class, 'pendidikan_ayah_id');
+    }
+
     public function pekerjaanAyah(): BelongsTo
     {
         return $this->belongsTo(Job::class, 'pekerjaan_ayah_id');
     }
 
-    /**
-     * Mendapatkan data agama ibu.
-     */
+    public function penghasilanAyah(): BelongsTo
+    {
+        return $this->belongsTo(Penghasilan::class, 'penghasilan_ayah_id');
+    }
+    
+    // ===================================================================
+    // RELASI UNTUK DATA IBU
+    // ===================================================================
+
     public function agamaIbu(): BelongsTo
     {
         return $this->belongsTo(Agama::class, 'agama_ibu_id');
     }
+
+    public function pendidikanIbu(): BelongsTo
+    {
+        return $this->belongsTo(Pendidikan::class, 'pendidikan_ibu_id');
+    }
+
+    public function pekerjaanIbu(): BelongsTo
+    {
+        return $this->belongsTo(Job::class, 'pekerjaan_ibu_id');
+    }
+
+    public function penghasilanIbu(): BelongsTo
+    {
+        return $this->belongsTo(Penghasilan::class, 'penghasilan_ibu_id');
+    }
     
-    // ... dan relasi lainnya untuk pendidikan, penghasilan, dll.
+    // ===================================================================
+    // RELASI UNTUK DATA WALI
+    // ===================================================================
+
+    public function agamaWali(): BelongsTo
+    {
+        return $this->belongsTo(Agama::class, 'agama_wali_id');
+    }
+
+    public function pendidikanWali(): BelongsTo
+    {
+        return $this->belongsTo(Pendidikan::class, 'pendidikan_wali_id');
+    }
+
+    public function pekerjaanWali(): BelongsTo
+    {
+        return $this->belongsTo(Job::class, 'pekerjaan_wali_id');
+    }
+
+    public function penghasilanWali(): BelongsTo
+    {
+        return $this->belongsTo(Penghasilan::class, 'penghasilan_wali_id');
+    }
 }
+

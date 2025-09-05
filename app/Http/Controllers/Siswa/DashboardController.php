@@ -18,27 +18,48 @@ use Illuminate\Support\Facades\Storage;
 class DashboardController extends Controller
 {
     /**
-     * Menampilkan halaman dashboard pendaftaran siswa.
+     * Menampilkan halaman dashboard pendaftaran atau halaman status.
      */
     public function index()
     {
-        // Mengambil data siswa yang sedang login beserta semua relasi yang diperlukan
-        $siswa = Siswa::with(['orangTuaWali', 'lampiran'])->find(Auth::id());
+        // Memuat siswa beserta semua relasi yang dibutuhkan, termasuk relasi turunan (nested)
+        $siswa = Siswa::with([
+            'agama',
+            'lampiran',
+            'orangTuaWali.agamaAyah',
+            'orangTuaWali.pendidikanAyah',
+            'orangTuaWali.pekerjaanAyah',
+            'orangTuaWali.penghasilanAyah',
+            'orangTuaWali.agamaIbu',
+            'orangTuaWali.pendidikanIbu',
+            'orangTuaWali.pekerjaanIbu',
+            'orangTuaWali.penghasilanIbu',
+            'orangTuaWali.agamaWali',
+            'orangTuaWali.pendidikanWali',
+            'orangTuaWali.pekerjaanWali',
+            'orangTuaWali.penghasilanWali'
+        ])->find(Auth::id());
 
-        // Mengambil data yang diperlukan untuk dropdown/select options
-        $agamas = Agama::all();
-        $pendidikans = Pendidikan::all();
-        $pekerjaans = Pekerjaan::all();
-        $penghasilans = Penghasilan::all();
+        // Kondisi untuk menentukan view mana yang akan ditampilkan
+        if (!$siswa->orangTuaWali || (request()->query('action') == 'edit' && $siswa->status_pendaftaran == 'pending')) {
+            // Jika data belum ada, atau jika ada permintaan edit, tampilkan form.
+            
+            $agamas = Agama::all();
+            $pendidikans = Pendidikan::all();
+            $pekerjaans = Pekerjaan::all();
+            $penghasilans = Penghasilan::all();
 
-        // Mengirim data ke view
-        return view('siswa.dashboard', compact(
-            'siswa',
-            'agamas',
-            'pendidikans',
-            'pekerjaans',
-            'penghasilans'
-        ));
+            return view('siswa.dashboard', compact(
+                'siswa',
+                'agamas',
+                'pendidikans',
+                'pekerjaans',
+                'penghasilans'
+            ));
+        }
+
+        // Jika tidak, tampilkan halaman status pendaftaran.
+        return view('siswa.status', compact('siswa'));
     }
 
     /**
@@ -92,10 +113,10 @@ class DashboardController extends Controller
             'tahun_lulus'           => 'required|digits:4|integer|min:2000',
 
             // Step 4: Berkas Lampiran
-            'berkas'                    => 'nullable|array',
-            'berkas.pas_foto'           => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
-            'berkas.kartu_keluarga'     => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
-            'berkas.ijazah'             => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'berkas'                => 'nullable|array',
+            'berkas.pas_foto'         => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'berkas.kartu_keluarga'   => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'berkas.ijazah'           => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ]);
 
         $siswa = Siswa::find(Auth::id());
@@ -155,8 +176,8 @@ class DashboardController extends Controller
             foreach ($request->file('berkas') as $jenisBerkas => $file) {
                 // Cari data berkas lama
                 $berkasLama = Lampiran::where('siswa_id', $siswa->id)
-                                            ->where('jenis_berkas', $jenisBerkas)
-                                            ->first();
+                                        ->where('jenis_berkas', $jenisBerkas)
+                                        ->first();
 
                 // Hapus file lama dari storage jika ada
                 if ($berkasLama && Storage::disk('public')->exists($berkasLama->path_file)) {
