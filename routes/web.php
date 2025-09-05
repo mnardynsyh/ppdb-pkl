@@ -1,15 +1,16 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\AuthController as AdminAuth;
-use App\Http\Controllers\Siswa\AuthController as SiswaAuth;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\JobController;
 use App\Http\Controllers\Admin\AgamaController;
+use App\Http\Controllers\Admin\PendidikanController;
+use App\Http\Controllers\Admin\PendaftaranController;
+use App\Http\Controllers\Admin\PenghasilanController;
+use App\Http\Controllers\Admin\AuthController as AdminAuth;
+use App\Http\Controllers\Siswa\AuthController as SiswaAuth;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
 use App\Http\Controllers\Siswa\DashboardController as SiswaDashboard;
-use App\Http\Controllers\Admin\PendidikanController;
-use App\Http\Controllers\Admin\PenghasilanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -72,6 +73,15 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('penghasilan', PenghasilanController::class)->only(['index', 'store', 'update', 'destroy']);
         Route::resource('agama', AgamaController::class)->only(['index', 'store', 'update', 'destroy']);
         Route::resource('pendidikan', PendidikanController::class)->only(['index', 'store', 'update', 'destroy']);
+
+        Route::prefix('pendaftaran')->name('pendaftaran.')->controller(PendaftaranController::class)->group(function () {
+            Route::get('/masuk', 'masuk')->name('masuk');
+            Route::get('/diterima', 'diterima')->name('diterima');
+            Route::get('/ditolak', 'ditolak')->name('ditolak');
+            Route::post('/{siswa}/terima', 'prosesTerima')->name('terima');
+            Route::post('/{siswa}/tolak', 'prosesTolak')->name('tolak');
+            Route::post('/{siswa}/kembalikan', 'kembalikanKePending')->name('kembalikan');
+        });
     });
 });
 
