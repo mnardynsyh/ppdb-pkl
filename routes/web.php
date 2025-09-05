@@ -78,9 +78,13 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/masuk', 'masuk')->name('masuk');
             Route::get('/diterima', 'diterima')->name('diterima');
             Route::get('/ditolak', 'ditolak')->name('ditolak');
-            Route::post('/{siswa}/terima', 'prosesTerima')->name('terima');
-            Route::post('/{siswa}/tolak', 'prosesTolak')->name('tolak');
-            Route::post('/{siswa}/kembalikan', 'kembalikanKePending')->name('kembalikan');
+            Route::get('/semua', 'semuaPendaftar')->name('semua');
+            Route::get('/{siswa}/detail', 'detail')->name('detail');
+
+            // Route untuk Aksi Perubahan Status
+            Route::patch('/{siswa}/terima', 'terima')->name('terima');
+            Route::patch('/{siswa}/tolak', 'tolak')->name('tolak');
+            Route::patch('/{siswa}/batalkan', 'batalkan')->name('batalkan');
         });
     });
 });

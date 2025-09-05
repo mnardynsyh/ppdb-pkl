@@ -29,7 +29,7 @@
                 </tr>
             </thead>
             <tbody>
-                @forelse($siswaDiterima as $i => $siswa)
+                @forelse($siswas as $i => $siswa)
                     <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
                         <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">{{ $i + 1 }}</td>
                         <td class="px-6 py-4 font-semibold">{{ $siswa->nama_lengkap }}</td>
@@ -37,10 +37,10 @@
                         <td class="px-6 py-4">{{ $siswa->asal_sekolah }}</td>
                         <td class="px-6 py-4">
                             <div class="flex items-center justify-center gap-2">
-                                <a href="#" class="px-3 py-2 text-xs font-medium text-center text-white bg-blue-600 rounded-lg hover:bg-blue-700">
+                                <a href="{{ route('admin.pendaftaran.detail', $siswa)}}" class="px-3 py-2 text-xs font-medium text-center text-white bg-blue-600 rounded-lg hover:bg-blue-700">
                                     Detail
                                 </a>
-                                <form action="{{ route('admin.pendaftaran.kembalikan', $siswa) }}" method="POST"
+                                <form action="{{ route('admin.pendaftaran.batalkan', $siswa) }}" method="POST"
                                       onsubmit="return confirm('Batalkan status DITERIMA dan kembalikan ke Pending?')">
                                     @csrf
                                     <button type="submit" class="px-3 py-2 text-xs font-medium text-center text-white bg-yellow-500 rounded-lg hover:bg-yellow-600">

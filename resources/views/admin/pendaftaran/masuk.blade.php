@@ -30,33 +30,36 @@
                 </tr>
             </thead>
             <tbody>
-                @forelse($calonSiswa as $i => $siswa)
+                @forelse($siswas as $i => $siswa)
                     <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
-                        <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">{{ $i + 1 }}</td>
+                        {{-- [FIX] Memperbaiki penomoran agar sesuai dengan paginasi --}}
+                        <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">{{ $siswas->firstItem() + $i }}</td>
                         <td class="px-6 py-4 font-semibold">{{ $siswa->nama_lengkap }}</td>
                         <td class="px-6 py-4">{{ $siswa->nisn }}</td>
                         <td class="px-6 py-4">{{ $siswa->asal_sekolah }}</td>
                         <td class="px-6 py-4">{{ $siswa->created_at->isoFormat('D MMMM YYYY') }}</td>
                         <td class="px-6 py-4">
                             <div class="flex items-center justify-center gap-2">
-                                {{-- Tombol Lihat Detail (Arahkan ke route detail nanti) --}}
-                                <a href="#" class="px-3 py-2 text-xs font-medium text-center text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300">
+                                {{-- [FIX] Mengarahkan tombol detail ke route yang benar --}}
+                                <a href="{{ route('admin.pendaftaran.detail', $siswa) }}" class="px-3 py-2 text-xs font-medium text-center text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300">
                                     Detail
                                 </a>
                                 
-                                {{-- Form untuk Terima --}}
+                                {{-- [FIX] Mengubah route dari 'diterima' ke 'terima' dan menambahkan @method('PATCH') --}}
                                 <form action="{{ route('admin.pendaftaran.terima', $siswa) }}" method="POST"
                                       onsubmit="return confirm('Apakah Anda yakin ingin MENERIMA pendaftar ini?')">
                                     @csrf
+                                    @method('PATCH')
                                     <button type="submit" class="px-3 py-2 text-xs font-medium text-center text-white bg-green-600 rounded-lg hover:bg-green-700 focus:ring-4 focus:ring-green-300">
                                         Terima
                                     </button>
                                 </form>
                                 
-                                {{-- Form untuk Tolak --}}
+                                {{-- [FIX] Menambahkan @method('PATCH') --}}
                                 <form action="{{ route('admin.pendaftaran.tolak', $siswa) }}" method="POST"
                                       onsubmit="return confirm('Apakah Anda yakin ingin MENOLAK pendaftar ini?')">
                                     @csrf
+                                    @method('PATCH')
                                     <button type="submit" class="px-3 py-2 text-xs font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:ring-red-300">
                                         Tolak
                                     </button>
@@ -74,5 +77,10 @@
             </tbody>
         </table>
     </div>
+    {{-- [FIX] Menambahkan link untuk paginasi --}}
+    <div class="mt-4">
+        {{ $siswas->links() }}
+    </div>
 </div>
 @endsection
+

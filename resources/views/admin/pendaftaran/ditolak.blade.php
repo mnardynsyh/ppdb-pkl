@@ -29,7 +29,7 @@
                 </tr>
             </thead>
             <tbody>
-                @forelse($siswaDitolak as $i => $siswa)
+                @forelse($siswas as $i => $siswa)
                     <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
                         <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">{{ $i + 1 }}</td>
                         <td class="px-6 py-4 font-semibold">{{ $siswa->nama_lengkap }}</td>

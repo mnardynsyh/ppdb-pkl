@@ -2,63 +2,119 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Models\Siswa;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class PendaftaranController extends Controller
 {
     /**
-     * Menampilkan pendaftar dengan status 'pending'.
+     * Menampilkan halaman pendaftar yang statusnya 'Pending'.
      */
     public function masuk()
     {
-        $calonSiswa = Siswa::where('status_pendaftaran', 'pending')->latest()->get();
-        return view('admin.pendaftaran.masuk', compact('calonSiswa'));
+        $siswas = Siswa::where('status_pendaftaran', 'Pending')->latest()->paginate(10);
+        return view('admin.pendaftaran.masuk', compact('siswas'));
     }
 
     /**
-     * Menampilkan pendaftar dengan status 'diterima'.
+     * Menampilkan halaman pendaftar yang statusnya 'Diterima'.
      */
     public function diterima()
     {
-        $siswaDiterima = Siswa::where('status_pendaftaran', 'diterima')->latest()->get();
-        return view('admin.pendaftaran.diterima', compact('siswaDiterima'));
+        $siswas = Siswa::where('status_pendaftaran', 'Diterima')->latest()->paginate(10);
+        return view('admin.pendaftaran.diterima', compact('siswas'));
     }
 
     /**
-     * Menampilkan pendaftar dengan status 'ditolak'.
+     * Menampilkan halaman pendaftar yang statusnya 'Ditolak'.
      */
     public function ditolak()
     {
-        $siswaDitolak = Siswa::where('status_pendaftaran', 'ditolak')->latest()->get();
-        return view('admin.pendaftaran.ditolak', compact('siswaDitolak'));
+        $siswas = Siswa::where('status_pendaftaran', 'Ditolak')->latest()->paginate(10);
+        return view('admin.pendaftaran.ditolak', compact('siswas'));
     }
 
     /**
-     * Mengubah status pendaftar menjadi 'diterima'.
+     * Menampilkan semua pendaftar dengan filter dan pencarian.
      */
-    public function prosesTerima(Siswa $siswa)
+    public function semuaPendaftar(Request $request)
     {
-        $siswa->update(['status_pendaftaran' => 'diterima']);
-        return redirect()->route('admin.pendaftaran.masuk')->with('success', 'Pendaftar berhasil diterima.');
+        $query = Siswa::query();
+
+        if ($request->filled('status')) {
+            $query->where('status_pendaftaran', $request->status);
+        }
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('nama_lengkap', 'like', "%{$search}%")
+                  ->orWhere('nisn', 'like', "%{$search}%")
+                  ->orWhere('nik', 'like', "%{$search}%")
+                  ->orWhere('asal_sekolah', 'like', "%{$search}%");
+            });
+        }
+
+        $siswas = $query->latest()->paginate(10)->withQueryString();
+
+        return view('admin.pendaftaran.semua', compact('siswas'));
     }
 
     /**
-     * Mengubah status pendaftar menjadi 'ditolak'.
+     * [BARU] Menampilkan halaman detail pendaftar.
      */
-    public function prosesTolak(Siswa $siswa)
+    public function detail(Siswa $siswa)
     {
-        $siswa->update(['status_pendaftaran' => 'ditolak']);
-        return redirect()->route('admin.pendaftaran.masuk')->with('success', 'Pendaftar berhasil ditolak.');
+        // Memuat semua relasi yang diperlukan untuk halaman detail
+        $siswa->load([
+            'agama',
+            'lampiran',
+            'orangTuaWali.agamaAyah', 'orangTuaWali.pekerjaanAyah', 'orangTuaWali.pendidikanAyah', 'orangTuaWali.penghasilanAyah',
+            'orangTuaWali.agamaIbu', 'orangTuaWali.pekerjaanIbu', 'orangTuaWali.pendidikanIbu', 'orangTuaWali.penghasilanIbu',
+            'orangTuaWali.agamaWali', 'orangTuaWali.pekerjaanWali', 'orangTuaWali.pendidikanWali', 'orangTuaWali.penghasilanWali'
+        ]);
+
+        return view('admin.pendaftaran.detail', compact('siswa'));
     }
 
     /**
-     * Mengembalikan status pendaftar ke 'pending'.
+     * Mengubah status siswa menjadi 'Diterima'.
      */
-    public function kembalikanKePending(Siswa $siswa)
+    public function terima(Siswa $siswa)
     {
-        $siswa->update(['status_pendaftaran' => 'pending']);
-        return redirect()->back()->with('success', 'Status pendaftar berhasil dikembalikan ke pending.');
+        // [FIX] Mengubah kondisi dan nilai update ke 'Diterima' (huruf besar)
+        if ($siswa->status_pendaftaran !== 'Diterima') {
+            $siswa->update(['status_pendaftaran' => 'Diterima']);
+            return back()->with('success', "Siswa dengan nama {$siswa->nama_lengkap} berhasil diterima.");
+        }
+        return back();
+    }
+
+    /**
+     * Mengubah status siswa menjadi 'Ditolak'.
+     */
+    public function tolak(Siswa $siswa)
+    {
+        // [FIX] Mengubah kondisi dan nilai update ke 'Ditolak' (huruf besar)
+        if ($siswa->status_pendaftaran !== 'Ditolak') {
+            $siswa->update(['status_pendaftaran' => 'Ditolak']);
+            return back()->with('success', "Siswa dengan nama {$siswa->nama_lengkap} berhasil ditolak.");
+        }
+        return back();
+    }
+
+    /**
+     * Mengembalikan status siswa menjadi 'Pending'.
+     */
+    public function batalkan(Siswa $siswa)
+    {
+        // [FIX] Mengubah kondisi dan nilai update ke 'Pending' (huruf besar)
+        if ($siswa->status_pendaftaran !== 'Pending') {
+            $siswa->update(['status_pendaftaran' => 'Pending']);
+            return back()->with('success', "Status untuk {$siswa->nama_lengkap} berhasil dikembalikan ke Pending.");
+        }
+        return back();
     }
 }
+
