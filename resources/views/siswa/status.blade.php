@@ -23,11 +23,13 @@
         <p class="text-gray-500 mt-2">Terima kasih telah melakukan pendaftaran. Berikut adalah ringkasan data Anda.</p>
     </div>
 
-    {{-- Banner Status Pendaftaran --}}
-    <div class="mt-8 mb-6 p-4 rounded-lg flex flex-col sm:flex-row items-center justify-between text-center sm:text-left
-        @if($siswa->status_pendaftaran == 'pending') bg-yellow-100 text-yellow-800 
-        @elseif($siswa->status_pendaftaran == 'diterima') bg-green-100 text-green-800 
-        @else bg-red-100 text-red-800 @endif">
+    {{-- Banner Status Pendaftaran (FIXED) --}}
+    <div @class([
+        'mt-8 mb-6 p-4 rounded-lg flex flex-col sm:flex-row items-center justify-between text-center sm:text-left',
+        'bg-yellow-100 text-yellow-800' => $siswa->status_pendaftaran == 'pending',
+        'bg-green-100 text-green-800' => $siswa->status_pendaftaran == 'diterima',
+        'bg-red-100 text-red-800' => $siswa->status_pendaftaran == 'ditolak',
+    ])>
         <div class="mb-4 sm:mb-0">
             <span class="font-semibold text-lg">Status:</span>
             <span class="font-bold text-lg uppercase ml-2">{{ $siswa->status_pendaftaran }}</span>
@@ -49,12 +51,10 @@
 
     {{-- Wrapper untuk semua card data --}}
     <div class="space-y-6">
-
         {{-- Card: Data Calon Siswa --}}
         <div class="p-5 border rounded-lg">
             <h3 class="text-lg font-semibold text-gray-800 border-b pb-2 mb-4">Data Calon Siswa</h3>
             <dl class="grid grid-cols-1 md:grid-cols-2 gap-x-6 text-sm">
-                {{-- Helper untuk setiap baris data --}}
                 @php
                     function renderDataRow($label, $value) {
                         echo '<div class="flex flex-col sm:grid sm:grid-cols-3 sm:gap-4 py-2 border-b border-gray-100">';
