@@ -32,36 +32,35 @@
                 </tr>
             </thead>
             <tbody>
-                @forelse($job as $index => $item)
-                        <tr>
-                            <td class="px-6 py-2 font-semibold text-gray-900 dark:text-white">{{ $index+1 }}</td>
-                            <td class="px-6 py-2 font-semibold">{{ $item->pekerjaan }}</td>
-                            <td class="px-6 py-2">
-                                <div class="flex items-center gap-3">
-                                    <button type="button"
-                                        onclick="openEditModal({{ $item->id }}, @js($item->pekerjaan))"
+                @forelse($job as $i => $job)
+                    <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+                        <td class="px-6 py-2 font-semibold text-gray-900 dark:text-white">{{ $i+1 }}</td>
+                        <td class="px-6 py-2 font-semibold">{{ $job->pekerjaan }}</td>
+                        <td class="px-6 py-2">
+                            <div class="flex items-center gap-3">
+                                <button type="button"
+                                        onclick="openEditModal({{ $job->id_job }}, @js($job->pekerjaan))"
                                         class="text-white bg-yellow-400 hover:bg-yellow-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-3.5 py-2.5 mb-2">
-                                        Edit
+                                    Edit
+                                </button>
+                                <form action="{{ route('admin.job.destroy', $job) }}" method="POST"
+                                      onsubmit="return confirm('Yakin ingin menghapus?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="text-white bg-red-600 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-2.5 py-2.5 text-center mb-2">
+                                        Hapus
                                     </button>
-
-                                    <form action="{{ route('admin.job.destroy', $item->id) }}" method="POST"
-                                        onsubmit="return confirm('Yakin ingin menghapus?')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="text-white bg-red-600 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-2.5 py-2.5 text-center mb-2">
-                                            Hapus
-                                        </button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td class="px-6 py-6 text-center text-gray-500 dark:text-gray-400" colspan="3">
-                                Belum ada data.
-                            </td>
-                        </tr>
-                    @endforelse
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td class="px-6 py-6 text-center text-gray-500 dark:text-gray-400" colspan="3">
+                            Belum ada data.
+                        </td>
+                    </tr>
+                @endforelse
             </tbody>
         </table>
     </div>
@@ -138,19 +137,23 @@
     const editForm  = document.getElementById('editForm');
     const editInput = document.getElementById('editPekerjaan');
 
+    const updateUrlTemplate = "{{ route('admin.job.update', ':id') }}";
+
     function openAddModal()  { addModal.classList.remove('hidden'); }
     function closeAddModal() { addModal.classList.add('hidden'); }
 
-    function openEditModal(id, pekerjaan) {
-        editInput.value = pekerjaan;
-        editForm.action = `{{ url('admin/job') }}/${id}`;
+    function openEditModal(id, pendidikan) {
+        editInput.value = pendidikan;
+        editForm.action = updateUrlTemplate.replace(':id', id);
         editModal.classList.remove('hidden');
     }
     function closeEditModal() { editModal.classList.add('hidden'); }
 
+    // Klik backdrop untuk menutup
     addModal?.addEventListener('click', (e) => { if (e.target === addModal) closeAddModal(); });
     editModal?.addEventListener('click', (e) => { if (e.target === editModal) closeEditModal(); });
 
+    // ESC untuk menutup
     window.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') { closeAddModal(); closeEditModal(); }
     });

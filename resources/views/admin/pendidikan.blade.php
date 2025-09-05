@@ -43,8 +43,9 @@
                                     class="text-white bg-yellow-400 hover:bg-yellow-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-3.5 py-2.5 mb-2">
                                     Edit
                                 </button>
-                                <form action="{{ route('admin.pendidikan.destroy', $d->id) }}" method="POST"
-                                      onsubmit="return confirm('Yakin ingin menghapus?')">
+
+                                <form action="{{ route('admin.pendidikan.destroy', ['pendidikan' => $d->id]) }}" method="POST"
+                                    onsubmit="return confirm('Yakin ingin menghapus?')">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="text-white bg-red-600 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-2.5 py-2.5 text-center mb-2">
@@ -80,7 +81,7 @@
         </div>
         <form action="{{ route('admin.pendidikan.store') }}" method="POST">
             @csrf
-            <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Pendidikan</label>
+            <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Pendidikan Terakhir</label>
             <input type="text" name="pendidikan" required
                    class="mb-4 w-full rounded border border-gray-300 p-2 text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
 
@@ -137,12 +138,14 @@
     const editForm  = document.getElementById('editForm');
     const editInput = document.getElementById('editPendidikan');
 
+    const updateUrlTemplate = "{{ route('admin.pendidikan.update', ':id') }}";
+
     function openAddModal()  { addModal.classList.remove('hidden'); }
     function closeAddModal() { addModal.classList.add('hidden'); }
 
     function openEditModal(id, pendidikan) {
         editInput.value = pendidikan;
-        editForm.action = `/admin/pendidikan/${id}`;
+        editForm.action = updateUrlTemplate.replace(':id', id);
         editModal.classList.remove('hidden');
     }
     function closeEditModal() { editModal.classList.add('hidden'); }
