@@ -183,24 +183,49 @@
                 </li>
             </ul>
         </li>
+        <li>
+            <button 
+                type="button" 
+                class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg group 
+                    hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" 
+                aria-controls="dropdown-set" 
+                data-collapse-toggle="dropdown-set"
+                onclick="document.getElementById('arrow-set').classList.toggle('rotate-180')">
 
-         <li>
-            <button type="button" class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-                    aria-controls="dropdown-pengaturan" data-collapse-toggle="dropdown-pengaturan">
-               <svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                <svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                   <path d="M18 7.5h-.423l-.452-1.09.3-.3a1.5 1.5 0 0 0 0-2.121L16.01 2.575a1.5 1.5 0 0 0-2.121 0l-.3.3-1.089-.452V2A1.5 1.5 0 0 0 11 .5H9A1.5 1.5 0 0 0 7.5 2v.423l-1.09.452-.3-.3a1.5 1.5 0 0 0-2.121 0L2.576 3.99a1.5 1.5 0 0 0 0 2.121l.3.3L2.423 7.5H2A1.5 1.5 0 0 0 .5 9v2A1.5 1.5 0 0 0 2 12.5h.423l.452 1.09-.3.3a1.5 1.5 0 0 0 0 2.121l1.414 1.414a1.5 1.5 0 0 0 2.121 0l.3-.3 1.09.452V18A1.5 1.5 0 0 0 9 19.5h2a1.5 1.5 0 0 0 1.5-1.5v-.423l1.09-.452.3.3a1.5 1.5 0 0 0 2.121 0l1.414-1.414a1.5 1.5 0 0 0 0-2.121l-.3-.3.452-1.09H18A1.5 1.5 0 0 0 19.5 11V9A1.5 1.5 0 0 0 18 7.5Zm-8 6a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Z"/>
                 </svg>
-               <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Pengaturan</span>
-               <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-               </svg>
+
+                <span class="flex-1 ms-3 text-left whitespace-nowrap">Pengaturan</span>
+
+                <svg id="arrow-set" class="w-3 h-3 ms-auto transition-transform duration-300" aria-hidden="true" 
+                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" 
+                        stroke-width="2" d="m1 1 4 4 4-4"/>
+                </svg>
             </button>
-            <ul id="dropdown-pengaturan" class="hidden py-2 space-y-2">
-               <li><a href="{{ route('admin.pengaturan.index') }}" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Status Pendaftaran</a></li>
-               <li><a href="{{ route('admin.jadwal.index')}}" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Manajemen Jadwal</a></li>
-               <li><a href="#" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Manajemen Pengguna</a></li>
+
+            <ul id="dropdown-set" class="hidden py-2 space-y-2">
+                <li>
+                  <li>
+                    <a href="{{ route('admin.pengaturan.index') }}" class="flex items-center w-full p-2 pl-11 text-gray-900 transition duration-75 rounded-lg 
+                        hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
+                        Status Pendaftaran
+                    </a>
+                </li>
+                    <a href="{{ route('admin.jadwal.index') }}" class="flex items-center w-full p-2 pl-11 text-gray-900 transition duration-75 rounded-lg 
+                        hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
+                        Jadwal Pendaftaran
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.pendaftaran.diterima') }}" class="flex items-center w-full p-2 pl-11 text-gray-900 transition duration-75 rounded-lg 
+                        hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
+                        Manajemen Pengguna
+                    </a>
+                </li>
             </ul>
-         </li>
+        </li>
       </ul>
    </div>
 </aside>

@@ -88,6 +88,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::patch('/{siswa}/terima', 'terima')->name('terima');
             Route::patch('/{siswa}/tolak', 'tolak')->name('tolak');
             Route::patch('/{siswa}/batalkan', 'batalkan')->name('batalkan');
+
+            Route::get('/export', 'exportExcel')->name('export');
         });
 
         Route::prefix('pengaturan')->name('pengaturan.')->controller(PengaturanController::class)->group(function () {

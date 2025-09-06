@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+// [BARU] Menambahkan use statement untuk Excel dan kelas ekspor
+use App\Exports\SiswasExport;
 use App\Models\Siswa;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PendaftaranController extends Controller
 {
@@ -62,11 +65,21 @@ class PendaftaranController extends Controller
     }
 
     /**
-     * [BARU] Menampilkan halaman detail pendaftar.
+     * [DIPERBARUI] Mengekspor data pendaftar ke file Excel (.xlsx).
+     */
+    public function exportExcel(Request $request)
+    {
+        $fileName = 'data-pendaftar-' . date('Y-m-d') . '.xlsx';
+        
+        // Memanggil kelas ekspor dan mengirimkan parameter filter dari request
+        return Excel::download(new SiswasExport($request), $fileName);
+    }
+    
+    /**
+     * Menampilkan halaman detail pendaftar.
      */
     public function detail(Siswa $siswa)
     {
-        // Memuat semua relasi yang diperlukan untuk halaman detail
         $siswa->load([
             'agama',
             'lampiran',
@@ -74,7 +87,6 @@ class PendaftaranController extends Controller
             'orangTuaWali.agamaIbu', 'orangTuaWali.pekerjaanIbu', 'orangTuaWali.pendidikanIbu', 'orangTuaWali.penghasilanIbu',
             'orangTuaWali.agamaWali', 'orangTuaWali.pekerjaanWali', 'orangTuaWali.pendidikanWali', 'orangTuaWali.penghasilanWali'
         ]);
-
         return view('admin.pendaftaran.detail', compact('siswa'));
     }
 
@@ -83,7 +95,6 @@ class PendaftaranController extends Controller
      */
     public function terima(Siswa $siswa)
     {
-        // [FIX] Mengubah kondisi dan nilai update ke 'Diterima' (huruf besar)
         if ($siswa->status_pendaftaran !== 'Diterima') {
             $siswa->update(['status_pendaftaran' => 'Diterima']);
             return back()->with('success', "Siswa dengan nama {$siswa->nama_lengkap} berhasil diterima.");
@@ -96,7 +107,6 @@ class PendaftaranController extends Controller
      */
     public function tolak(Siswa $siswa)
     {
-        // [FIX] Mengubah kondisi dan nilai update ke 'Ditolak' (huruf besar)
         if ($siswa->status_pendaftaran !== 'Ditolak') {
             $siswa->update(['status_pendaftaran' => 'Ditolak']);
             return back()->with('success', "Siswa dengan nama {$siswa->nama_lengkap} berhasil ditolak.");
@@ -109,7 +119,6 @@ class PendaftaranController extends Controller
      */
     public function batalkan(Siswa $siswa)
     {
-        // [FIX] Mengubah kondisi dan nilai update ke 'Pending' (huruf besar)
         if ($siswa->status_pendaftaran !== 'Pending') {
             $siswa->update(['status_pendaftaran' => 'Pending']);
             return back()->with('success', "Status untuk {$siswa->nama_lengkap} berhasil dikembalikan ke Pending.");
