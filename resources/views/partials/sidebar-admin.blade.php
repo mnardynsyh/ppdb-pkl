@@ -196,9 +196,8 @@
                </svg>
             </button>
             <ul id="dropdown-pengaturan" class="hidden py-2 space-y-2">
-               {{-- Ganti '#' dengan route yang sesuai nanti --}}
-               <li><a href="{{ route('admin.jadwal.index')}}" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Pengaturan Pendaftaran</a></li>
-               <li><a href="#" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Manajemen Jadwal</a></li>
+               <li><a href="{{ route('admin.pengaturan.index') }}" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Status Pendaftaran</a></li>
+               <li><a href="{{ route('admin.jadwal.index')}}" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Manajemen Jadwal</a></li>
                <li><a href="#" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Manajemen Pengguna</a></li>
             </ul>
          </li>

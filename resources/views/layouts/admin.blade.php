@@ -6,7 +6,7 @@
     <title>Dashboard Admin</title>
     @vite('resources/css/app.css')
 </head>
-<body class="bg-gray-100 dark:bg-gray-900">
+<body class="bg-gray-100">
 
     @include('partials.sidebar-admin')
 

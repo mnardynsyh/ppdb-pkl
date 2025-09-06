@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\JobController;
 use App\Http\Controllers\Admin\AgamaController;
 use App\Http\Controllers\Admin\JadwalController;
 use App\Http\Controllers\Admin\PendidikanController;
+use App\Http\Controllers\Admin\PengaturanController;
 use App\Http\Controllers\Admin\PendaftaranController;
 use App\Http\Controllers\Admin\PenghasilanController;
 use App\Http\Controllers\Admin\AuthController as AdminAuth;
@@ -87,6 +88,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::patch('/{siswa}/terima', 'terima')->name('terima');
             Route::patch('/{siswa}/tolak', 'tolak')->name('tolak');
             Route::patch('/{siswa}/batalkan', 'batalkan')->name('batalkan');
+        });
+
+        Route::prefix('pengaturan')->name('pengaturan.')->controller(PengaturanController::class)->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::put('/', 'update')->name('update');
         });
     });
 });

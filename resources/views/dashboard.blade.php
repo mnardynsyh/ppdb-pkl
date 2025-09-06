@@ -4,6 +4,13 @@
 
 @section('content')
 
+{{-- Menampilkan notifikasi error jika pendaftaran ditutup --}}
+@if(session('error'))
+    <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 text-center" role="alert">
+        <p>{{ session('error') }}</p>
+    </div>
+@endif
+
 <section 
   style="background-image: url('{{ asset('img/bg-sekolah.png') }}')" 
   class="bg-cover bg-center bg-no-repeat w-full h-[90vh] sm:h-[90vh] min-h-[500px] relative"
@@ -34,35 +41,50 @@
       Daftarkan dirimu sekarang untuk bergabung bersama sekolah unggulan kami!
     </p>
 
-    <!-- Tombol -->
-    <div 
-      class="flex flex-col space-y-3 sm:flex-row sm:justify-center sm:space-y-0"
-      data-aos="zoom-in"
-      data-aos-delay="600"
-    >
-      <a 
-        href="{{route('siswa.register')}}" 
-        class="inline-flex justify-center items-center py-2 px-4 text-sm sm:text-base font-medium text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300"
-      >
-        Daftar Sekarang
-        <svg class="w-3.5 h-3.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-        </svg>
-      </a>
-      
-      <a 
-        href="#alur" 
-        class="inline-flex justify-center items-center py-2 px-4 sm:ms-4 text-sm sm:text-base font-medium text-white rounded-lg border border-white hover:bg-gray-100 hover:text-gray-900"
-      >Alur Pendaftaran
-      </a>
-    </div>
+    {{-- [BARU] Logika untuk menampilkan tombol atau pesan status --}}
+    @php
+        $sekarang = now();
+        $pendaftaranDibuka = ($pengaturan->status == 'Dibuka' && $sekarang->between($pengaturan->tanggal_buka, $pengaturan->tanggal_tutup));
+    @endphp
+
+    @if($pendaftaranDibuka)
+        {{-- Tampilkan tombol jika pendaftaran dibuka --}}
+        <div 
+          class="flex flex-col space-y-3 sm:flex-row sm:justify-center sm:space-y-0"
+          data-aos="zoom-in"
+          data-aos-delay="600"
+        >
+          <a 
+            href="{{ route('siswa.register') }}" 
+            class="inline-flex justify-center items-center py-2 px-4 text-sm sm:text-base font-medium text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300"
+          >
+            Daftar Sekarang
+            <svg class="w-3.5 h-3.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+            </svg>
+          </a>
+          <a 
+            href="#alur" 
+            class="inline-flex justify-center items-center py-2 px-4 sm:ms-4 text-sm sm:text-base font-medium text-white rounded-lg border border-white hover:bg-gray-100 hover:text-gray-900"
+          >Alur Pendaftaran
+          </a>
+        </div>
+    @else
+        {{-- Tampilkan pesan status jika pendaftaran ditutup --}}
+        <div class="mt-8" data-aos="zoom-in" data-aos-delay="600">
+            <div class="inline-block bg-red-600 text-white font-semibold py-3 px-6 rounded-lg shadow-lg">
+                <p>Pendaftaran Saat Ini Ditutup</p>
+                <p class="text-sm font-normal mt-1">Akan dibuka pada: {{ \Carbon\Carbon::parse($pengaturan->tanggal_buka)->isoFormat('D MMMM YYYY') }}</p>
+            </div>
+        </div>
+    @endif
   </div>
 </section>
 
 
 <!-- Section Fitur -->
 <section class="py-16 bg-white" id="alur">
-  <div class="max-w-screen-xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-8">
+  <div class="max-w-screen-xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-3 gap-8">
     
     <div class="text-center" data-aos="fade-up" data-aos-delay="100">
       <span class="inline-flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-blue-100 text-blue-600 text-2xl font-bold mb-4">

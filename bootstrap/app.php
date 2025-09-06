@@ -15,6 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
         'admin' => \App\Http\Middleware\AdminMiddleware::class,
         'siswa' => \App\Http\Middleware\SiswaMiddleware::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
+        'pendaftaran.status' => \App\Http\Middleware\CheckPendaftaranStatus::class,
     ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
