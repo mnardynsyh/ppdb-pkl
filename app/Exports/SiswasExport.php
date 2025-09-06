@@ -10,11 +10,11 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
-// [BARU] Menambahkan use statement untuk format kolom
+// Menambahkan use statement untuk format kolom
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
-// [BARU] Menambahkan implementasi WithColumnFormatting
+// Menambahkan implementasi WithColumnFormatting
 class SiswasExport implements FromQuery, WithHeadings, WithMapping, ShouldAutoSize, WithStyles, WithColumnFormatting
 {
     protected $request;

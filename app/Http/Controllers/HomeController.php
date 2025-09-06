@@ -8,12 +8,24 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
+    /**
+     * Menampilkan halaman depan (landing page).
+     */
     public function index()
     {
-
-        $jadwals = Jadwal::orderBy('order')->get();
+        // Hanya mengambil data pengaturan untuk halaman depan
         $pengaturan = Pengaturan::first();
+        return view('home', compact('pengaturan'));
+    }
 
-        return view('dashboard', compact('jadwals', 'pengaturan'));
+    /**
+     * Menampilkan halaman jadwal pendaftaran.
+     */
+    public function jadwal()
+    {
+        // Mengambil data jadwal dari database
+        $jadwals = Jadwal::orderBy('order')->get();
+        return view('jadwal', compact('jadwals'));
     }
 }
+

@@ -21,6 +21,7 @@ use App\Http\Controllers\Siswa\DashboardController as SiswaDashboard;
 */
 Route::middleware(['guest:web', 'guest:siswa'])->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
+    Route::get('/jadwal', [HomeController::class, 'jadwal'])->name('jadwal');
 });
 
 Route::get('/login', [SiswaAuth::class, 'showLoginForm'])->middleware('guest:siswa')->name('login');
