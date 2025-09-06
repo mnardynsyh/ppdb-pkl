@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\JobController;
 use App\Http\Controllers\Admin\AgamaController;
+use App\Http\Controllers\Admin\JadwalController;
 use App\Http\Controllers\Admin\PendidikanController;
 use App\Http\Controllers\Admin\PendaftaranController;
 use App\Http\Controllers\Admin\PenghasilanController;
@@ -73,6 +74,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('penghasilan', PenghasilanController::class)->only(['index', 'store', 'update', 'destroy']);
         Route::resource('agama', AgamaController::class)->only(['index', 'store', 'update', 'destroy']);
         Route::resource('pendidikan', PendidikanController::class)->only(['index', 'store', 'update', 'destroy']);
+        Route::resource('jadwal', JadwalController::class)->only(['index', 'store', 'update', 'destroy']);
 
         Route::prefix('pendaftaran')->name('pendaftaran.')->controller(PendaftaranController::class)->group(function () {
             Route::get('/masuk', 'masuk')->name('masuk');
