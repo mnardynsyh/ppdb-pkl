@@ -12,14 +12,20 @@ class Pengaturan extends Model
 
     protected $table = 'pengaturan';
 
+    /**
+     * [DIPERBARUI] Menambahkan kolom kontak ke fillable.
+     */
     protected $fillable = [
         'status',
         'tanggal_buka',
         'tanggal_tutup',
+        'alamat_sekolah',
+        'telepon',
+        'email_kontak',
     ];
 
     /**
-     * [BARU] Mengubah kolom tanggal menjadi objek Carbon secara otomatis.
+     * Mengubah kolom tanggal menjadi objek Carbon secara otomatis.
      */
     protected $casts = [
         'tanggal_buka' => 'date',
@@ -27,8 +33,7 @@ class Pengaturan extends Model
     ];
 
     /**
-     * [BARU] Metode untuk mengenkapsulasi semua logika status pendaftaran.
-     * Ini akan mengembalikan array yang berisi status, pesan, dan warna banner.
+     * Metode ini berisi semua logika untuk menentukan status pendaftaran.
      */
     public function getStatusDetails(): array
     {
@@ -37,8 +42,16 @@ class Pengaturan extends Model
         if ($this->status === 'Ditutup') {
             return [
                 'status' => 'Ditutup',
-                'pesan' => 'Pendaftaran saat ini sedang ditutup.',
+                'pesan' => 'Pendaftaran saat ini sedang ditutup oleh panitia.',
                 'warna' => 'bg-red-100 border-red-500 text-red-700',
+            ];
+        }
+
+        if (!$this->tanggal_buka || !$this->tanggal_tutup) {
+             return [
+                'status' => 'Ditutup',
+                'pesan' => 'Jadwal pendaftaran belum diatur oleh panitia.',
+                'warna' => 'bg-yellow-100 border-yellow-500 text-yellow-700',
             ];
         }
 
@@ -53,7 +66,7 @@ class Pengaturan extends Model
         if ($sekarang->isAfter($this->tanggal_tutup)) {
             return [
                 'status' => 'Ditutup',
-                'pesan' => 'Periode pendaftaran telah berakhir.',
+                'pesan' => 'Periode pendaftaran telah berakhir pada tanggal ' . $this->tanggal_tutup->isoFormat('D MMMM YYYY') . '.',
                 'warna' => 'bg-red-100 border-red-500 text-red-700',
             ];
         }

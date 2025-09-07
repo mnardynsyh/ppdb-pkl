@@ -97,6 +97,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::prefix('pengaturan')->name('pengaturan.')->controller(PengaturanController::class)->group(function () {
             Route::get('/', 'index')->name('index');
             Route::put('/', 'update')->name('update');
+            Route::post('/jadwal', 'storeJadwal')->name('jadwal.store');
+            Route::put('/jadwal/{jadwal}', 'updateJadwal')->name('jadwal.update');
+            Route::delete('/jadwal/{jadwal}', 'destroyJadwal')->name('jadwal.destroy');
         });
     });
 });

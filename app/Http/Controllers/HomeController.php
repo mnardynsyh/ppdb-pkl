@@ -31,7 +31,8 @@ class HomeController extends Controller
 
     public function kontak()
     {
-        return view('kontak');
+        $pengaturan = Pengaturan::first();
+        return view('kontak', compact('pengaturan'));
     }
 }
 

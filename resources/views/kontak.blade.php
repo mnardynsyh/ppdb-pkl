@@ -18,14 +18,14 @@
             <div class="bg-gray-50 p-8 rounded-lg border border-gray-100">
                 <h3 class="text-2xl font-bold text-gray-800 mb-6">Informasi Kontak</h3>
                 <div class="space-y-6">
-                    {{-- Alamat --}}
+                    {{-- [DIPERBARUI] Mengambil data dari variabel $pengaturan --}}
                     <div class="flex items-start">
                         <div class="flex-shrink-0 w-10 h-10 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                         </div>
                         <div class="ml-4">
                             <h4 class="text-lg font-semibold text-gray-900">Alamat Sekolah</h4>
-                            <p class="text-gray-600">Jalan Raya Karanganyar, Sirampog, Brebes, Jawa Tengah 52272</p>
+                            <p class="text-gray-600">{{ $pengaturan->alamat_sekolah ?? 'Alamat belum diatur oleh admin.' }}</p>
                         </div>
                     </div>
                     {{-- Email --}}
@@ -35,7 +35,7 @@
                         </div>
                         <div class="ml-4">
                             <h4 class="text-lg font-semibold text-gray-900">Email Panitia</h4>
-                            <p class="text-gray-600">panitia.ppdb@sekolah.sch.id</p>
+                            <p class="text-gray-600">{{ $pengaturan->email_kontak ?? 'Email belum diatur oleh admin.' }}</p>
                         </div>
                     </div>
                     {{-- Telepon --}}
@@ -45,7 +45,7 @@
                         </div>
                         <div class="ml-4">
                             <h4 class="text-lg font-semibold text-gray-900">Telepon</h4>
-                            <p class="text-gray-600">(0283) 123-4567</p>
+                            <p class="text-gray-600">{{ $pengaturan->telepon ?? 'Telepon belum diatur oleh admin.' }}</p>
                         </div>
                     </div>
                 </div>
@@ -66,18 +66,9 @@
     </div>
 </section>
 
-{{-- Memanggil partial footer --}}
 @include('partials.footer')
 
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-{{-- Menambahkan AlpineJS Collapse Plugin untuk animasi FAQ --}}
-<script src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
-<script>
-  AOS.init({
-    duration: 800,
-    once: true
-  });
-</script>
+{{-- Script dan footer sekarang berada di layout utama (app.blade.php) --}}
 
 @endsection
 
