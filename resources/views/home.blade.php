@@ -60,44 +60,8 @@
 
 @include('partials.persyaratan')
 
-{{-- Section FAQ --}}
-<section class="py-16 bg-white">
-    <div class="max-w-screen-md mx-auto px-4" x-data="{ open: null }">
-        <h2 class="text-4xl font-bold text-center mb-12">Tanya Jawab (FAQ)</h2>
-        <div class="space-y-4">
-            {{-- FAQ 1 --}}
-            <div class="border rounded-lg">
-                <button @click="open = open === 1 ? null : 1" class="w-full text-left p-4 font-semibold flex justify-between items-center">
-                    <span>Kapan pendaftaran dibuka?</span>
-                    <span x-text="open === 1 ? '-' : '+'" class="text-xl"></span>
-                </button>
-                <div x-show="open === 1" x-collapse class="p-4 pt-0 text-gray-600">
-                    Pendaftaran dibuka sesuai dengan jadwal yang tertera di halaman "Jadwal Pendaftaran". Silakan periksa secara berkala untuk informasi terbaru.
-                </div>
-            </div>
-            {{-- FAQ 2 --}}
-            <div class="border rounded-lg">
-                <button @click="open = open === 2 ? null : 2" class="w-full text-left p-4 font-semibold flex justify-between items-center">
-                    <span>Bagaimana jika saya lupa password?</span>
-                    <span x-text="open === 2 ? '-' : '+'" class="text-xl"></span>
-                </button>
-                <div x-show="open === 2" x-collapse class="p-4 pt-0 text-gray-600">
-                    Jika Anda lupa password, silakan gunakan fitur "Lupa Password" yang tersedia di halaman login atau hubungi panitia melalui kontak yang tersedia.
-                </div>
-            </div>
-             {{-- FAQ 3 --}}
-            <div class="border rounded-lg">
-                <button @click="open = open === 3 ? null : 3" class="w-full text-left p-4 font-semibold flex justify-between items-center">
-                    <span>Apakah saya bisa mendaftar jika ada berkas yang kurang?</span>
-                    <span x-text="open === 3 ? '-' : '+'" class="text-xl"></span>
-                </button>
-                <div x-show="open === 3" x-collapse class="p-4 pt-0 text-gray-600">
-                    Tidak, semua berkas yang tertera di bagian "Persyaratan" bersifat wajib dan harus diunggah secara lengkap agar data Anda dapat diproses oleh panitia verifikasi.
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+@include('partials.faq')
+
 
 {{-- Footer --}}
 <footer class="bg-gray-800 text-white py-8">

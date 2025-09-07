@@ -13,19 +13,20 @@ class HomeController extends Controller
      */
     public function index()
     {
-        // Hanya mengambil data pengaturan untuk halaman depan
         $pengaturan = Pengaturan::first();
         return view('home', compact('pengaturan'));
     }
 
     /**
-     * Menampilkan halaman jadwal pendaftaran.
+     * [PENTING] Menampilkan halaman jadwal pendaftaran yang terpisah.
+     * Metode ini mengambil data jadwal dan juga data pengaturan untuk banner status.
      */
     public function jadwal()
     {
-        // Mengambil data jadwal dari database
         $jadwals = Jadwal::orderBy('order')->get();
-        return view('jadwal', compact('jadwals'));
+        $pengaturan = Pengaturan::first();
+        
+        return view('jadwal', compact('jadwals', 'pengaturan'));
     }
 }
 
