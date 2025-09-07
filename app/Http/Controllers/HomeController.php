@@ -28,5 +28,10 @@ class HomeController extends Controller
         
         return view('jadwal', compact('jadwals', 'pengaturan'));
     }
+
+    public function kontak()
+    {
+        return view('kontak');
+    }
 }
 
