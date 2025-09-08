@@ -34,8 +34,8 @@ Route::get('/login', [SiswaAuth::class, 'showLoginForm'])->middleware('guest:sis
 | Route Siswa
 |--------------------------------------------------------------------------
 */
-Route::name('siswa.')->group(function () {
-    // jika belum login sebagai siswa
+Route::prefix('siswa')->name('siswa.')->group(function () {
+    // Rute untuk tamu (belum login)
     Route::middleware('guest:siswa')->controller(SiswaAuth::class)->group(function () {
         Route::get('/register', 'showRegisterForm')->name('register');
         Route::post('/register', 'register')->name('register.submit');
@@ -43,15 +43,25 @@ Route::name('siswa.')->group(function () {
         Route::post('/login', 'login')->name('login.submit');
     });
 
-    // jika sudah login sebagai siswa
+    // Rute untuk siswa yang sudah login
     Route::middleware('auth:siswa')->group(function () {
         Route::post('/logout', [SiswaAuth::class, 'logout'])->name('logout');
         
-        // Route untuk menampilkan halaman dashboard (form)
         Route::get('/dashboard', [SiswaDashboard::class, 'index'])->name('dashboard');
+        
+        Route::get('/formulir-pendaftaran', [SiswaDashboard::class, 'showForm'])->name('formulir');
+        Route::post('/formulir-pendaftaran', [SiswaDashboard::class, 'store'])->name('formulir.store');
 
-        // Route untuk menyimpan data dari form pendaftaran
-        Route::post('/dashboard', [SiswaDashboard::class, 'store'])->name('dashboard.store');
+        Route::get('/status-pendaftaran', [SiswaDashboard::class, 'showStatus'])->name('status');
+
+        // Rute untuk profil siswa
+        Route::prefix('profil')->name('profil.')->controller(ProfileController::class)->group(function () {
+            Route::get('/', 'edit')->name('edit');
+            Route::put('/', 'update')->name('update');
+        });
+        
+        // [DIPERBARUI] Menambahkan rute untuk cetak bukti
+        Route::get('/cetak-bukti', [SiswaDashboard::class, 'cetakBukti'])->name('cetak-bukti');
     });
 });
 

@@ -1,85 +1,79 @@
+@extends('layouts.siswa')
 
+@section('title', 'Dashboard Siswa')
 
-<div x-data="{ step: 1, konfirmasi: false, showModal: false, status: '{{ $siswa->status_pendaftaran }}' }" class="max-w-full mx-auto bg-white shadow-2xl rounded-xl p-4 sm:p-8 my-6 sm:my-10 border border-gray-200 relative">
-    
-    <div class="absolute top-4 right-4 md:top-6 md:right-6">
-        <form action="{{ route('siswa.logout') }}" method="POST">
-            @csrf
-            <button type="submit"
-                class="px-3 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition duration-300 flex items-center gap-2 text-sm">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
-                <span class="hidden sm:inline">Logout</span>
-            </button>
-        </form>
-    </div>
+@section('content')
+<div class="bg-gray-50 min-h-screen">
+    <div class="max-w-4xl mx-auto py-10 sm:py-16 px-4 sm:px-6 lg:px-8">
+        
+        {{-- Header dengan Sapaan Personal --}}
+        <div class="mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-800">
+                Selamat Datang, {{ strtok(Auth::user()->nama_lengkap, ' ') }}!
+            </h1>
+            <p class="text-gray-500 mt-2">Ini adalah pusat informasi pendaftaran Anda.</p>
+        </div>
 
-    <h1 class="text-2xl md:text-3xl font-bold mb-2 text-center text-gray-800 pt-10 sm:pt-0">Formulir Pendaftaran Siswa Baru</h1>
-    <p class="text-center text-gray-500 mb-8 px-4 sm:px-0">Silakan lengkapi semua data dengan benar.</p>
+        @if(session('success'))
+            <div class="mb-6 rounded-lg border border-green-200 bg-green-50 p-4 text-green-700">
+                {{ session('success') }}
+            </div>
+        @endif
 
-    @include('partials.siswa.stepper')
+        {{-- Menentukan Status Pendaftaran --}}
+        @php
+            $status = 'Belum Lengkap';
+            $pesan = 'Anda belum melengkapi formulir pendaftaran. Silakan lengkapi data Anda sekarang.';
+            $warna = 'blue';
+            $tombolTeks = 'Lengkapi Pendaftaran';
+            $tombolLink = route('siswa.formulir');
+            $ikon = '<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>';
 
-    <div class="mt-8">
-        <form x-ref="pendaftaranForm" action="{{ route('siswa.dashboard.store') }}" method="POST" enctype="multipart/form-data" novalidate>
-            @csrf
-            
-            <fieldset :disabled="status !== 'pending'">
-                @include('partials.siswa.step1')
-                @include('partials.siswa.step2')
-                @include('partials.siswa.step3')
-                @include('partials.siswa.step4')
-                @include('partials.siswa.step5')
+            if ($siswa->orangTuaWali) { // Jika form sudah pernah di-submit
+                switch ($siswa->status_pendaftaran) {
+                    case 'Pending':
+                        $status = 'Menunggu Verifikasi';
+                        $pesan = 'Data Anda telah kami terima dan sedang dalam proses verifikasi oleh panitia.';
+                        $warna = 'yellow';
+                        $tombolTeks = 'Lihat Detail Pendaftaran';
+                        $tombolLink = route('siswa.status');
+                        $ikon = '<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>';
+                        break;
+                    case 'Diterima':
+                        $status = 'Pendaftaran Diterima';
+                        $pesan = 'Selamat! Anda telah diterima. Lihat detail dan langkah selanjutnya.';
+                        $warna = 'green';
+                        $tombolTeks = 'Lihat Pengumuman Kelulusan';
+                        $tombolLink = route('siswa.status');
+                        $ikon = '<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>';
+                        break;
+                    case 'Ditolak':
+                        $status = 'Pendaftaran Ditolak';
+                        $pesan = 'Mohon maaf, pendaftaran Anda ditolak. Lihat detail untuk informasi lebih lanjut.';
+                        $warna = 'red';
+                        $tombolTeks = 'Lihat Detail Pendaftaran';
+                        $tombolLink = route('siswa.status');
+                        $ikon = '<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path></svg>';
+                        break;
+                }
+            }
+        @endphp
 
-                <div class="flex justify-between mt-10 pt-6 border-t">
-                    <button type="button"
-                            class="px-4 py-2 sm:px-6 text-sm sm:text-base bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                            @click="if(step > 1) step--"
-                            :disabled="step === 1">
-                        Sebelumnya
-                    </button>
-
-                    <button type="button"
-                            class="px-4 py-2 sm:px-6 text-sm sm:text-base bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300"
-                            @click="if(step < 5) step++"
-                            x-show="step < 5">
-                        Berikutnya
-                    </button>
-
-                    <button type="button"
-                            @click="showModal = true"
-                            class="px-4 py-2 sm:px-6 text-sm sm:text-base bg-green-600 text-white rounded-lg hover:bg-green-700 transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                            x-show="step === 5"
-                            :disabled="!konfirmasi">
-                        <span>{{ $siswa->orangTuaWali ? 'Simpan Perubahan' : 'Kirim Pendaftaran' }}</span>
-                    </button>
-                </div>
-            </fieldset>
-        </form>
-    </div>
-
-    <!-- Modal Konfirmasi -->
-    <div x-show="showModal" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50" style="display: none;">
-        <div @click.away="showModal = false" class="bg-white rounded-lg shadow-xl p-6 sm:p-8 w-11/12 max-w-md mx-auto">
-            <div class="text-center">
-                <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-blue-100">
-                    <svg class="h-6 w-6 text-blue-600" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.546-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                </div>
-                <h3 class="text-lg leading-6 font-medium text-gray-900 mt-5">Konfirmasi Pendaftaran</h3>
-                <div class="mt-2 px-7 py-3">
-                    <p class="text-sm text-gray-500">
-                        Apakah Anda yakin semua data yang diisi sudah benar? Anda masih dapat mengubah data selama pendaftaran belum diverifikasi oleh panitia.
-                    </p>
-                </div>
-                <div class="mt-6 flex justify-center gap-4">
-                    <button type="button" @click="showModal = false" class="px-6 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 transition">
-                        Batal
-                    </button>
-                    <button type="button" @click="$refs.pendaftaranForm.submit()" class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">
-                        Ya, Kirim Sekarang
-                    </button>
-                </div>
+        {{-- Kartu Status Utama --}}
+        <div class="p-6 rounded-xl shadow-lg border-t-4 mb-8 text-center bg-white border-{{$warna}}-400" data-aos="fade-up">
+            <div class="mx-auto w-16 h-16 rounded-full flex items-center justify-center mb-4 bg-{{$warna}}-100 text-{{$warna}}-600">
+                {!! $ikon !!}
+            </div>
+            <h2 class="text-2xl font-bold">{{ $status }}</h2>
+            <p class="text-gray-600 mt-2 max-w-md mx-auto">{{ $pesan }}</p>
+            <div class="mt-6">
+                <a href="{{ $tombolLink }}" class="inline-block px-5 py-2.5 bg-{{$warna}}-600 text-white rounded-lg hover:bg-{{$warna}}-700 transition text-sm font-semibold shadow">
+                    {{ $tombolTeks }}
+                </a>
             </div>
         </div>
+        
     </div>
 </div>
+@endsection
+

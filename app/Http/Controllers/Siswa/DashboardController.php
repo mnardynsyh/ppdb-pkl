@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Siswa;
 
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Agama;
 use App\Models\Siswa;
 use App\Models\Pendidikan;
@@ -14,6 +15,7 @@ use App\Models\Job as Pekerjaan;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\View\View;
 
 class DashboardController extends Controller
 {
@@ -22,43 +24,49 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        // Memuat siswa beserta semua relasi yang dibutuhkan, termasuk relasi turunan (nested)
-        $siswa = Siswa::with([
-            'agama',
-            'lampiran',
-            'orangTuaWali.agamaAyah',
-            'orangTuaWali.pendidikanAyah',
-            'orangTuaWali.pekerjaanAyah',
-            'orangTuaWali.penghasilanAyah',
-            'orangTuaWali.agamaIbu',
-            'orangTuaWali.pendidikanIbu',
-            'orangTuaWali.pekerjaanIbu',
-            'orangTuaWali.penghasilanIbu',
-            'orangTuaWali.agamaWali',
-            'orangTuaWali.pendidikanWali',
-            'orangTuaWali.pekerjaanWali',
-            'orangTuaWali.penghasilanWali'
-        ])->find(Auth::id());
+        $siswa = Siswa::with('orangTuaWali')->find(Auth::id());
 
-        // Kondisi untuk menentukan view mana yang akan ditampilkan
-        if (!$siswa->orangTuaWali || (request()->query('action') == 'edit' && $siswa->status_pendaftaran == 'pending')) {
-            // Jika data belum ada, atau jika ada permintaan edit, tampilkan form.
-            
-            $agamas = Agama::all();
-            $pendidikans = Pendidikan::all();
-            $pekerjaans = Pekerjaan::all();
-            $penghasilans = Penghasilan::all();
-
-            return view('siswa.dashboard', compact(
-                'siswa',
-                'agamas',
-                'pendidikans',
-                'pekerjaans',
-                'penghasilans'
-            ));
+        // Logika Pengecekan:
+        // Kita menggunakan relasi orangTuaWali sebagai indikator bahwa
+        // formulir sudah pernah diisi setidaknya satu kali.
+        if (!$siswa->orangTuaWali) {
+            // Jika data orang tua belum ada, artinya siswa belum pernah
+            // mengirim formulir. Arahkan mereka langsung ke halaman formulir.
+            return redirect()->route('siswa.formulir');
         }
 
-        // Jika tidak, tampilkan halaman status pendaftaran.
+        // Jika data sudah ada, tampilkan dashboard utama yang berisi status pendaftaran.
+        return view('siswa.dashboard', compact('siswa'));
+    }
+
+    /**
+     * Menampilkan formulir pendaftaran (multi-step).
+     */
+    public function showForm(): View
+    {
+        $siswa = Siswa::with(['orangTuaWali', 'lampiran'])->find(Auth::id());
+        
+        // Data untuk dropdown
+        $agamas = Agama::all();
+        $pendidikans = Pendidikan::all();
+        $pekerjaans = Pekerjaan::all();
+        $penghasilans = Penghasilan::all();
+
+        return view('siswa.form-pendaftaran', compact('siswa', 'agamas', 'pendidikans', 'pekerjaans', 'penghasilans'));
+    }
+
+    /**
+     * Menampilkan halaman detail status pendaftaran.
+     */
+    public function showStatus(): View
+    {
+        $siswa = Siswa::with([
+            'agama', 'lampiran',
+            'orangTuaWali.agamaAyah', 'orangTuaWali.pekerjaanAyah', 'orangTuaWali.pendidikanAyah', 'orangTuaWali.penghasilanAyah',
+            'orangTuaWali.agamaIbu', 'orangTuaWali.pekerjaanIbu', 'orangTuaWali.pendidikanIbu', 'orangTuaWali.penghasilanIbu',
+            'orangTuaWali.agamaWali', 'orangTuaWali.pekerjaanWali', 'orangTuaWali.pendidikanWali', 'orangTuaWali.penghasilanWali'
+        ])->find(Auth::id());
+        
         return view('siswa.status', compact('siswa'));
     }
 
@@ -202,6 +210,25 @@ class DashboardController extends Controller
         }
 
         return redirect()->route('siswa.dashboard')->with('success', 'Data pendaftaran berhasil diperbarui!');
+    }
+
+    public function cetakBukti()
+    {
+        $siswa = Siswa::with([
+            'agama',
+            'orangTuaWali'
+        ])->find(Auth::id());
+
+        // Pastikan siswa sudah diterima sebelum mencetak
+        if ($siswa->status_pendaftaran !== 'Diterima') {
+            return redirect()->route('siswa.dashboard')->with('error', 'Anda tidak dapat mencetak bukti pendaftaran saat ini.');
+        }
+
+        $pdf = PDF::loadView('siswa.cetak-bukti', compact('siswa'));
+        
+        $fileName = 'bukti-pendaftaran-' . str_replace(' ', '-', strtolower($siswa->nama_lengkap)) . '.pdf';
+        
+        return $pdf->stream($fileName);
     }
 }
 

@@ -12,13 +12,13 @@
             <p class="text-gray-500 mt-2">Terima kasih telah melakukan pendaftaran. Berikut adalah ringkasan data Anda.</p>
         </div>
 
-        {{-- [BARU] Kartu Status Utama --}}
+        {{-- Kartu Status Utama yang Disempurnakan --}}
         <div @class([
-            'p-6 rounded-xl shadow-lg border-t-4 mb-8 text-center',
-            'bg-yellow-50 border-yellow-400' => $siswa->status_pendaftaran == 'Pending',
-            'bg-green-50 border-green-400' => $siswa->status_pendaftaran == 'Diterima',
-            'bg-red-50 border-red-400' => $siswa->status_pendaftaran == 'Ditolak',
-        ]) data-aos="fade-up">
+            'p-6 rounded-xl shadow-lg border-t-4 mb-8 text-center bg-white',
+            'border-yellow-400' => $siswa->status_pendaftaran == 'Pending',
+            'border-green-400' => $siswa->status_pendaftaran == 'Diterima',
+            'border-red-400' => $siswa->status_pendaftaran == 'Ditolak',
+        ])>
             <div @class([
                 'mx-auto w-16 h-16 rounded-full flex items-center justify-center mb-4',
                 'bg-yellow-100 text-yellow-600' => $siswa->status_pendaftaran == 'Pending',
@@ -33,12 +33,12 @@
                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path></svg>
                 @endif
             </div>
-            <h2 class="text-2xl font-bold uppercase">{{ $siswa->status_pendaftaran }}</h2>
+            <h2 class="text-2xl font-bold uppercase tracking-wider">{{ $siswa->status_pendaftaran }}</h2>
             
             {{-- Pesan Status Dinamis --}}
             <p class="text-gray-600 mt-2 max-w-md mx-auto">
                 @if($siswa->status_pendaftaran == 'Pending')
-                    Data Anda sedang dalam proses verifikasi oleh panitia. Anda masih dapat mengubah data jika diperlukan.
+                    Data Anda telah kami terima dan sedang dalam proses verifikasi oleh panitia. Anda masih dapat mengubah data jika diperlukan.
                 @elseif($siswa->status_pendaftaran == 'Diterima')
                     Selamat! Pendaftaran Anda telah kami terima. Silakan cetak bukti pendaftaran dan tunggu informasi selanjutnya.
                 @else
@@ -49,12 +49,13 @@
             {{-- Tombol Aksi Dinamis --}}
             <div class="mt-6">
                 @if($siswa->status_pendaftaran == 'Pending')
-                    <a href="{{ route('siswa.dashboard', ['action' => 'edit']) }}" 
+                    {{-- [DIPERBARUI] Mengarahkan ke route formulir yang benar --}}
+                    <a href="{{ route('siswa.formulir') }}" 
                        class="inline-block px-5 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-sm font-semibold shadow">
                         Ubah Data Pendaftaran
                     </a>
                 @elseif($siswa->status_pendaftaran == 'Diterima')
-                     <a href="#" 
+                     <a href="{{ route('siswa.cetak-bukti') }}" target="_blank"
                        class="inline-block px-5 py-2.5 bg-green-600 text-white rounded-lg hover:bg-green-700 transition text-sm font-semibold shadow">
                         Cetak Bukti Pendaftaran
                     </a>
@@ -62,7 +63,7 @@
             </div>
         </div>
 
-        {{-- [DIPERBARUI] Memanggil partial detail siswa yang sudah ada --}}
+        {{-- Memanggil partial detail siswa --}}
         @include('partials.siswa.detail-siswa')
         
     </div>
