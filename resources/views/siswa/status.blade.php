@@ -6,18 +6,6 @@
 <div class="bg-gray-50 min-h-screen">
     <div class="max-w-4xl mx-auto py-10 sm:py-16 px-4 sm:px-6 lg:px-8">
         
-        {{-- Tombol Logout --}}
-        <div class="absolute top-4 right-4 md:top-6 md:right-6">
-            <form action="{{ route('siswa.logout') }}" method="POST">
-                @csrf
-                <button type="submit"
-                    class="px-3 py-2 bg-white/80 backdrop-blur-sm text-gray-700 rounded-lg hover:bg-gray-200 transition duration-300 flex items-center gap-2 text-sm shadow-sm border">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
-                    <span class="hidden sm:inline">Logout</span>
-                </button>
-            </form>
-        </div>
-
         {{-- Header Halaman --}}
         <div class="text-center mb-8">
             <h1 class="text-3xl md:text-4xl font-bold text-gray-800">Status Pendaftaran Anda</h1>

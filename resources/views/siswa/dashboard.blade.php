@@ -1,3 +1,5 @@
+
+
 <div x-data="{ step: 1, konfirmasi: false, showModal: false, status: '{{ $siswa->status_pendaftaran }}' }" class="max-w-full mx-auto bg-white shadow-2xl rounded-xl p-4 sm:p-8 my-6 sm:my-10 border border-gray-200 relative">
     
     <div class="absolute top-4 right-4 md:top-6 md:right-6">
