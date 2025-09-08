@@ -53,7 +53,7 @@
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {{-- Grafik Pendaftaran --}}
         <div class="lg:col-span-2 bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
-            <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">Grafik Pendaftaran (7 Hari Terakhir)</h3>
+            <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">Grafik Pendaftaran (30 Hari Terakhir)</h3>
             <canvas id="pendaftaranChart"></canvas>
         </div>
 

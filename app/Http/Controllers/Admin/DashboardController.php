@@ -27,7 +27,7 @@ class DashboardController extends Controller
                 DB::raw('DATE(created_at) as tanggal'),
                 DB::raw('count(*) as jumlah')
             )
-            ->where('created_at', '>=', Carbon::now()->subDays(7))
+            ->where('created_at', '>=', Carbon::now()->subDays(30))
             ->groupBy('tanggal')
             ->orderBy('tanggal', 'asc')
             ->get();

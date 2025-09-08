@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\JobController;
 use App\Http\Controllers\Admin\AgamaController;
 use App\Http\Controllers\Admin\JadwalController;
+use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\PendidikanController;
 use App\Http\Controllers\Admin\PengaturanController;
 use App\Http\Controllers\Admin\PendaftaranController;
@@ -100,6 +101,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::post('/jadwal', 'storeJadwal')->name('jadwal.store');
             Route::put('/jadwal/{jadwal}', 'updateJadwal')->name('jadwal.update');
             Route::delete('/jadwal/{jadwal}', 'destroyJadwal')->name('jadwal.destroy');
+        });
+
+        Route::prefix('profil')->name('profil.')->controller(ProfileController::class)->group(function () {
+            Route::get('/', 'edit')->name('edit');
+            Route::put('/', 'update')->name('update');
         });
     });
 });
