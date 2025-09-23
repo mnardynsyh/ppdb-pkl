@@ -1,5 +1,5 @@
 {{-- Section Persyaratan Pendaftaran --}}
-<section class="py-16 bg-blue-100" id="persyaratan">
+<section class="py-20 bg-blue-100" id="persyaratan">
     <div class="max-w-screen-xl mx-auto px-4">
         <div class="text-center mb-16">
             <h2 class="text-4xl font-bold text-gray-800">Persyaratan Pendaftaran</h2>

@@ -1,5 +1,5 @@
 {{-- Section Tanya Jawab (FAQ) --}}
-<section class="bg-gray-50 py-16" id="faq">
+<section class="bg-gray-50 py-20" id="faq">
     <div class="max-w-screen-xl mx-auto px-4">
         <div class="text-center mb-16">
             <h2 class="text-4xl font-bold text-gray-800">Tanya Jawab</h2>

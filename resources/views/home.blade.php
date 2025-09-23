@@ -18,42 +18,32 @@
 </div>
 
 {{-- Hero Section --}}
-<section 
-  style="background-image: url('{{ asset('img/bg-sekolah.png') }}')" 
-  class="bg-cover bg-center bg-no-repeat w-full h-[90vh] sm:h-[90vh] min-h-[500px] relative"
->
-  <div class="absolute inset-0 bg-black bg-opacity-70"></div>
-  <div 
-    class="relative z-10 px-4 mx-auto max-w-screen-xl text-center py-16 sm:py-24 lg:py-40"
-    data-aos="fade-up"
-  >
-    <h1 
-      class="mb-4 text-3xl sm:text-4xl md:text-5xl lg:text-5xl font-extrabold tracking-tight leading-tight text-white"
-      data-aos="fade-down"
-    >
-      Selamat Datang di PPDB Online <br>
-      SMP Muhammadiyah 1 Sirampog
-    </h1>
-    <p 
-      class="mb-8 text-sm sm:text-base lg:text-xl font-normal text-gray-300 sm:px-10 lg:px-48"
-      data-aos="fade-up" data-aos-delay="200"
-    >
-      Daftarkan dirimu sekarang untuk bergabung bersama sekolah unggulan kami!
-    </p>
+<section class="bg-white" style="font-family: 'Poppins', sans-serif;">
+    <div class="grid max-w-screen-xl px-4 py-8 mx-auto lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12 h-[90vh] sm:h-[90vh] min-h-[500px] items-center">
+        <div class="mr-auto place-self-center lg:col-span-7" data-aos="fade-right">
+            <h1 class="max-w-2xl mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-6xl text-[#283618]">
+                Selamat Datang di PPDB Online SMP Muhammadiyah 1 Sirampog
+            </h1>
+            <p class="max-w-2xl mb-6 font-light text-[#606c38] lg:mb-8 md:text-lg lg:text-xl">
+                Daftarkan dirimu sekarang untuk bergabung bersama sekolah unggulan kami dan raih masa depan gemilang!
+            </p>
 
-    {{-- [DIPERBARUI] Tombol Aksi (CTA) menggunakan variabel baru --}}
-    @if($statusInfo['status'] == 'Dibuka')
-        <div class="flex flex-col space-y-3 sm:flex-row sm:justify-center sm:space-y-0" data-aos="zoom-in" data-aos-delay="400">
-          <a href="{{ route('siswa.register') }}" class="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300">
-            Daftar Sekarang
-            <svg class="w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/></svg>
-          </a>
-          <a href="{{ route('jadwal')}}" class="inline-flex justify-center items-center py-3 px-5 sm:ms-4 text-base font-medium text-white rounded-lg border border-white hover:bg-gray-100 hover:text-gray-900">
-            Lihat Jadwal Pendaftaran
-          </a>
+            @if($statusInfo['status'] == 'Dibuka')
+              <div data-aos="fade-up" data-aos-delay="200">
+                <a href="{{ route('siswa.register') }}" class="inline-flex items-center justify-center px-5 py-3 mr-3 text-base font-medium text-center text-white rounded-lg bg-[#bc6c25] hover:bg-[#a55d20] focus:ring-4 focus:ring-[#dda15e]/80 transition-colors">
+                    Daftar Sekarang
+                    <svg class="w-5 h-5 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/0000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                </a>
+                <a href="{{ route('jadwal')}}" class="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-[#283618] border border-[#606c38] rounded-lg hover:bg-[#dda15e]/40 focus:ring-4 focus:ring-[#dda15e]/50 transition-colors">
+                    Lihat Jadwal
+                </a> 
+              </div>
+            @endif
         </div>
-    @endif
-  </div>
+        <div class="hidden lg:mt-0 lg:col-span-5 lg:flex justify-center items-center" data-aos="fade-left">
+            <img src="{{ asset('img/hero.png') }}" alt="Foto SMP Muhammadiyah 1 Sirampog" class="object-top drop-shadow-lg w-full">
+        </div>                
+    </div>
 </section>
 
 @include('partials.alur')
