@@ -121,10 +121,12 @@ class DashboardController extends Controller
             'tahun_lulus'           => 'required|digits:4|integer|min:2000',
 
             // Step 4: Berkas Lampiran
-            'berkas'                => 'nullable|array',
+            'berkas'                  => 'nullable|array',
             'berkas.pas_foto'         => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
             'berkas.kartu_keluarga'   => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
             'berkas.ijazah'           => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'berkas.akta_kelahiran'   => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'berkas.ktp_ortu'   => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ]);
 
         $siswa = Siswa::find(Auth::id());
