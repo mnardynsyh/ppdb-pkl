@@ -1,4 +1,7 @@
-<div x-show="step === 2" class="space-y-6 animate-fade-in" x-data="{ showWali: {{ old('tinggal_dengan_wali', $siswa->orangTuaWali && $siswa->orangTuaWali->nama_wali ? 'true' : 'false') }} }">
+<div x-show="step === 2" class="space-y-6 animate-fade-in" 
+     x-data="{ 
+         showWali: {{ old('tinggal_dengan_wali', ($siswa->orangTuaWali && $siswa->orangTuaWali->nama_wali) ? 'true' : 'false') }} 
+     }">
 
     <!-- Data Ayah -->
     <div class="p-6 border rounded-lg shadow-sm">
@@ -7,18 +10,22 @@
             <div>
                 <label for="nama_ayah" class="block mb-2 text-sm font-medium text-gray-900">Nama Lengkap Ayah</label>
                 <input type="text" id="nama_ayah" name="nama_ayah" value="{{ old('nama_ayah', $siswa->orangTuaWali->nama_ayah ?? '') }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" placeholder="Sesuai KTP" required>
+                @error('nama_ayah') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
             <div>
                 <label for="nik_ayah" class="block mb-2 text-sm font-medium text-gray-900">NIK Ayah</label>
                 <input type="text" id="nik_ayah" name="nik_ayah" value="{{ old('nik_ayah', $siswa->orangTuaWali->nik_ayah ?? '') }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" placeholder="16 Digit NIK" required>
+                @error('nik_ayah') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
             <div>
                 <label for="tempat_lahir_ayah" class="block mb-2 text-sm font-medium text-gray-900">Tempat Lahir Ayah</label>
                 <input type="text" id="tempat_lahir_ayah" name="tempat_lahir_ayah" value="{{ old('tempat_lahir_ayah', $siswa->orangTuaWali->tempat_lahir_ayah ?? '') }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" required>
+                @error('tempat_lahir_ayah') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
             <div>
                 <label for="tanggal_lahir_ayah" class="block mb-2 text-sm font-medium text-gray-900">Tanggal Lahir Ayah</label>
                 <input type="date" id="tanggal_lahir_ayah" name="tanggal_lahir_ayah" value="{{ old('tanggal_lahir_ayah', $siswa->orangTuaWali->tanggal_lahir_ayah ?? '') }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" required>
+                @error('tanggal_lahir_ayah') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
             <div>
                 <label for="pendidikan_ayah_id" class="block mb-2 text-sm font-medium text-gray-900">Pendidikan Terakhir Ayah</label>
@@ -28,6 +35,7 @@
                         <option value="{{ $pendidikan->id }}" @if(old('pendidikan_ayah_id', $siswa->orangTuaWali->pendidikan_ayah_id ?? '') == $pendidikan->id) selected @endif>{{ $pendidikan->pendidikan }}</option>
                     @endforeach
                 </select>
+                @error('pendidikan_ayah_id') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
             <div>
                 <label for="pekerjaan_ayah_id" class="block mb-2 text-sm font-medium text-gray-900">Pekerjaan Ayah</label>
@@ -37,6 +45,7 @@
                         <option value="{{ $pekerjaan->id }}" @if(old('pekerjaan_ayah_id', $siswa->orangTuaWali->pekerjaan_ayah_id ?? '') == $pekerjaan->id) selected @endif>{{ $pekerjaan->pekerjaan }}</option>
                     @endforeach
                 </select>
+                @error('pekerjaan_ayah_id') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
             <div>
                 <label for="penghasilan_ayah_id" class="block mb-2 text-sm font-medium text-gray-900">Penghasilan Ayah</label>
@@ -46,6 +55,7 @@
                         <option value="{{ $penghasilan->id }}" @if(old('penghasilan_ayah_id', $siswa->orangTuaWali->penghasilan_ayah_id ?? '') == $penghasilan->id) selected @endif>{{ $penghasilan->penghasilan }}</option>
                     @endforeach
                 </select>
+                @error('penghasilan_ayah_id') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
              <div>
                 <label for="agama_ayah_id" class="block mb-2 text-sm font-medium text-gray-900">Agama Ayah</label>
@@ -55,6 +65,7 @@
                         <option value="{{ $agama->id }}" @if(old('agama_ayah_id', $siswa->orangTuaWali->agama_ayah_id ?? '') == $agama->id) selected @endif>{{ $agama->agama }}</option>
                     @endforeach
                 </select>
+                @error('agama_ayah_id') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
         </div>
     </div>
@@ -66,18 +77,22 @@
             <div>
                 <label for="nama_ibu" class="block mb-2 text-sm font-medium text-gray-900">Nama Lengkap Ibu</label>
                 <input type="text" id="nama_ibu" name="nama_ibu" value="{{ old('nama_ibu', $siswa->orangTuaWali->nama_ibu ?? '') }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" placeholder="Sesuai KTP" required>
+                @error('nama_ibu') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
             <div>
                 <label for="nik_ibu" class="block mb-2 text-sm font-medium text-gray-900">NIK Ibu</label>
                 <input type="text" id="nik_ibu" name="nik_ibu" value="{{ old('nik_ibu', $siswa->orangTuaWali->nik_ibu ?? '') }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" placeholder="16 Digit NIK" required>
+                @error('nik_ibu') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
             <div>
                 <label for="tempat_lahir_ibu" class="block mb-2 text-sm font-medium text-gray-900">Tempat Lahir Ibu</label>
                 <input type="text" id="tempat_lahir_ibu" name="tempat_lahir_ibu" value="{{ old('tempat_lahir_ibu', $siswa->orangTuaWali->tempat_lahir_ibu ?? '') }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" required>
+                @error('tempat_lahir_ibu') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
             <div>
                 <label for="tanggal_lahir_ibu" class="block mb-2 text-sm font-medium text-gray-900">Tanggal Lahir Ibu</label>
                 <input type="date" id="tanggal_lahir_ibu" name="tanggal_lahir_ibu" value="{{ old('tanggal_lahir_ibu', $siswa->orangTuaWali->tanggal_lahir_ibu ?? '') }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" required>
+                @error('tanggal_lahir_ibu') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
             <div>
                 <label for="pendidikan_ibu_id" class="block mb-2 text-sm font-medium text-gray-900">Pendidikan Terakhir Ibu</label>
@@ -87,6 +102,7 @@
                         <option value="{{ $pendidikan->id }}" @if(old('pendidikan_ibu_id', $siswa->orangTuaWali->pendidikan_ibu_id ?? '') == $pendidikan->id) selected @endif>{{ $pendidikan->pendidikan }}</option>
                     @endforeach
                 </select>
+                @error('pendidikan_ibu_id') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
             <div>
                 <label for="pekerjaan_ibu_id" class="block mb-2 text-sm font-medium text-gray-900">Pekerjaan Ibu</label>
@@ -96,6 +112,7 @@
                         <option value="{{ $pekerjaan->id }}" @if(old('pekerjaan_ibu_id', $siswa->orangTuaWali->pekerjaan_ibu_id ?? '') == $pekerjaan->id) selected @endif>{{ $pekerjaan->pekerjaan }}</option>
                     @endforeach
                 </select>
+                @error('pekerjaan_ibu_id') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
             <div>
                 <label for="penghasilan_ibu_id" class="block mb-2 text-sm font-medium text-gray-900">Penghasilan Ibu</label>
@@ -105,6 +122,7 @@
                         <option value="{{ $penghasilan->id }}" @if(old('penghasilan_ibu_id', $siswa->orangTuaWali->penghasilan_ibu_id ?? '') == $penghasilan->id) selected @endif>{{ $penghasilan->penghasilan }}</option>
                     @endforeach
                 </select>
+                @error('penghasilan_ibu_id') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
              <div>
                 <label for="agama_ibu_id" class="block mb-2 text-sm font-medium text-gray-900">Agama Ibu</label>
@@ -114,6 +132,7 @@
                         <option value="{{ $agama->id }}" @if(old('agama_ibu_id', $siswa->orangTuaWali->agama_ibu_id ?? '') == $agama->id) selected @endif>{{ $agama->agama }}</option>
                     @endforeach
                 </select>
+                @error('agama_ibu_id') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
         </div>
     </div>
@@ -131,18 +150,22 @@
                 <div>
                     <label for="nama_wali" class="block mb-2 text-sm font-medium text-gray-900">Nama Lengkap Wali</label>
                     <input type="text" id="nama_wali" name="nama_wali" value="{{ old('nama_wali', $siswa->orangTuaWali->nama_wali ?? '') }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" placeholder="Sesuai KTP">
+                    @error('nama_wali') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
                 </div>
                 <div>
                     <label for="nik_wali" class="block mb-2 text-sm font-medium text-gray-900">NIK Wali</label>
                     <input type="text" id="nik_wali" name="nik_wali" value="{{ old('nik_wali', $siswa->orangTuaWali->nik_wali ?? '') }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" placeholder="16 Digit NIK">
+                    @error('nik_wali') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
                 </div>
                 <div>
                 <label for="tempat_lahir_wali" class="block mb-2 text-sm font-medium text-gray-900">Tempat Lahir Wali</label>
                 <input type="text" id="tempat_lahir_wali" name="tempat_lahir_wali" value="{{ old('tempat_lahir_wali', $siswa->orangTuaWali->tempat_lahir_wali ?? '') }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">
+                @error('tempat_lahir_wali') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
             <div>
                 <label for="tanggal_lahir_wali" class="block mb-2 text-sm font-medium text-gray-900">Tanggal Lahir Wali</label>
-                <input type="date" id="tanggal_lahir_wali" name="tanggal_lahir_wali" value="{{ old('tanggal_lahir_wali', $siswa->orangTuaWali->tanggal_lahir_ibu ?? '') }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">
+                <input type="date" id="tanggal_lahir_wali" name="tanggal_lahir_wali" value="{{ old('tanggal_lahir_wali', $siswa->orangTuaWali->tanggal_lahir_wali ?? '') }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">
+                @error('tanggal_lahir_wali') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
             <div>
                 <label for="pendidikan_wali_id" class="block mb-2 text-sm font-medium text-gray-900">Pendidikan Terakhir Wali</label>
@@ -152,6 +175,7 @@
                         <option value="{{ $pendidikan->id }}" @if(old('pendidikan_wali_id', $siswa->orangTuaWali->pendidikan_wali_id ?? '') == $pendidikan->id) selected @endif>{{ $pendidikan->pendidikan }}</option>
                     @endforeach
                 </select>
+                @error('pendidikan_wali_id') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
             <div>
                 <label for="pekerjaan_wali_id" class="block mb-2 text-sm font-medium text-gray-900">Pekerjaan Wali</label>
@@ -161,6 +185,7 @@
                         <option value="{{ $pekerjaan->id }}" @if(old('pekerjaan_wali_id', $siswa->orangTuaWali->pekerjaan_wali_id ?? '') == $pekerjaan->id) selected @endif>{{ $pekerjaan->pekerjaan }}</option>
                     @endforeach
                 </select>
+                @error('pekerjaan_wali_id') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
             <div>
                 <label for="penghasilan_wali_id" class="block mb-2 text-sm font-medium text-gray-900">Penghasilan Wali</label>
@@ -170,6 +195,7 @@
                         <option value="{{ $penghasilan->id }}" @if(old('penghasilan_wali_id', $siswa->orangTuaWali->penghasilan_wali_id ?? '') == $penghasilan->id) selected @endif>{{ $penghasilan->penghasilan }}</option>
                     @endforeach
                 </select>
+                @error('penghasilan_wali_id') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
              <div>
                 <label for="agama_wali_id" class="block mb-2 text-sm font-medium text-gray-900">Agama Wali</label>
@@ -179,6 +205,7 @@
                         <option value="{{ $agama->id }}" @if(old('agama_wali_id', $siswa->orangTuaWali->agama_wali_id ?? '') == $agama->id) selected @endif>{{ $agama->agama }}</option>
                     @endforeach
                 </select>
+                @error('agama_wali_id') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
             </div>
         </div>

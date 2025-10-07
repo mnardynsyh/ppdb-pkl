@@ -31,6 +31,9 @@ class Siswa extends Authenticatable
         'agama_id',
         'tahun_lulus',
         'status_pendaftaran',
+        'provinsi_id',
+        'kabupaten_id',
+        'kecamatan_id',
     ];
 
 

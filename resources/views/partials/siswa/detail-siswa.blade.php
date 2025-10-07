@@ -1,8 +1,38 @@
 {{-- [BARU] Partial ini berisi ringkasan lengkap data siswa --}}
 <div class="space-y-6" data-aos="fade-up" data-aos-delay="100">
 
-    {{-- Card: Data Calon Siswa --}}
-    <div class="bg-white p-5 rounded-lg shadow-md border border-gray-100">
+    {{-- [DISEMPURNAKAN] Card: Data Calon Siswa dengan AlpineJS untuk Alamat --}}
+    <div class="bg-white p-5 rounded-lg shadow-md border border-gray-100" 
+         x-data="{
+             provinceName: '...',
+             regencyName: '...',
+             districtName: '...',
+
+             async init() {
+                 const provinceId = '{{ $siswa->provinsi_id }}';
+                 const regencyId = '{{ $siswa->kabupaten_id }}';
+                 const districtId = '{{ $siswa->kecamatan_id }}';
+
+                 if (!provinceId) return;
+
+                 // Ambil semua data wilayah secara bersamaan untuk efisiensi
+                 const [provincesRes, regenciesRes, districtsRes] = await Promise.all([
+                     fetch('https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json'),
+                     fetch(`https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${provinceId}.json`),
+                     fetch(`https://www.emsifa.com/api-wilayah-indonesia/api/districts/${regencyId}.json`)
+                 ]);
+
+                 const provinces = await provincesRes.json();
+                 const regencies = await regenciesRes.json();
+                 const districts = await districtsRes.json();
+
+                 // Cari nama berdasarkan ID dan tampilkan
+                 this.provinceName = provinces.find(p => p.id === provinceId)?.name || 'Tidak Ditemukan';
+                 this.regencyName = regencies.find(r => r.id === regencyId)?.name || 'Tidak Ditemukan';
+                 this.districtName = districts.find(d => d.id === districtId)?.name || 'Tidak Ditemukan';
+             }
+         }"
+         x-init="init()">
         <h3 class="text-lg font-semibold text-gray-800 border-b pb-3 mb-4">Data Calon Siswa</h3>
         <dl class="grid grid-cols-1 md:grid-cols-2 gap-x-6 text-sm">
             @php
@@ -10,7 +40,7 @@
                 function renderDataRow($label, $value) {
                     echo '<div class="flex flex-col sm:grid sm:grid-cols-3 sm:gap-4 py-2 border-b border-gray-100 last:border-b-0">';
                     echo '<dt class="font-medium text-gray-500">' . e($label) . '</dt>';
-                    echo '<dd class="mt-1 text-gray-900 sm:mt-0 sm:col-span-2">' . e($value ?: '-') . '</dd>';
+                    echo '<dd class="mt-1 text-gray-900 sm:mt-0 sm:col-span-2">' . ($value ? e($value) : '-') . '</dd>';
                     echo '</div>';
                 }
             @endphp
@@ -22,7 +52,12 @@
             @php renderDataRow('Tempat, Tgl Lahir', $siswa->tempat_lahir . ', ' . ($siswa->tanggal_lahir ? \Carbon\Carbon::parse($siswa->tanggal_lahir)->isoFormat('D MMMM Y') : '-')); @endphp
             @php renderDataRow('Agama', $siswa->agama->agama ?? '-'); @endphp
             @php renderDataRow('Anak Ke-', $siswa->anak_ke); @endphp
-            @php renderDataRow('Alamat', $siswa->alamat); @endphp
+            
+            {{-- [DISEMPURNAKAN] Tampilan Alamat --}}
+            <div class="flex flex-col sm:grid sm:grid-cols-3 sm:gap-4 py-2 border-b border-gray-100"><dt class="font-medium text-gray-500">Provinsi</dt><dd class="mt-1 text-gray-900 sm:mt-0 sm:col-span-2" x-text="provinceName"></dd></div>
+            <div class="flex flex-col sm:grid sm:grid-cols-3 sm:gap-4 py-2 border-b border-gray-100"><dt class="font-medium text-gray-500">Kabupaten/Kota</dt><dd class="mt-1 text-gray-900 sm:mt-0 sm:col-span-2" x-text="regencyName"></dd></div>
+            <div class="flex flex-col sm:grid sm:grid-cols-3 sm:gap-4 py-2 border-b border-gray-100"><dt class="font-medium text-gray-500">Kecamatan</dt><dd class="mt-1 text-gray-900 sm:mt-0 sm:col-span-2" x-text="districtName"></dd></div>
+            @php renderDataRow('Detail Alamat', $siswa->alamat); @endphp
         </dl>
     </div>
 
@@ -36,7 +71,7 @@
         </dl>
     </div>
     
-    {{-- Card: Data Orang Tua & Wali --}}
+    {{-- [DISEMPURNAKAN] Card: Data Orang Tua & Wali dengan alamat sederhana --}}
     @if($siswa->orangTuaWali)
         <div class="bg-white p-5 rounded-lg shadow-md border border-gray-100">
             <h3 class="text-lg font-semibold text-gray-800 border-b pb-3 mb-4">Data Orang Tua & Wali</h3>
@@ -50,6 +85,7 @@
                         @php renderDataRow('Pendidikan', $siswa->orangTuaWali->pendidikanAyah->pendidikan ?? '-'); @endphp
                         @php renderDataRow('Pekerjaan', $siswa->orangTuaWali->pekerjaanAyah->pekerjaan ?? '-'); @endphp
                         @php renderDataRow('Penghasilan', $siswa->orangTuaWali->penghasilanAyah->penghasilan ?? '-'); @endphp
+                        @php renderDataRow('Alamat Ayah', $siswa->orangTuaWali->alamat_ayah); @endphp
                     </dl>
                 </div>
                 {{-- Data Ibu --}}
@@ -61,6 +97,7 @@
                         @php renderDataRow('Pendidikan', $siswa->orangTuaWali->pendidikanIbu->pendidikan ?? '-'); @endphp
                         @php renderDataRow('Pekerjaan', $siswa->orangTuaWali->pekerjaanIbu->pekerjaan ?? '-'); @endphp
                         @php renderDataRow('Penghasilan', $siswa->orangTuaWali->penghasilanIbu->penghasilan ?? '-'); @endphp
+                        @php renderDataRow('Alamat Ibu', $siswa->orangTuaWali->alamat_ibu); @endphp
                     </dl>
                 </div>
                 {{-- Data Wali --}}
@@ -72,6 +109,7 @@
                             @php renderDataRow('NIK', $siswa->orangTuaWali->nik_wali); @endphp
                             @php renderDataRow('Pekerjaan', $siswa->orangTuaWali->pekerjaanWali->pekerjaan ?? '-'); @endphp
                             @php renderDataRow('Penghasilan', $siswa->orangTuaWali->penghasilanWali->penghasilan ?? '-'); @endphp
+                            @php renderDataRow('Alamat Wali', $siswa->orangTuaWali->alamat_wali); @endphp
                         </dl>
                     </div>
                 @endif
@@ -83,9 +121,9 @@
     <div class="bg-white p-5 rounded-lg shadow-md border border-gray-100">
         <h3 class="text-lg font-semibold text-gray-800 border-b pb-3 mb-4">Berkas Terunggah</h3>
         <ul class="text-sm space-y-2">
-            @forelse ($siswa->lampiran->keyBy('jenis_berkas') as $jenis => $file)
+            @forelse ($siswa->lampiran as $file)
                  <li class="flex items-center justify-between p-2 bg-gray-50 rounded-md">
-                    <span class="font-medium text-gray-600">{{ ucwords(str_replace('_', ' ', $jenis)) }}</span>
+                    <span class="font-medium text-gray-600">{{ ucwords(str_replace('_', ' ', $file->jenis_berkas)) }}</span>
                     <a href="{{ Storage::url($file->path_file) }}" target="_blank" class="text-blue-600 hover:underline font-semibold">Lihat Berkas</a>
                 </li>
             @empty
@@ -94,4 +132,3 @@
         </ul>
     </div>
 </div>
-

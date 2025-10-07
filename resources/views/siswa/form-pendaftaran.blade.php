@@ -9,6 +9,19 @@
     <h1 class="text-2xl md:text-3xl font-bold mb-2 text-center text-gray-800">Formulir Pendaftaran Siswa Baru</h1>
     <p class="text-center text-gray-500 mb-8 px-4 sm:px-0">Silakan lengkapi semua data dengan benar.</p>
 
+    {{-- Menampilkan Ringkasan Error Validasi --}}
+    @if ($errors->any())
+        <div class="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-800 rounded-r-lg" role="alert">
+            <p class="font-bold">Terjadi Kesalahan!</p>
+            <p>Mohon periksa kembali data yang Anda isikan. Terdapat beberapa kolom yang belum diisi dengan benar:</p>
+            <ul class="list-disc list-inside text-sm mt-2">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     {{-- Memanggil partial stepper --}}
     @include('partials.siswa.stepper')
 
@@ -81,4 +94,55 @@
         </div>
     </div>
 </div>
+
+{{-- [DIPERBAIKI] Logika JavaScript dipindahkan ke sini dengan cara yang benar --}}
 @endsection
+
+@push('scripts')
+<script>
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('addressHandler', () => ({
+            provinces: [],
+            regencies: [],
+            districts: [],
+            selectedProvince: '{{ old('provinsi_id', $siswa->provinsi_id) ?? '' }}',
+            selectedRegency: '{{ old('kabupaten_id', $siswa->kabupaten_id) ?? '' }}',
+            selectedDistrict: '{{ old('kecamatan_id', $siswa->kecamatan_id) ?? '' }}',
+
+            async init() {
+                const provinceResponse = await fetch('https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json');
+                this.provinces = await provinceResponse.json();
+                
+                if (this.selectedProvince) {
+                    const regencyResponse = await fetch(`https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${this.selectedProvince}.json`);
+                    this.regencies = await regencyResponse.json();
+                }
+
+                if (this.selectedRegency) {
+                    const districtResponse = await fetch(`https://www.emsifa.com/api-wilayah-indonesia/api/districts/${this.selectedRegency}.json`);
+                    this.districts = await districtResponse.json();
+                }
+            },
+
+            async fetchRegencies() {
+                this.regencies = [];
+                this.districts = [];
+                this.selectedRegency = '';
+                this.selectedDistrict = '';
+                if (!this.selectedProvince) return;
+                const response = await fetch(`https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${this.selectedProvince}.json`);
+                this.regencies = await response.json();
+            },
+
+            async fetchDistricts() {
+                this.districts = [];
+                this.selectedDistrict = '';
+                if (!this.selectedRegency) return;
+                const response = await fetch(`https://www.emsifa.com/api-wilayah-indonesia/api/districts/${this.selectedRegency}.json`);
+                this.districts = await response.json();
+            }
+        }));
+    });
+</script>
+@endpush
+

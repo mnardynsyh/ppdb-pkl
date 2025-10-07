@@ -13,7 +13,6 @@
         .header p { margin: 5px 0 0; font-size: 14px; }
         .content { margin-top: 30px; }
         .content h2 { font-size: 18px; border-bottom: 1px solid #eee; padding-bottom: 5px; margin-bottom: 15px; }
-        .profile-photo { float: right; width: 100px; height: 120px; border: 1px solid #ddd; object-fit: cover; margin-left: 20px; }
         table { width: 100%; border-collapse: collapse; margin-top: 10px; }
         td { padding: 8px; vertical-align: top; }
         td.label { width: 30%; font-weight: bold; color: #555; }
@@ -31,8 +30,6 @@
 
         <div class="content">
             <p>Dengan ini menyatakan bahwa siswa dengan data di bawah ini telah dinyatakan <strong>DITERIMA</strong> sebagai calon siswa baru:</p>
-            
-            <img src="{{ storage_path('app/public/' . $siswa->pas_foto) }}" alt="Foto Profil" class="profile-photo">
 
             <h2>A. DATA CALON SISWA</h2>
             <table>

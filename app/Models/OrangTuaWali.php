@@ -2,6 +2,11 @@
 
 namespace App\Models;
 
+use App\Models\Job;
+use App\Models\Agama;
+use App\Models\Pendidikan;
+use App\Models\Penghasilan;
+use App\Models\Siswa;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -130,4 +135,3 @@ class OrangTuaWali extends Model
         return $this->belongsTo(Penghasilan::class, 'penghasilan_wali_id');
     }
 }
-
