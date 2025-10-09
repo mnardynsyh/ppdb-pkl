@@ -1,114 +1,68 @@
 {{-- Section Persyaratan Pendaftaran --}}
-<section class="py-20 bg-blue-100" id="persyaratan">
+<section class="bg-slate-50 py-20" id="persyaratan">
     <div class="max-w-screen-xl mx-auto px-4">
-        <div class="text-center mb-16">
-            <h2 class="text-4xl font-bold text-gray-800">Persyaratan Pendaftaran</h2>
-            <p class="text-gray-500 mt-2">Pastikan Anda telah menyiapkan semua dokumen yang diperlukan.</p>
+        {{-- Header Section --}}
+        <div class="text-center mb-16" data-aos="fade-up">
+            <h2 class="text-4xl font-extrabold text-slate-900">Persyaratan Pendaftaran</h2>
+            <p class="text-slate-600 mt-2 max-w-2xl mx-auto">Pastikan Anda telah menyiapkan semua dokumen yang diperlukan untuk kelancaran proses pendaftaran.</p>
         </div>
 
+        @php
+            // Daftar dokumen wajib dengan ikon yang lebih spesifik
+            $dokumenWajib = [
+                ['title' => 'Kartu Keluarga (KK)', 'description' => 'Pastikan nama calon siswa dan orang tua tercantum dengan jelas.', 'icon' => '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 20h5v-2a3 3 0 0 0-5.36-1.85M17 20H7m10 0v-2c0-.65-.12-1.28-.35-1.85m0 0a5 5 0 0 1 9.28 0M15 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM4 20h2.5a1.5 1.5 0 0 0 1.5-1.5v-2.5a1.5 1.5 0 0 0-1.5-1.5H4a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1Z"/></svg>'],
+                ['title' => 'Akta Kelahiran', 'description' => 'Untuk verifikasi usia dan nama lengkap calon siswa.', 'icon' => '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 7V5c0-1.1.9-2 2-2h4c1.1 0 2 .9 2 2v2"/><path d="M12 22a4 4 0 0 0 4-4v-1a2 2 0 0 0-2-2H10a2 2 0 0 0-2 2v1a4 4 0 0 0 4 4Z"/><path d="M12 7h.01"/></svg>'],
+                ['title' => 'Ijazah / SKL', 'description' => 'Scan Ijazah atau Surat Keterangan Lulus dari sekolah asal.', 'icon' => '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10.2V16a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-5.8"/><path d="M16 2a2 2 0 0 1 2 2v2"/><path d="M8 2a2 2 0 0 0-2 2v2"/><path d="M12 10a2 2 0 0 0-1 1.73v.54a2 2 0 0 0 2 0v-.54A2 2 0 0 0 12 10Z"/></svg>'],
+                ['title' => 'Pas Foto', 'description' => 'File pas foto formal terbaru dengan latar belakang merah (ukuran 3x4).', 'icon' => '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>'],
+                ['title' => 'KTP Orang Tua/Wali', 'description' => 'Scan KTP Ayah dan Ibu atau Wali yang bertanggung jawab.', 'icon' => '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>'],
+            ];
+        @endphp
+
         {{-- === Bagian 1: Persyaratan Wajib === --}}
-        <div>
-            <h3 class="text-2xl font-semibold text-center text-gray-700 mb-10">Dokumen Wajib (Semua Jalur)</h3>
-            {{-- [DIPERBARUI] Menggunakan Flexbox untuk centering otomatis pada baris terakhir --}}
-            <div class="flex flex-wrap justify-center gap-8">
-                
-                {{-- Persyaratan 1: Kartu Keluarga --}}
-                <div class="w-full max-w-sm lg:w-[30%] bg-white p-6 rounded-lg shadow-lg border border-gray-100 flex items-start space-x-4 transition-transform duration-300 hover:shadow-xl hover:-translate-y-1" data-aos="fade-up" data-aos-delay="100">
-                    <div class="flex-shrink-0 w-12 h-12 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.653-.124-1.282-.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm-1-4a1 1 0 11-2 0 1 1 0 012 0zM4 20h2.5a1.5 1.5 0 001.5-1.5v-2.5a1.5 1.5 0 00-1.5-1.5H4a1 1 0 00-1 1v4a1 1 0 001 1z"></path></svg>
+        <div class="mb-16">
+            <h3 class="text-2xl font-bold text-center text-slate-800 mb-10" data-aos="fade-up">Dokumen Wajib (Semua Jalur)</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                @foreach ($dokumenWajib as $item)
+                    <div class="bg-white p-6 rounded-lg shadow-lg border border-slate-200 flex items-start space-x-5 transition-transform duration-300 hover:-translate-y-2" data-aos="fade-up" data-aos-delay="{{ $loop->index * 50 }}">
+                        <div class="flex-shrink-0 w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center">
+                            {!! $item['icon'] !!}
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-semibold text-slate-800">{{ $item['title'] }}</h4>
+                            <p class="mt-1 text-slate-600 text-sm">{{ $item['description'] }}</p>
+                        </div>
                     </div>
-                    <div>
-                        <h3 class="text-lg font-semibold text-gray-900">Kartu Keluarga (KK)</h3>
-                        <p class="mt-1 text-gray-600">Scan dokumen KK yang masih berlaku. Pastikan nama calon siswa dan orang tua tercantum dengan jelas.</p>
-                    </div>
-                </div>
-
-                {{-- Persyaratan 2: Akta Kelahiran --}}
-                <div class="w-full max-w-sm lg:w-[30%] bg-white p-6 rounded-lg shadow-lg border border-gray-100 flex items-start space-x-4 transition-transform duration-300 hover:shadow-xl hover:-translate-y-1" data-aos="fade-up" data-aos-delay="200">
-                    <div class="flex-shrink-0 w-12 h-12 bg-green-100 text-green-700 rounded-full flex items-center justify-center">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
-                    </div>
-                    <div>
-                        <h3 class="text-lg font-semibold text-gray-900">Akta Kelahiran</h3>
-                        <p class="mt-1 text-gray-600">Scan Akta Kelahiran asli untuk verifikasi usia dan nama lengkap calon siswa.</p>
-                    </div>
-                </div>
-
-                {{-- Persyaratan 3: Ijazah / SKL --}}
-                <div class="w-full max-w-sm lg:w-[30%] bg-white p-6 rounded-lg shadow-lg border border-gray-100 flex items-start space-x-4 transition-transform duration-300 hover:shadow-xl hover:-translate-y-1" data-aos="fade-up" data-aos-delay="300">
-                    <div class="flex-shrink-0 w-12 h-12 bg-yellow-100 text-yellow-700 rounded-full flex items-center justify-center">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                    </div>
-                    <div>
-                        <h3 class="text-lg font-semibold text-gray-900">Ijazah / SKL</h3>
-                        <p class="mt-1 text-gray-600">Scan Ijazah atau Surat Keterangan Lulus (SKL) dari sekolah asal yang sudah dilegalisir.</p>
-                    </div>
-                </div>
-                
-                {{-- Persyaratan 4: Pas Foto --}}
-                <div class="w-full max-w-sm lg:w-[30%] bg-white p-6 rounded-lg shadow-lg border border-gray-100 flex items-start space-x-4 transition-transform duration-300 hover:shadow-xl hover:-translate-y-1" data-aos="fade-up" data-aos-delay="400">
-                    <div class="flex-shrink-0 w-12 h-12 bg-purple-100 text-purple-700 rounded-full flex items-center justify-center">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                    </div>
-                    <div>
-                        <h3 class="text-lg font-semibold text-gray-900">Pas Foto</h3>
-                        <p class="mt-1 text-gray-600">File pas foto formal terbaru dengan latar belakang merah, ukuran 3x4.</p>
-                    </div>
-                </div>
-
-                {{-- Persyaratan 5: KTP Orang Tua --}}
-                <div class="w-full max-w-sm lg:w-[30%] bg-white p-6 rounded-lg shadow-lg border border-gray-100 flex items-start space-x-4 transition-transform duration-300 hover:shadow-xl hover:-translate-y-1" data-aos="fade-up" data-aos-delay="500">
-                    <div class="flex-shrink-0 w-12 h-12 bg-teal-100 text-teal-700 rounded-full flex items-center justify-center">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4z"></path></svg>
-                    </div>
-                    <div>
-                        <h3 class="text-lg font-semibold text-gray-900">KTP Orang Tua/Wali</h3>
-                        <p class="mt-1 text-gray-600">Scan KTP Ayah dan Ibu atau Wali untuk validasi data orang tua yang diisikan.</p>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
 
         {{-- === Bagian 2: Persyaratan Khusus === --}}
-        <div class="mt-16">
-            <h3 class="text-2xl font-semibold text-center text-gray-700 mb-10">Dokumen Tambahan untuk Jalur Khusus</h3>
-            {{-- [DIPERBARUI] Tata letak kartu untuk desktop --}}
-            <div class="max-w-screen-lg mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
-                
-                {{-- Jalur Afirmasi --}}
-                <div class="border rounded-lg bg-white shadow-sm p-6" data-aos="fade-up" data-aos-delay="100">
-                    <h4 class="font-semibold text-gray-900 mb-2">Jalur Afirmasi (Siswa Kurang Mampu)</h4>
-                    <div class="text-gray-600">
-                        <ul class="list-disc list-inside space-y-2">
-                            <li>Scan Kartu Indonesia Pintar (KIP), Program Keluarga Harapan (PKH), atau Kartu Keluarga Sejahtera (KKS).</li>
-                            <li>Jika tidak ada, dapat menggunakan Surat Keterangan Tidak Mampu (SKTM) dari kelurahan/desa.</li>
-                        </ul>
-                    </div>
+        <div>
+            <h3 class="text-2xl font-bold text-center text-slate-800 mb-10" data-aos="fade-up">Dokumen Tambahan untuk Jalur Khusus</h3>
+            <div class="max-w-4xl mx-auto space-y-6">
+                <!-- Jalur Afirmasi -->
+                <div class="bg-white p-6 rounded-lg shadow-lg border border-slate-200" data-aos="fade-up" data-aos-delay="100">
+                    <h4 class="text-lg font-semibold text-slate-800 mb-2">Jalur Afirmasi (Siswa Kurang Mampu)</h4>
+                    <ul class="list-disc list-inside space-y-1 text-sm text-slate-600 pl-2">
+                        <li>Kartu Indonesia Pintar (KIP), Program Keluarga Harapan (PKH), atau Kartu Keluarga Sejahtera (KKS).</li>
+                        <li>Jika tidak memiliki kartu di atas, dapat menggunakan Surat Keterangan Tidak Mampu (SKTM).</li>
+                    </ul>
                 </div>
-
-                {{-- Jalur Prestasi --}}
-                <div class="border rounded-lg bg-white shadow-sm p-6" data-aos="fade-up" data-aos-delay="200">
-                    <h4 class="font-semibold text-gray-900 mb-2">Jalur Prestasi</h4>
-                    <div class="text-gray-600">
-                        <ul class="list-disc list-inside space-y-2">
-                            <li>Scan sertifikat prestasi (akademik/non-akademik) minimal tingkat kabupaten/kota.</li>
-                            <li>Scan nilai rapor semester 1-5 yang telah dilegalisir oleh sekolah asal.</li>
-                        </ul>
-                    </div>
+                <!-- Jalur Prestasi -->
+                <div class="bg-white p-6 rounded-lg shadow-lg border border-slate-200" data-aos="fade-up" data-aos-delay="150">
+                    <h4 class="text-lg font-semibold text-slate-800 mb-2">Jalur Prestasi</h4>
+                    <ul class="list-disc list-inside space-y-1 text-sm text-slate-600 pl-2">
+                        <li>Sertifikat prestasi (akademik/non-akademik) minimal tingkat kabupaten/kota.</li>
+                        <li>Nilai rapor semester 1 sampai 5 yang telah dilegalisir oleh sekolah asal.</li>
+                    </ul>
                 </div>
-
-                {{-- Jalur Pindah Tugas (di tengah) --}}
-                <div class="md:col-span-2 flex justify-center">
-                    <div class="w-full max-w-lg border rounded-lg bg-white shadow-sm p-6" data-aos="fade-up" data-aos-delay="300">
-                        <h4 class="font-semibold text-gray-900 mb-2">Jalur Pindah Tugas Orang Tua</h4>
-                        <div class="text-gray-600">
-                            <ul class="list-disc list-inside space-y-2">
-                                <li>Scan Surat Keputusan (SK) pindah tugas orang tua/wali dari instansi terkait.</li>
-                            </ul>
-                        </div>
-                    </div>
+                <!-- Jalur Pindah Tugas -->
+                 <div class="bg-white p-6 rounded-lg shadow-lg border border-slate-200" data-aos="fade-up" data-aos-delay="200">
+                    <h4 class="text-lg font-semibold text-slate-800 mb-2">Jalur Pindah Tugas Orang Tua</h4>
+                    <ul class="list-disc list-inside space-y-1 text-sm text-slate-600 pl-2">
+                        <li>Surat Keputusan (SK) pindah tugas orang tua/wali dari instansi terkait yang sah.</li>
+                    </ul>
                 </div>
-
             </div>
         </div>
     </div>
