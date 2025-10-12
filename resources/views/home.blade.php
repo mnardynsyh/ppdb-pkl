@@ -23,7 +23,7 @@
          <!-- Item 1: Selamat Datang -->
         <div class="hidden duration-1000 ease-in-out" data-carousel-item>
             <img src="{{asset ('img/bg-sekolah.png')}}" class="absolute block w-full h-full object-cover" alt="Kegiatan Belajar Mengajar">
-            <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+            <div class="absolute inset-0 bg-black bg-opacity-80"></div>
             <div class="absolute inset-0 flex flex-col items-center justify-center text-center text-white p-4">
                 <h1 class="max-w-2xl mb-4 text-4xl font-extrabold tracking-tight leading-snug md:text-5xl text-white">
                     Selamat Datang di PPDB 
@@ -48,7 +48,7 @@
         <!-- Item 2: Ekstrakurikuler -->
         <div class="hidden duration-1000 ease-in-out" data-carousel-item>
             <img src="{{asset ('img/slider-2.jpg')}}" class="absolute block w-full h-full object-cover" alt="Ekstrakurikuler">
-             <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+             <div class="absolute inset-0 bg-black bg-opacity-80"></div>
             <div class="absolute inset-0 flex flex-col items-center justify-center text-center text-white p-4">
                 <h1 class="max-w-2xl mb-4 text-4xl font-extrabold tracking-tight leading-snug md:text-5xl text-white">
                     Kembangkan Bakat & Minat
@@ -68,8 +68,8 @@
         </div>
         <!-- Item 3: Fasilitas -->
         <div class="hidden duration-1000 ease-in-out" data-carousel-item>
-            <img src="https://placehold.co/1920x1080/ECFDF5/10B981?text=Fasilitas+Lengkap" class="absolute block w-full h-full object-cover" alt="Fasilitas Sekolah">
-            <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+            <img src="{{asset ('img/slider-3.jpg')}}" class="absolute block w-full h-full object-cover" alt="Fasilitas Sekolah">
+            <div class="absolute inset-0 bg-black bg-opacity-80"></div>
             <div class="absolute inset-0 flex flex-col items-center justify-center text-center text-white p-4">
                  <h1 class="max-w-2xl mb-4 text-4xl font-extrabold tracking-tight leading-snug md:text-5xl text-white">
                     Didukung Fasilitas Modern
