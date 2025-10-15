@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Models\Job;
-use App\Models\Agama;
 use App\Models\Pendidikan;
 use App\Models\Penghasilan;
 use App\Models\Siswa;
@@ -36,7 +35,6 @@ class OrangTuaWali extends Model
         'pekerjaan_ayah_id',
         'penghasilan_ayah_id',
         'pendidikan_ayah_id',
-        'agama_ayah_id',
         'nama_ibu',
         'nik_ibu',
         'tempat_lahir_ibu',
@@ -44,7 +42,6 @@ class OrangTuaWali extends Model
         'pekerjaan_ibu_id',
         'penghasilan_ibu_id',
         'pendidikan_ibu_id',
-        'agama_ibu_id',
         'nama_wali',
         'nik_wali',
         'tempat_lahir_wali',
@@ -52,7 +49,6 @@ class OrangTuaWali extends Model
         'pekerjaan_wali_id',
         'penghasilan_wali_id',
         'pendidikan_wali_id',
-        'agama_wali_id',
     ];
 
     /**
@@ -66,11 +62,6 @@ class OrangTuaWali extends Model
     // ===================================================================
     // RELASI UNTUK DATA AYAH
     // ===================================================================
-
-    public function agamaAyah(): BelongsTo
-    {
-        return $this->belongsTo(Agama::class, 'agama_ayah_id');
-    }
 
     public function pendidikanAyah(): BelongsTo
     {
@@ -91,11 +82,6 @@ class OrangTuaWali extends Model
     // RELASI UNTUK DATA IBU
     // ===================================================================
 
-    public function agamaIbu(): BelongsTo
-    {
-        return $this->belongsTo(Agama::class, 'agama_ibu_id');
-    }
-
     public function pendidikanIbu(): BelongsTo
     {
         return $this->belongsTo(Pendidikan::class, 'pendidikan_ibu_id');
@@ -114,11 +100,6 @@ class OrangTuaWali extends Model
     // ===================================================================
     // RELASI UNTUK DATA WALI
     // ===================================================================
-
-    public function agamaWali(): BelongsTo
-    {
-        return $this->belongsTo(Agama::class, 'agama_wali_id');
-    }
 
     public function pendidikanWali(): BelongsTo
     {

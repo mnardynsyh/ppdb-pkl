@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Agama;
 use App\Models\Lampiran;
 use App\Models\OrangTuaWali;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -40,12 +39,6 @@ class Siswa extends Authenticatable
     protected $hidden = [
         'password',
     ];
-
-    // Relasi ke tabel agama
-    public function agama()
-    {
-        return $this->belongsTo(Agama::class, 'agama_id');
-    }
 
     public function orangTuaWali()
     {
