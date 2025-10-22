@@ -7,8 +7,6 @@ use App\Models\Siswa;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
-// [DIHAPUS] Model Agama tidak lagi digunakan
-// use App\Models\Agama; 
 use App\Models\OrangTuaWali; // Pastikan model ini di-use
 use App\Models\Pendidikan; // Pastikan model ini di-use
 use App\Models\Penghasilan; // Pastikan model ini di-use
@@ -84,7 +82,6 @@ class PendaftaranController extends Controller
      */
     public function detail(Siswa $siswa)
     {
-        // [DISESUAIKAN] Menghapus relasi agama dari eager loading
         $siswa->load([
             'lampiran',
             'orangTuaWali.pekerjaanAyah', 'orangTuaWali.pendidikanAyah', 'orangTuaWali.penghasilanAyah',

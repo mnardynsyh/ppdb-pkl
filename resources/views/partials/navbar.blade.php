@@ -45,10 +45,9 @@
           <!-- Dropdown menu -->
           <div x-show="open" x-transition class="absolute mt-2 z-10 font-normal bg-white divide-y divide-slate-100 rounded-lg shadow-lg w-44 border border-slate-100">
             <ul class="py-2 text-sm text-slate-700" aria-labelledby="dropdownLargeButton">
-              <li><a href="{{ url('/#alur-pendaftaran') }}" class="block px-4 py-2 hover:bg-slate-100">Alur Pendaftaran</a></li>
-              <li><a href="{{ url('/#jadwal-penting') }}" class="block px-4 py-2 hover:bg-slate-100">Jadwal Penting</a></li>
+              <li><a href="{{ url('/#alur') }}" class="block px-4 py-2 hover:bg-slate-100">Alur Pendaftaran</a></li>
+              <li><a href="{{ route('jadwal') }}" class="block px-4 py-2 hover:bg-slate-100">Jadwal Penting</a></li>
               <li><a href="{{ url('/#persyaratan') }}" class="block px-4 py-2 hover:bg-slate-100">Persyaratan & Dokumen</a></li>
-              <li><a href="#" class="block px-4 py-2 hover:bg-slate-100">Biaya Pendidikan</a></li>
             </ul>
           </div>
         </li>
@@ -66,7 +65,7 @@
             <ul class="py-2 text-sm text-slate-700" aria-labelledby="dropdownLargeButton">
               <li><a href="#" class="block px-4 py-2 hover:bg-slate-100">Tentang Kami</a></li>
               <li><a href="#" class="block px-4 py-2 hover:bg-slate-100">Visi & Misi</a></li>
-              <li><a href="#" class="block px-4 py-2 hover:bg-slate-100">Program Unggulan</a></li>
+              <li><a href="{{ route('kontak')}}" class="block px-4 py-2 hover:bg-slate-100">Kontak Kami</a></li>
             </ul>
           </div>
         </li>
