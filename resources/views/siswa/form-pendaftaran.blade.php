@@ -95,7 +95,7 @@
     </div>
 </div>
 
-{{-- [DIPERBAIKI] Logika JavaScript dipindahkan ke sini dengan cara yang benar --}}
+
 @endsection
 
 @push('scripts')

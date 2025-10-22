@@ -18,7 +18,6 @@ class PengaturanController extends Controller
      */
     public function index(): View
     {
-        // Mengambil data pengaturan umum dan semua data jadwal
         $pengaturan = Pengaturan::firstOrFail(); 
         $jadwals = Jadwal::orderBy('order')->get();
         

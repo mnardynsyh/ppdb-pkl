@@ -39,14 +39,17 @@
                 @error('tanggal_lahir') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
             <div>
-                <label for="agama_id" class="block mb-2 text-sm font-medium text-slate-900">Agama</label>
-                <select id="agama_id" name="agama_id" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
-                    <option value="" disabled {{ old('agama_id', $siswa->agama_id) ? '' : 'selected' }}>Pilih Agama</option>
-                    @foreach($agamas as $agama)
-                        <option value="{{ $agama->id }}" @if(old('agama_id', $siswa->agama_id) == $agama->id) selected @endif>{{ $agama->agama }}</option>
+                <label for="agama" class="block mb-2 text-sm font-medium text-slate-900">Agama</label> {{-- [DIUBAH] label for disesuaikan --}}
+                {{-- [DIUBAH] name="agama", id="agama" --}}
+                <select id="agama" name="agama" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
+                    <option value="" disabled {{ old('agama', $siswa->agama) ? '' : 'selected' }}>Pilih Agama</option> {{-- Kondisi old() disesuaikan --}}
+                    {{-- [DIUBAH] Looping menggunakan $agamaOptions --}}
+                    @foreach($agamaOptions as $option) 
+                        {{-- [DIUBAH] value="$option", kondisi selected disesuaikan --}}
+                        <option value="{{ $option }}" @if(old('agama', $siswa->agama) == $option) selected @endif>{{ $option }}</option>
                     @endforeach
                 </select>
-                @error('agama_id') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
+                @error('agama') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror {{-- Error key disesuaikan --}}
             </div>
              <div>
                 <label for="anak_ke" class="block mb-2 text-sm font-medium text-slate-900">Anak Ke-</label>

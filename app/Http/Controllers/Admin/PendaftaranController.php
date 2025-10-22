@@ -2,12 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
-// [BARU] Menambahkan use statement untuk Excel dan kelas ekspor
 use App\Exports\SiswasExport;
 use App\Models\Siswa;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
+// [DIHAPUS] Model Agama tidak lagi digunakan
+// use App\Models\Agama; 
+use App\Models\OrangTuaWali; // Pastikan model ini di-use
+use App\Models\Pendidikan; // Pastikan model ini di-use
+use App\Models\Penghasilan; // Pastikan model ini di-use
+use App\Models\Job as Pekerjaan; // Pastikan model ini di-use
 
 class PendaftaranController extends Controller
 {
@@ -65,13 +70,12 @@ class PendaftaranController extends Controller
     }
 
     /**
-     * [DIPERBARUI] Mengekspor data pendaftar ke file Excel (.xlsx).
+     * Mengekspor data pendaftar ke file Excel (.xlsx).
      */
     public function exportExcel(Request $request)
     {
         $fileName = 'data-pendaftar-' . date('Y-m-d') . '.xlsx';
         
-        // Memanggil kelas ekspor dan mengirimkan parameter filter dari request
         return Excel::download(new SiswasExport($request), $fileName);
     }
     
@@ -80,12 +84,12 @@ class PendaftaranController extends Controller
      */
     public function detail(Siswa $siswa)
     {
+        // [DISESUAIKAN] Menghapus relasi agama dari eager loading
         $siswa->load([
-            'agama',
             'lampiran',
-            'orangTuaWali.agamaAyah', 'orangTuaWali.pekerjaanAyah', 'orangTuaWali.pendidikanAyah', 'orangTuaWali.penghasilanAyah',
-            'orangTuaWali.agamaIbu', 'orangTuaWali.pekerjaanIbu', 'orangTuaWali.pendidikanIbu', 'orangTuaWali.penghasilanIbu',
-            'orangTuaWali.agamaWali', 'orangTuaWali.pekerjaanWali', 'orangTuaWali.pendidikanWali', 'orangTuaWali.penghasilanWali'
+            'orangTuaWali.pekerjaanAyah', 'orangTuaWali.pendidikanAyah', 'orangTuaWali.penghasilanAyah',
+            'orangTuaWali.pekerjaanIbu', 'orangTuaWali.pendidikanIbu', 'orangTuaWali.penghasilanIbu',
+            'orangTuaWali.pekerjaanWali', 'orangTuaWali.pendidikanWali', 'orangTuaWali.penghasilanWali'
         ]);
         return view('admin.pendaftaran.detail', compact('siswa'));
     }
@@ -126,4 +130,3 @@ class PendaftaranController extends Controller
         return back();
     }
 }
-

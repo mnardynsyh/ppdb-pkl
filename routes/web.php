@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\JobController;
-use App\Http\Controllers\Admin\AgamaController;
 use App\Http\Controllers\Admin\JadwalController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\PendidikanController;
@@ -35,7 +34,7 @@ Route::get('/login', [SiswaAuth::class, 'showLoginForm'])->middleware('guest:sis
 |--------------------------------------------------------------------------
 */
 Route::prefix('siswa')->name('siswa.')->group(function () {
-    // Rute untuk tamu (belum login)
+    // Rute guest
     Route::middleware('guest:siswa')->controller(SiswaAuth::class)->group(function () {
         Route::get('/register', 'showRegisterForm')->name('register');
         Route::post('/register', 'register')->name('register.submit');
@@ -43,7 +42,7 @@ Route::prefix('siswa')->name('siswa.')->group(function () {
         Route::post('/login', 'login')->name('login.submit');
     });
 
-    // Rute untuk siswa yang sudah login
+    // Rute siswa yang sudah login
     Route::middleware('auth:siswa')->group(function () {
         Route::post('/logout', [SiswaAuth::class, 'logout'])->name('logout');
         
@@ -60,7 +59,7 @@ Route::prefix('siswa')->name('siswa.')->group(function () {
             Route::put('/', 'update')->name('update');
         });
         
-        // [DIPERBARUI] Menambahkan rute untuk cetak bukti
+        
         Route::get('/cetak-bukti', [SiswaDashboard::class, 'cetakBukti'])->name('cetak-bukti');
     });
 });
@@ -86,7 +85,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
         
         Route::resource('job', JobController::class)->only(['index', 'store', 'update', 'destroy']);
         Route::resource('penghasilan', PenghasilanController::class)->only(['index', 'store', 'update', 'destroy']);
-        Route::resource('agama', AgamaController::class)->only(['index', 'store', 'update', 'destroy']);
         Route::resource('pendidikan', PendidikanController::class)->only(['index', 'store', 'update', 'destroy']);
         Route::resource('jadwal', JadwalController::class)->only(['index', 'store', 'update', 'destroy']);
 
