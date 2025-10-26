@@ -3,16 +3,16 @@
 namespace App\Http\Controllers\Siswa;
 
 use Barryvdh\DomPDF\Facade\Pdf;
-// [DIHAPUS] Model Agama tidak lagi digunakan
+// Model Agama dan Pendidikan tidak lagi digunakan
 // use App\Models\Agama; 
+// use App\Models\Pendidikan; 
 use App\Models\Siswa;
-use App\Models\Pendidikan;
 use App\Models\Penghasilan;
 use App\Models\OrangTuaWali;
 use Illuminate\Http\Request;
 use App\Models\Lampiran;
 use Illuminate\Validation\Rule;
-use App\Models\Job as Pekerjaan;
+use App\Models\Job as Pekerjaan; // Model Pekerjaan tetap digunakan
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -26,11 +26,9 @@ class DashboardController extends Controller
     public function index()
     {
         $siswa = Siswa::with('orangTuaWali')->find(Auth::id());
-
         if (!$siswa->orangTuaWali) {
             return redirect()->route('siswa.formulir');
         }
-
         return view('siswa.dashboard', compact('siswa'));
     }
 
@@ -41,13 +39,16 @@ class DashboardController extends Controller
     {
         $siswa = Siswa::with(['orangTuaWali', 'lampiran'])->find(Auth::id());
         
-        // [DISESUAIKAN] Data agama sekarang didefinisikan sebagai array, bukan diambil dari database.
+        // Data agama dan pendidikan sekarang berupa array
         $agamaOptions = ['Islam', 'Kristen Protestan', 'Kristen Katolik', 'Hindu', 'Buddha', 'Konghucu'];
-        $pendidikans = Pendidikan::all();
-        $pekerjaans = Pekerjaan::all();
+        $pendidikanOptions = [
+            'Tidak Sekolah', 'SD/Sederajat', 'SMP/Sederajat', 'SMA/Sederajat',
+            'Diploma (D1/D2/D3)', 'Sarjana (S1)', 'Magister (S2)', 'Doktor (S3)', 'Lainnya'
+        ];
+        $pekerjaans = Pekerjaan::all(); // Data pekerjaan diambil dari DB
         $penghasilans = Penghasilan::all();
 
-        return view('siswa.form-pendaftaran', compact('siswa', 'agamaOptions', 'pendidikans', 'pekerjaans', 'penghasilans'));
+        return view('siswa.form-pendaftaran', compact('siswa', 'agamaOptions', 'pendidikanOptions', 'pekerjaans', 'penghasilans'));
     }
 
     /**
@@ -55,12 +56,12 @@ class DashboardController extends Controller
      */
     public function showStatus(): View
     {
-        // [DISESUAIKAN] Menghapus relasi ke model Agama yang sudah tidak ada.
+        // Menghapus relasi agama dan pendidikan dari eager load
         $siswa = Siswa::with([
             'lampiran',
-            'orangTuaWali.pekerjaanAyah', 'orangTuaWali.pendidikanAyah', 'orangTuaWali.penghasilanAyah',
-            'orangTuaWali.pekerjaanIbu', 'orangTuaWali.pendidikanIbu', 'orangTuaWali.penghasilanIbu',
-            'orangTuaWali.pekerjaanWali', 'orangTuaWali.pendidikanWali', 'orangTuaWali.penghasilanWali'
+            'orangTuaWali.pekerjaanAyah', 'orangTuaWali.penghasilanAyah',
+            'orangTuaWali.pekerjaanIbu', 'orangTuaWali.penghasilanIbu',
+            'orangTuaWali.pekerjaanWali', 'orangTuaWali.penghasilanWali'
         ])->find(Auth::id());
         
         return view('siswa.status', compact('siswa'));
@@ -73,8 +74,12 @@ class DashboardController extends Controller
     {
         $orangTuaWaliId = Auth::user()->orangTuaWali->id ?? null;
 
-        // [DISESUAIKAN] Opsi agama didefinisikan untuk digunakan dalam aturan validasi.
+        // Opsi enum untuk validasi
         $agamaOptions = ['Islam', 'Kristen Protestan', 'Kristen Katolik', 'Hindu', 'Buddha', 'Konghucu'];
+        $pendidikanOptions = [
+            'Tidak Sekolah', 'SD/Sederajat', 'SMP/Sederajat', 'SMA/Sederajat',
+            'Diploma (D1/D2/D3)', 'Sarjana (S1)', 'Magister (S2)', 'Doktor (S3)', 'Lainnya'
+        ];
 
         $validated = $request->validate([
             // Step 1: Data Diri Siswa
@@ -84,7 +89,7 @@ class DashboardController extends Controller
             'jenis_kelamin'   => 'required|in:L,P',
             'tempat_lahir'    => 'required|string|max:100',
             'tanggal_lahir'   => 'required|date',
-            'agama'           => ['required', Rule::in($agamaOptions)], // Aturan diubah dari 'exists' menjadi 'in'
+            'agama'           => ['required', Rule::in($agamaOptions)], 
             'anak_ke'         => 'nullable|integer|min:1',
             'alamat'          => 'required|string',
             'provinsi_id'     => 'required|string|max:2',
@@ -96,29 +101,29 @@ class DashboardController extends Controller
             'nik_ayah'              => ['required', 'string', 'digits:16', Rule::unique('orang_tua_wali', 'nik_ayah')->ignore($orangTuaWaliId)],
             'tempat_lahir_ayah'     => 'required|string|max:100',
             'tanggal_lahir_ayah'    => 'required|date',
-            'pekerjaan_ayah_id'     => 'required|exists:job,id',
+            'pekerjaan_ayah_id'     => 'required|exists:job,id', // Pekerjaan masih ID
             'penghasilan_ayah_id'   => 'required|exists:penghasilan,id',
-            'pendidikan_ayah_id'    => 'required|exists:pendidikan,id',
-            'agama_ayah'            => ['required', Rule::in($agamaOptions)], // Aturan diubah
+            'pendidikan_ayah'       => ['required', Rule::in($pendidikanOptions)], // Pendidikan jadi enum
+            'agama_ayah'            => ['required', Rule::in($agamaOptions)], 
             'alamat_ayah'           => 'nullable|string',
             'nama_ibu'              => 'required|string|max:255',
             'nik_ibu'               => ['required', 'string', 'digits:16', Rule::unique('orang_tua_wali', 'nik_ibu')->ignore($orangTuaWaliId)],
             'tempat_lahir_ibu'      => 'required|string|max:100',
             'tanggal_lahir_ibu'     => 'required|date',
-            'pekerjaan_ibu_id'      => 'required|exists:job,id',
+            'pekerjaan_ibu_id'      => 'required|exists:job,id', // Pekerjaan masih ID
             'penghasilan_ibu_id'    => 'required|exists:penghasilan,id',
-            'pendidikan_ibu_id'     => 'required|exists:pendidikan,id',
-            'agama_ibu'             => ['required', Rule::in($agamaOptions)], // Aturan diubah
+            'pendidikan_ibu'        => ['required', Rule::in($pendidikanOptions)], // Pendidikan jadi enum
+            'agama_ibu'             => ['required', Rule::in($agamaOptions)], 
             'alamat_ibu'            => 'nullable|string',
             'tinggal_dengan_wali'   => 'nullable|string',
             'nama_wali'             => 'required_if:tinggal_dengan_wali,on|nullable|string|max:255',
             'nik_wali'              => ['required_if:tinggal_dengan_wali,on', 'nullable', 'string', 'digits:16', Rule::unique('orang_tua_wali', 'nik_wali')->ignore($orangTuaWaliId)],
             'tempat_lahir_wali'     => 'required_if:tinggal_dengan_wali,on|nullable|string|max:100',
             'tanggal_lahir_wali'    => 'required_if:tinggal_dengan_wali,on|nullable|date',
-            'pekerjaan_wali_id'     => 'required_if:tinggal_dengan_wali,on|nullable|exists:job,id',
+            'pekerjaan_wali_id'     => 'required_if:tinggal_dengan_wali,on|nullable|exists:job,id', // Pekerjaan masih ID
             'penghasilan_wali_id'   => 'required_if:tinggal_dengan_wali,on|nullable|exists:penghasilan,id',
-            'pendidikan_wali_id'    => 'required_if:tinggal_dengan_wali,on|nullable|exists:pendidikan,id',
-            'agama_wali'            => ['required_if:tinggal_dengan_wali,on', 'nullable', Rule::in($agamaOptions)], // Aturan diubah
+            'pendidikan_wali'       => ['required_if:tinggal_dengan_wali,on', 'nullable', Rule::in($pendidikanOptions)], // Pendidikan jadi enum
+            'agama_wali'            => ['required_if:tinggal_dengan_wali,on', 'nullable', Rule::in($agamaOptions)], 
             'alamat_wali'           => 'required_if:tinggal_dengan_wali,on|nullable|string',
 
             // Step 3: Sekolah Asal
@@ -135,6 +140,12 @@ class DashboardController extends Controller
             'agama_ayah' => 'Agama Ayah',
             'agama_ibu' => 'Agama Ibu',
             'agama_wali' => 'Agama Wali',
+            'pendidikan_ayah' => 'Pendidikan Ayah',
+            'pendidikan_ibu' => 'Pendidikan Ibu',
+            'pendidikan_wali' => 'Pendidikan Wali',
+            'pekerjaan_ayah_id' => 'Pekerjaan Ayah', // Tetap gunakan _id
+            'pekerjaan_ibu_id' => 'Pekerjaan Ibu',   // Tetap gunakan _id
+            'pekerjaan_wali_id' => 'Pekerjaan Wali', // Tetap gunakan _id
             // ... atribut lainnya
         ]);
 
@@ -147,7 +158,7 @@ class DashboardController extends Controller
             'jenis_kelamin'   => $validated['jenis_kelamin'],
             'tempat_lahir'    => $validated['tempat_lahir'],
             'tanggal_lahir'   => $validated['tanggal_lahir'],
-            'agama'           => $validated['agama'], // [DISESUAIKAN]
+            'agama'           => $validated['agama'], // Kolom enum
             'anak_ke'         => $validated['anak_ke'] ?? null,
             'alamat'          => $validated['alamat'],
             'provinsi_id'     => $validated['provinsi_id'],
@@ -163,12 +174,12 @@ class DashboardController extends Controller
             'nik_wali'              => $validated['nik_wali'],
             'tempat_lahir_wali'     => $validated['tempat_lahir_wali'],
             'tanggal_lahir_wali'    => $validated['tanggal_lahir_wali'],
-            'pekerjaan_wali_id'     => $validated['pekerjaan_wali_id'],
+            'pekerjaan_wali_id'     => $validated['pekerjaan_wali_id'], // Tetap ID
             'penghasilan_wali_id'   => $validated['penghasilan_wali_id'],
-            'pendidikan_wali_id'    => $validated['pendidikan_wali_id'],
-            'agama_wali'            => $validated['agama_wali'], // [DISESUAIKAN]
+            'pendidikan_wali'       => $validated['pendidikan_wali'], // Kolom enum
+            'agama_wali'            => $validated['agama_wali'],       // Kolom enum
             'alamat_wali'           => $validated['alamat_wali'],
-        ] : array_fill_keys(['nama_wali', 'nik_wali', 'tempat_lahir_wali', 'tanggal_lahir_wali', 'pekerjaan_wali_id', 'penghasilan_wali_id', 'pendidikan_wali_id', 'agama_wali', 'alamat_wali'], null);
+        ] : array_fill_keys(['nama_wali', 'nik_wali', 'tempat_lahir_wali', 'tanggal_lahir_wali', 'pekerjaan_wali_id', 'penghasilan_wali_id', 'pendidikan_wali', 'agama_wali', 'alamat_wali'], null);
 
         OrangTuaWali::updateOrCreate(
             ['siswa_id' => $siswa->id],
@@ -177,19 +188,19 @@ class DashboardController extends Controller
                 'nik_ayah'              => $validated['nik_ayah'],
                 'tempat_lahir_ayah'     => $validated['tempat_lahir_ayah'],
                 'tanggal_lahir_ayah'    => $validated['tanggal_lahir_ayah'],
-                'pekerjaan_ayah_id'     => $validated['pekerjaan_ayah_id'],
+                'pekerjaan_ayah_id'     => $validated['pekerjaan_ayah_id'], // Tetap ID
                 'penghasilan_ayah_id'   => $validated['penghasilan_ayah_id'],
-                'pendidikan_ayah_id'    => $validated['pendidikan_ayah_id'],
-                'agama_ayah'            => $validated['agama_ayah'], // [DISESUAIKAN]
+                'pendidikan_ayah'       => $validated['pendidikan_ayah'], // Kolom enum
+                'agama_ayah'            => $validated['agama_ayah'],       // Kolom enum
                 'alamat_ayah'           => $validated['alamat_ayah'],
                 'nama_ibu'              => $validated['nama_ibu'],
                 'nik_ibu'               => $validated['nik_ibu'],
                 'tempat_lahir_ibu'      => $validated['tempat_lahir_ibu'],
                 'tanggal_lahir_ibu'     => $validated['tanggal_lahir_ibu'],
-                'pekerjaan_ibu_id'      => $validated['pekerjaan_ibu_id'],
+                'pekerjaan_ibu_id'      => $validated['pekerjaan_ibu_id'], // Tetap ID
                 'penghasilan_ibu_id'    => $validated['penghasilan_ibu_id'],
-                'pendidikan_ibu_id'     => $validated['pendidikan_ibu_id'],
-                'agama_ibu'             => $validated['agama_ibu'], // [DISESUAIKAN]
+                'pendidikan_ibu'        => $validated['pendidikan_ibu'], // Kolom enum
+                'agama_ibu'             => $validated['agama_ibu'],       // Kolom enum
                 'alamat_ibu'            => $validated['alamat_ibu'],
             ], $dataWali)
         );
@@ -212,7 +223,7 @@ class DashboardController extends Controller
 
     public function cetakBukti()
     {
-        // [DISESUAIKAN] Menghapus relasi agama
+        // Menghapus relasi agama
         $siswa = Siswa::with('orangTuaWali')->find(Auth::id());
         
         if ($siswa->status_pendaftaran !== 'Diterima') {

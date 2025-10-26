@@ -28,14 +28,17 @@
                 @error('tanggal_lahir_ayah') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
             <div>
-                <label for="pendidikan_ayah_id" class="block mb-2 text-sm font-medium text-slate-900">Pendidikan Terakhir Ayah</label>
-                <select id="pendidikan_ayah_id" name="pendidikan_ayah_id" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg block w-full p-2.5 focus:ring-blue-500 focus:border-blue-500" required>
-                    <option value="" disabled selected>-- Pilih Pendidikan --</option>
-                    @foreach($pendidikans as $pendidikan)
-                        <option value="{{ $pendidikan->id }}" @if(old('pendidikan_ayah_id', $siswa->orangTuaWali->pendidikan_ayah_id ?? '') == $pendidikan->id) selected @endif>{{ $pendidikan->pendidikan }}</option>
+                <label for="pendidikan_ayah" class="block mb-2 text-sm font-medium text-slate-900">Pendidikan Terakhir Ayah</label> {{-- [DIUBAH] label for --}}
+                {{-- [DIUBAH] name="pendidikan_ayah", id="pendidikan_ayah" --}}
+                <select id="pendidikan_ayah" name="pendidikan_ayah" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg block w-full p-2.5 focus:ring-blue-500 focus:border-blue-500" required>
+                    <option value="" disabled {{ old('pendidikan_ayah', $siswa->orangTuaWali->pendidikan_ayah ?? '') ? '' : 'selected' }}>-- Pilih Pendidikan --</option> {{-- Kondisi old() disesuaikan --}}
+                    {{-- [DIUBAH] Looping menggunakan $pendidikanOptions --}}
+                    @foreach($pendidikanOptions as $option)
+                         {{-- [DIUBAH] value="$option", kondisi selected disesuaikan --}}
+                        <option value="{{ $option }}" @if(old('pendidikan_ayah', $siswa->orangTuaWali->pendidikan_ayah ?? '') == $option) selected @endif>{{ $option }}</option>
                     @endforeach
                 </select>
-                @error('pendidikan_ayah_id') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
+                @error('pendidikan_ayah') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror {{-- Error key disesuaikan --}}
             </div>
             <div>
                 <label for="pekerjaan_ayah_id" class="block mb-2 text-sm font-medium text-slate-900">Pekerjaan Ayah</label>
@@ -58,17 +61,14 @@
                 @error('penghasilan_ayah_id') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
              <div>
-                <label for="agama_ayah" class="block mb-2 text-sm font-medium text-slate-900">Agama Ayah</label> {{-- [DIUBAH] label for --}}
-                {{-- [DIUBAH] name="agama_ayah", id="agama_ayah" --}}
+                <label for="agama_ayah" class="block mb-2 text-sm font-medium text-slate-900">Agama Ayah</label>
                 <select id="agama_ayah" name="agama_ayah" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg block w-full p-2.5 focus:ring-blue-500 focus:border-blue-500" required>
-                    <option value="" disabled {{ old('agama_ayah', $siswa->orangTuaWali->agama_ayah ?? '') ? '' : 'selected' }}>-- Pilih Agama --</option> {{-- Kondisi old() disesuaikan --}}
-                    {{-- [DIUBAH] Looping menggunakan $agamaOptions --}}
+                    <option value="" disabled {{ old('agama_ayah', $siswa->orangTuaWali->agama_ayah ?? '') ? '' : 'selected' }}>-- Pilih Agama --</option>
                     @foreach($agamaOptions as $option)
-                         {{-- [DIUBAH] value="$option", kondisi selected disesuaikan --}}
                         <option value="{{ $option }}" @if(old('agama_ayah', $siswa->orangTuaWali->agama_ayah ?? '') == $option) selected @endif>{{ $option }}</option>
                     @endforeach
                 </select>
-                @error('agama_ayah') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror {{-- Error key disesuaikan --}}
+                @error('agama_ayah') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
              {{-- Alamat Ayah --}}
             <div class="md:col-span-2">
@@ -104,14 +104,17 @@
                 @error('tanggal_lahir_ibu') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
             <div>
-                <label for="pendidikan_ibu_id" class="block mb-2 text-sm font-medium text-slate-900">Pendidikan Terakhir Ibu</label>
-                <select id="pendidikan_ibu_id" name="pendidikan_ibu_id" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg block w-full p-2.5 focus:ring-blue-500 focus:border-blue-500" required>
-                    <option value="" disabled selected>-- Pilih Pendidikan --</option>
-                    @foreach($pendidikans as $pendidikan)
-                        <option value="{{ $pendidikan->id }}" @if(old('pendidikan_ibu_id', $siswa->orangTuaWali->pendidikan_ibu_id ?? '') == $pendidikan->id) selected @endif>{{ $pendidikan->pendidikan }}</option>
+                <label for="pendidikan_ibu" class="block mb-2 text-sm font-medium text-slate-900">Pendidikan Terakhir Ibu</label> {{-- [DIUBAH] label for --}}
+                {{-- [DIUBAH] name="pendidikan_ibu", id="pendidikan_ibu" --}}
+                <select id="pendidikan_ibu" name="pendidikan_ibu" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg block w-full p-2.5 focus:ring-blue-500 focus:border-blue-500" required>
+                    <option value="" disabled {{ old('pendidikan_ibu', $siswa->orangTuaWali->pendidikan_ibu ?? '') ? '' : 'selected' }}>-- Pilih Pendidikan --</option> {{-- Kondisi old() disesuaikan --}}
+                    {{-- [DIUBAH] Looping menggunakan $pendidikanOptions --}}
+                    @foreach($pendidikanOptions as $option)
+                         {{-- [DIUBAH] value="$option", kondisi selected disesuaikan --}}
+                        <option value="{{ $option }}" @if(old('pendidikan_ibu', $siswa->orangTuaWali->pendidikan_ibu ?? '') == $option) selected @endif>{{ $option }}</option>
                     @endforeach
                 </select>
-                @error('pendidikan_ibu_id') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
+                @error('pendidikan_ibu') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror {{-- Error key disesuaikan --}}
             </div>
             <div>
                 <label for="pekerjaan_ibu_id" class="block mb-2 text-sm font-medium text-slate-900">Pekerjaan Ibu</label>
@@ -134,17 +137,14 @@
                 @error('penghasilan_ibu_id') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
              <div>
-                <label for="agama_ibu" class="block mb-2 text-sm font-medium text-slate-900">Agama Ibu</label> {{-- [DIUBAH] label for --}}
-                {{-- [DIUBAH] name="agama_ibu", id="agama_ibu" --}}
+                <label for="agama_ibu" class="block mb-2 text-sm font-medium text-slate-900">Agama Ibu</label>
                 <select id="agama_ibu" name="agama_ibu" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg block w-full p-2.5 focus:ring-blue-500 focus:border-blue-500" required>
-                     <option value="" disabled {{ old('agama_ibu', $siswa->orangTuaWali->agama_ibu ?? '') ? '' : 'selected' }}>-- Pilih Agama --</option> {{-- Kondisi old() disesuaikan --}}
-                    {{-- [DIUBAH] Looping menggunakan $agamaOptions --}}
+                     <option value="" disabled {{ old('agama_ibu', $siswa->orangTuaWali->agama_ibu ?? '') ? '' : 'selected' }}>-- Pilih Agama --</option>
                     @foreach($agamaOptions as $option)
-                         {{-- [DIUBAH] value="$option", kondisi selected disesuaikan --}}
                         <option value="{{ $option }}" @if(old('agama_ibu', $siswa->orangTuaWali->agama_ibu ?? '') == $option) selected @endif>{{ $option }}</option>
                     @endforeach
                 </select>
-                @error('agama_ibu') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror {{-- Error key disesuaikan --}}
+                @error('agama_ibu') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
             {{-- Alamat Ibu --}}
             <div class="md:col-span-2">
@@ -186,14 +186,17 @@
                 @error('tanggal_lahir_wali') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
             <div>
-                <label for="pendidikan_wali_id" class="block mb-2 text-sm font-medium text-slate-900">Pendidikan Terakhir Wali</label>
-                <select id="pendidikan_wali_id" name="pendidikan_wali_id" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg block w-full p-2.5 focus:ring-blue-500 focus:border-blue-500">
-                    <option value="" disabled selected>-- Pilih Pendidikan --</option>
-                    @foreach($pendidikans as $pendidikan)
-                        <option value="{{ $pendidikan->id }}" @if(old('pendidikan_wali_id', $siswa->orangTuaWali->pendidikan_wali_id ?? '') == $pendidikan->id) selected @endif>{{ $pendidikan->pendidikan }}</option>
+                <label for="pendidikan_wali" class="block mb-2 text-sm font-medium text-slate-900">Pendidikan Terakhir Wali</label> {{-- [DIUBAH] label for --}}
+                 {{-- [DIUBAH] name="pendidikan_wali", id="pendidikan_wali" --}}
+                <select id="pendidikan_wali" name="pendidikan_wali" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg block w-full p-2.5 focus:ring-blue-500 focus:border-blue-500">
+                    <option value="" disabled {{ old('pendidikan_wali', $siswa->orangTuaWali->pendidikan_wali ?? '') ? '' : 'selected' }}>-- Pilih Pendidikan --</option> {{-- Kondisi old() disesuaikan --}}
+                    {{-- [DIUBAH] Looping menggunakan $pendidikanOptions --}}
+                    @foreach($pendidikanOptions as $option)
+                         {{-- [DIUBAH] value="$option", kondisi selected disesuaikan --}}
+                        <option value="{{ $option }}" @if(old('pendidikan_wali', $siswa->orangTuaWali->pendidikan_wali ?? '') == $option) selected @endif>{{ $option }}</option>
                     @endforeach
                 </select>
-                @error('pendidikan_wali_id') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
+                @error('pendidikan_wali') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror {{-- Error key disesuaikan --}}
             </div>
             <div>
                 <label for="pekerjaan_wali_id" class="block mb-2 text-sm font-medium text-slate-900">Pekerjaan Wali</label>
@@ -216,17 +219,14 @@
                 @error('penghasilan_wali_id') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
              <div>
-                <label for="agama_wali" class="block mb-2 text-sm font-medium text-slate-900">Agama Wali</label> {{-- [DIUBAH] label for --}}
-                {{-- [DIUBAH] name="agama_wali", id="agama_wali" --}}
+                <label for="agama_wali" class="block mb-2 text-sm font-medium text-slate-900">Agama Wali</label>
                 <select id="agama_wali" name="agama_wali" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg block w-full p-2.5 focus:ring-blue-500 focus:border-blue-500">
-                     <option value="" disabled {{ old('agama_wali', $siswa->orangTuaWali->agama_wali ?? '') ? '' : 'selected' }}>-- Pilih Agama --</option> {{-- Kondisi old() disesuaikan --}}
-                    {{-- [DIUBAH] Looping menggunakan $agamaOptions --}}
+                     <option value="" disabled {{ old('agama_wali', $siswa->orangTuaWali->agama_wali ?? '') ? '' : 'selected' }}>-- Pilih Agama --</option>
                     @foreach($agamaOptions as $option)
-                         {{-- [DIUBAH] value="$option", kondisi selected disesuaikan --}}
                         <option value="{{ $option }}" @if(old('agama_wali', $siswa->orangTuaWali->agama_wali ?? '') == $option) selected @endif>{{ $option }}</option>
                     @endforeach
                 </select>
-                @error('agama_wali') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror {{-- Error key disesuaikan --}}
+                @error('agama_wali') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
             {{-- Alamat Wali --}}
              <div class="md:col-span-2">
