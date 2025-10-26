@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use App\Models\Job;
-use App\Models\Pendidikan;
+use App\Models\Job; // [DIKEMBALIKAN] Model Job tetap digunakan
+// [DIHAPUS] Model Pendidikan tidak lagi digunakan
+// use App\Models\Pendidikan; 
 use App\Models\Penghasilan;
 use App\Models\Siswa;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -32,23 +33,31 @@ class OrangTuaWali extends Model
         'nik_ayah',
         'tempat_lahir_ayah',
         'tanggal_lahir_ayah',
-        'pekerjaan_ayah_id',
+        'pekerjaan_ayah_id', // [DIKEMBALIKAN] Tetap menggunakan ID untuk pekerjaan
         'penghasilan_ayah_id',
-        'pendidikan_ayah_id',
+        // [DIUBAH] Menggunakan nama kolom enum baru untuk pendidikan
+        'pendidikan_ayah', 
+        'agama_ayah', // Disesuaikan dari langkah sebelumnya
+        'alamat_ayah', // Disesuaikan dari langkah sebelumnya
         'nama_ibu',
         'nik_ibu',
         'tempat_lahir_ibu',
         'tanggal_lahir_ibu',
-        'pekerjaan_ibu_id',
+        'pekerjaan_ibu_id', // [DIKEMBALIKAN] Tetap menggunakan ID untuk pekerjaan
         'penghasilan_ibu_id',
-        'pendidikan_ibu_id',
+         // [DIUBAH] Menggunakan nama kolom enum baru untuk pendidikan
+        'pendidikan_ibu', 
+        'agama_ibu', // Disesuaikan dari langkah sebelumnya
+        'alamat_ibu', // Disesuaikan dari langkah sebelumnya
         'nama_wali',
         'nik_wali',
         'tempat_lahir_wali',
         'tanggal_lahir_wali',
-        'pekerjaan_wali_id',
+        'pekerjaan_wali_id', // [DIKEMBALIKAN] Tetap menggunakan ID untuk pekerjaan
         'penghasilan_wali_id',
-        'pendidikan_wali_id',
+        'pendidikan_wali', 
+        'agama_wali', // Disesuaikan dari langkah sebelumnya
+        'alamat_wali', // Disesuaikan dari langkah sebelumnya
     ];
 
     /**
@@ -63,12 +72,7 @@ class OrangTuaWali extends Model
     // RELASI UNTUK DATA AYAH
     // ===================================================================
 
-    public function pendidikanAyah(): BelongsTo
-    {
-        return $this->belongsTo(Pendidikan::class, 'pendidikan_ayah_id');
-    }
-
-    public function pekerjaanAyah(): BelongsTo
+    public function pekerjaanAyah(): BelongsTo 
     {
         return $this->belongsTo(Job::class, 'pekerjaan_ayah_id');
     }
@@ -82,12 +86,7 @@ class OrangTuaWali extends Model
     // RELASI UNTUK DATA IBU
     // ===================================================================
 
-    public function pendidikanIbu(): BelongsTo
-    {
-        return $this->belongsTo(Pendidikan::class, 'pendidikan_ibu_id');
-    }
-
-    public function pekerjaanIbu(): BelongsTo
+    public function pekerjaanIbu(): BelongsTo 
     {
         return $this->belongsTo(Job::class, 'pekerjaan_ibu_id');
     }
@@ -101,12 +100,7 @@ class OrangTuaWali extends Model
     // RELASI UNTUK DATA WALI
     // ===================================================================
 
-    public function pendidikanWali(): BelongsTo
-    {
-        return $this->belongsTo(Pendidikan::class, 'pendidikan_wali_id');
-    }
-
-    public function pekerjaanWali(): BelongsTo
+    public function pekerjaanWali(): BelongsTo 
     {
         return $this->belongsTo(Job::class, 'pekerjaan_wali_id');
     }
@@ -116,3 +110,4 @@ class OrangTuaWali extends Model
         return $this->belongsTo(Penghasilan::class, 'penghasilan_wali_id');
     }
 }
+
