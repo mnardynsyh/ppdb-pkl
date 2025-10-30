@@ -1,4 +1,5 @@
-<div x-show="step === 1" class="space-y-8 animate-fade-in" x-data="addressHandler">
+{{-- [DIUBAH] `x-data` sekarang menerima data $provinsi dari controller --}}
+<div x-show="step === 1" class="space-y-8 animate-fade-in" x-data="addressHandler({{ json_encode($provinsi) }})">
     
     {{-- === Bagian Data Diri === --}}
     <div>
@@ -39,17 +40,14 @@
                 @error('tanggal_lahir') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
             <div>
-                <label for="agama" class="block mb-2 text-sm font-medium text-slate-900">Agama</label> {{-- [DIUBAH] label for disesuaikan --}}
-                {{-- [DIUBAH] name="agama", id="agama" --}}
+                <label for="agama" class="block mb-2 text-sm font-medium text-slate-900">Agama</label> 
                 <select id="agama" name="agama" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
-                    <option value="" disabled {{ old('agama', $siswa->agama) ? '' : 'selected' }}>Pilih Agama</option> {{-- Kondisi old() disesuaikan --}}
-                    {{-- [DIUBAH] Looping menggunakan $agamaOptions --}}
+                    <option value="" disabled {{ old('agama', $siswa->agama) ? '' : 'selected' }}>Pilih Agama</option> 
                     @foreach($agamaOptions as $option) 
-                        {{-- [DIUBAH] value="$option", kondisi selected disesuaikan --}}
                         <option value="{{ $option }}" @if(old('agama', $siswa->agama) == $option) selected @endif>{{ $option }}</option>
                     @endforeach
                 </select>
-                @error('agama') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror {{-- Error key disesuaikan --}}
+                @error('agama') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror 
             </div>
              <div>
                 <label for="anak_ke" class="block mb-2 text-sm font-medium text-slate-900">Anak Ke-</label>
@@ -68,8 +66,9 @@
                 <label for="provinsi_id" class="block mb-2 text-sm font-medium text-slate-900">Provinsi</label>
                 <select id="provinsi_id" name="provinsi_id" x-model="selectedProvince" @change="fetchRegencies()" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                     <option value="">-- Pilih Provinsi --</option>
+                    {{-- [DIUBAH] Data provinsi sekarang di-looping dari variabel 'provinces' yang di-inject --}}
                     <template x-for="province in provinces" :key="province.id">
-                        <option :value="province.id" x-text="province.name" :selected="province.id == selectedProvince"></option>
+                        <option :value="province.id" x-text="province.nama" :selected="province.id == selectedProvince"></option>
                     </template>
                 </select>
                 @error('provinsi_id') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
@@ -81,7 +80,7 @@
                 <select id="kabupaten_id" name="kabupaten_id" x-model="selectedRegency" @change="fetchDistricts()" :disabled="!selectedProvince" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 disabled:bg-slate-200">
                     <option value="">-- Pilih Kabupaten/Kota --</option>
                     <template x-for="regency in regencies" :key="regency.id">
-                        <option :value="regency.id" x-text="regency.name" :selected="regency.id == selectedRegency"></option>
+                        <option :value="regency.id" x-text="regency.nama" :selected="regency.id == selectedRegency"></option>
                     </template>
                 </select>
                 @error('kabupaten_id') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
@@ -90,19 +89,31 @@
             {{-- Dropdown Kecamatan --}}
             <div>
                 <label for="kecamatan_id" class="block mb-2 text-sm font-medium text-slate-900">Kecamatan</label>
-                <select id="kecamatan_id" name="kecamatan_id" x-model="selectedDistrict" :disabled="!selectedRegency" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 disabled:bg-slate-200">
+                <select id="kecamatan_id" name="kecamatan_id" x-model="selectedDistrict" @change="fetchVillages()" :disabled="!selectedRegency" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 disabled:bg-slate-200">
                     <option value="">-- Pilih Kecamatan --</option>
                     <template x-for="district in districts" :key="district.id">
-                        <option :value="district.id" x-text="district.name" :selected="district.id == selectedDistrict"></option>
+                        <option :value="district.id" x-text="district.nama" :selected="district.id == selectedDistrict"></option>
                     </template>
                 </select>
                 @error('kecamatan_id') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
 
+            {{-- Dropdown Desa/Kelurahan --}}
+            <div>
+                <label for="desa_id" class="block mb-2 text-sm font-medium text-slate-900">Desa/Kelurahan</label>
+                <select id="desa_id" name="desa_id" x-model="selectedVillage" :disabled="!selectedDistrict" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 disabled:bg-slate-200">
+                    <option value="">-- Pilih Desa/Kelurahan --</option>
+                    <template x-for="village in villages" :key="village.id">
+                        <option :value="village.id" x-text="village.nama" :selected="village.id == selectedVillage"></option>
+                    </template>
+                </select>
+                @error('desa_id') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
+            </div>
+
             {{-- Alamat Lengkap --}}
             <div class="md:col-span-2">
-                <label for="alamat" class="block mb-2 text-sm font-medium text-slate-900">Nama Jalan, RT/RW, dan Kelurahan/Desa</label>
-                <textarea id="alamat" name="alamat" rows="3" class="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500" placeholder="Contoh: Jl. Merdeka No. 10, RT 01/RW 05, Kelurahan Bahagia" required>{{ old('alamat', $siswa->alamat) }}</textarea>
+                <label for="alamat" class="block mb-2 text-sm font-medium text-slate-900">Nama Jalan, RT/RW (Jika Ada)</label>
+                <textarea id="alamat" name="alamat" rows="2" class="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500" placeholder="Contoh: Jl. Merdeka No. 10, RT 01/RW 05" required>{{ old('alamat', $siswa->alamat) }}</textarea>
                 @error('alamat') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
         </div>

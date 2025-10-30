@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             // Menambahkan kolom baru 'alamat_sekolah_asal' setelah kolom 'asal_sekolah'
             // Dibuat nullable() agar tidak error pada data yang sudah ada.
-            $table->string('alamat_sekolah_asal')->nullable()->after('role_id');
+            $table->string('foto')->nullable()->after('role_id');
         });
     }
 
