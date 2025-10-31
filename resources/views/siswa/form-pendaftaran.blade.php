@@ -97,4 +97,67 @@
 
 
 @endsection
+@push('scripts')
+<script>
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('addressHandler', (provinces) => ({
+            provinces: provinces, // Data provinsi di-inject dari controller
+            regencies: [],
+            districts: [],
+            villages: [], 
 
+            selectedProvince: '{{ old('provinsi_id', $siswa->provinsi_id) ?? '' }}',
+            selectedRegency: '{{ old('kabupaten_id', $siswa->kabupaten_id) ?? '' }}',
+            selectedDistrict: '{{ old('kecamatan_id', $siswa->kecamatan_id) ?? '' }}',
+            selectedVillage: '{{ old('desa_id', $siswa->desa_id) ?? '' }}', 
+
+            async init() {
+                if (this.selectedProvince) {
+                    await this.fetchRegencies(true); 
+                }
+            },
+
+            async fetchRegencies(isInitialLoad = false) {
+                if (!isInitialLoad) {
+                    this.regencies = []; this.districts = []; this.villages = [];
+                    this.selectedRegency = ''; this.selectedDistrict = ''; this.selectedVillage = '';
+                }
+                if (!this.selectedProvince) return;
+
+                const response = await fetch(`{{ route('wilayah.kabupaten') }}?provinsi_id=${this.selectedProvince}`);
+                this.regencies = await response.json();
+
+                if (isInitialLoad && this.selectedRegency) {
+                    await this.fetchDistricts(true); 
+                }
+            },
+
+            async fetchDistricts(isInitialLoad = false) {
+                if (!isInitialLoad) {
+                    this.districts = []; this.villages = [];
+                    this.selectedDistrict = ''; this.selectedVillage = '';
+                }
+                if (!this.selectedRegency) return;
+
+                const response = await fetch(`{{ route('wilayah.kecamatan') }}?kabupaten_id=${this.selectedRegency}`);
+                this.districts = await response.json();
+
+                if (isInitialLoad && this.selectedDistrict) {
+                    await this.fetchVillages(true); 
+                }
+            },
+
+            async fetchVillages(isInitialLoad = false) {
+                if (!isInitialLoad) {
+                    this.villages = [];
+                    this.selectedVillage = '';
+                }
+                if (!this.selectedDistrict) return;
+
+                const response = await fetch(`{{ route('wilayah.desa') }}?kecamatan_id=${this.selectedDistrict}`);
+                this.villages = await response.json();
+            }
+        }));
+    });
+</script>
+@endpush

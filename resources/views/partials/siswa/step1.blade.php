@@ -1,5 +1,10 @@
-{{-- [DIUBAH] `x-data` sekarang menerima data $provinsi dari controller --}}
-<div x-show="step === 1" class="space-y-8 animate-fade-in" x-data="addressHandler({{ json_encode($provinsi) }})">
+{{-- 
+    [DIUBAH] 
+    - Logika x-data disederhanakan untuk memanggil 'addressHandler'
+    - 'addressHandler' akan didefinisikan di 'form-pendaftaran.blade.php'
+    - x-text diubah dari .name menjadi .nama agar sesuai dengan nama kolom database Anda
+--}}
+<div x-show="step === 1" class="space-y-8 animate-fade-in" x-data="addressHandler({{ $provinsi->toJson() }})">
     
     {{-- === Bagian Data Diri === --}}
     <div>
@@ -66,8 +71,8 @@
                 <label for="provinsi_id" class="block mb-2 text-sm font-medium text-slate-900">Provinsi</label>
                 <select id="provinsi_id" name="provinsi_id" x-model="selectedProvince" @change="fetchRegencies()" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                     <option value="">-- Pilih Provinsi --</option>
-                    {{-- [DIUBAH] Data provinsi sekarang di-looping dari variabel 'provinces' yang di-inject --}}
                     <template x-for="province in provinces" :key="province.id">
+                        {{-- [DIUBAH] x-text="province.nama" agar sesuai nama kolom database --}}
                         <option :value="province.id" x-text="province.nama" :selected="province.id == selectedProvince"></option>
                     </template>
                 </select>
@@ -80,6 +85,7 @@
                 <select id="kabupaten_id" name="kabupaten_id" x-model="selectedRegency" @change="fetchDistricts()" :disabled="!selectedProvince" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 disabled:bg-slate-200">
                     <option value="">-- Pilih Kabupaten/Kota --</option>
                     <template x-for="regency in regencies" :key="regency.id">
+                        {{-- [DIUBAH] x-text="regency.nama" --}}
                         <option :value="regency.id" x-text="regency.nama" :selected="regency.id == selectedRegency"></option>
                     </template>
                 </select>
@@ -92,6 +98,7 @@
                 <select id="kecamatan_id" name="kecamatan_id" x-model="selectedDistrict" @change="fetchVillages()" :disabled="!selectedRegency" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 disabled:bg-slate-200">
                     <option value="">-- Pilih Kecamatan --</option>
                     <template x-for="district in districts" :key="district.id">
+                         {{-- [DIUBAH] x-text="district.nama" --}}
                         <option :value="district.id" x-text="district.nama" :selected="district.id == selectedDistrict"></option>
                     </template>
                 </select>
@@ -104,6 +111,7 @@
                 <select id="desa_id" name="desa_id" x-model="selectedVillage" :disabled="!selectedDistrict" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 disabled:bg-slate-200">
                     <option value="">-- Pilih Desa/Kelurahan --</option>
                     <template x-for="village in villages" :key="village.id">
+                         {{-- [DIUBAH] x-text="village.nama" --}}
                         <option :value="village.id" x-text="village.nama" :selected="village.id == selectedVillage"></option>
                     </template>
                 </select>

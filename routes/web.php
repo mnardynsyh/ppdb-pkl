@@ -5,7 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\JobController;
 use App\Http\Controllers\Admin\JadwalController;
 use App\Http\Controllers\Admin\ProfileController;
-use App\Http\Controllers\Admin\PendidikanController;
+use App\Http\Controllers\WilayahController;
 use App\Http\Controllers\Admin\PengaturanController;
 use App\Http\Controllers\Admin\PendaftaranController;
 use App\Http\Controllers\Admin\PenghasilanController;
@@ -64,6 +64,9 @@ Route::prefix('siswa')->name('siswa.')->group(function () {
     });
 });
 
+Route::get('/wilayah/kabupaten', [WilayahController::class, 'getKabupaten'])->name('wilayah.kabupaten');
+Route::get('/wilayah/kecamatan', [WilayahController::class, 'getKecamatan'])->name('wilayah.kecamatan');
+Route::get('/wilayah/desa', [WilayahController::class, 'getDesa'])->name('wilayah.desa');
 
 
 /*
@@ -85,7 +88,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
         
         Route::resource('job', JobController::class)->only(['index', 'store', 'update', 'destroy']);
         Route::resource('penghasilan', PenghasilanController::class)->only(['index', 'store', 'update', 'destroy']);
-        Route::resource('pendidikan', PendidikanController::class)->only(['index', 'store', 'update', 'destroy']);
         Route::resource('jadwal', JadwalController::class)->only(['index', 'store', 'update', 'destroy']);
 
         Route::prefix('pendaftaran')->name('pendaftaran.')->controller(PendaftaranController::class)->group(function () {
