@@ -110,8 +110,5 @@
             </form>
         </div>
     </div>
-
-    {{-- [DIHAPUS] Konten Tab, Modal, dan Script untuk Manajemen Jadwal telah dihapus --}}
-
 </div>
 @endsection

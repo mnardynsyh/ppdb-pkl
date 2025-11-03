@@ -87,7 +87,6 @@ class DashboardController extends Controller
     {
         $orangTuaWaliId = Auth::user()->orangTuaWali->id ?? null;
 
-        // Opsi enum untuk validasi
         $agamaOptions = ['Islam', 'Kristen Protestan', 'Kristen Katolik', 'Hindu', 'Buddha', 'Konghucu'];
         $pendidikanOptions = [
             'Tidak Sekolah', 'SD/Sederajat', 'SMP/Sederajat', 'SMA/Sederajat',
@@ -149,11 +148,11 @@ class DashboardController extends Controller
             'berkas'                => 'nullable|array',
             'berkas.*'              => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ], 
-        // Pesan error custom (jika diperlukan)
+       
         [
             'berkas.*.max' => 'Ukuran file :attribute tidak boleh lebih dari 2MB.',
         ], 
-        // Nama Atribut untuk pesan error Bahasa Indonesia
+        
         [
             'nama_lengkap'    => 'Nama Lengkap Siswa',
             'nik'             => 'NIK Siswa',
@@ -284,7 +283,7 @@ class DashboardController extends Controller
 
     public function cetakBukti()
     {
-        // Menambahkan relasi wilayah ke cetak bukti
+        // relasi wilayah ke cetak bukti
         $siswa = Siswa::with(['orangTuaWali', 'provinsi', 'kabupaten', 'kecamatan', 'desa'])->find(Auth::id());
         
         if ($siswa->status_pendaftaran !== 'Diterima') {

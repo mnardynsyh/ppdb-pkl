@@ -26,7 +26,6 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        // Coba login sebagai Admin (guard 'web' adalah default untuk admin)
         if (Auth::guard('web')->attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
             return redirect()->intended(route('admin.dashboard'));

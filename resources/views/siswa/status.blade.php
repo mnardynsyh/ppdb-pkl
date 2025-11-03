@@ -49,7 +49,6 @@
             {{-- Tombol Aksi Dinamis --}}
             <div class="mt-6">
                 @if($siswa->status_pendaftaran == 'Pending')
-                    {{-- [DIPERBARUI] Mengarahkan ke route formulir yang benar --}}
                     <a href="{{ route('siswa.formulir') }}" 
                        class="inline-block px-5 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-sm font-semibold shadow">
                         Ubah Data Pendaftaran

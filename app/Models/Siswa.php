@@ -2,11 +2,8 @@
 
 namespace App\Models;
 
-// [DIHAPUS] Model Agama tidak lagi digunakan
-// use App\Models\Agama; 
 use App\Models\Lampiran;
 use App\Models\OrangTuaWali;
-// [BARU] Menambahkan model untuk relasi wilayah
 use App\Models\Provinsi;
 use App\Models\Kabupaten;
 use App\Models\Kecamatan;
@@ -37,7 +34,6 @@ class Siswa extends Authenticatable
         'tempat_lahir',
         'jenis_kelamin',
         'alamat',
-        // [BARU] Kolom Wilayah ditambahkan
         'provinsi_id',
         'kabupaten_id',
         'kecamatan_id',
@@ -45,7 +41,7 @@ class Siswa extends Authenticatable
         'asal_sekolah',
         'alamat_sekolah_asal',
         'anak_ke',
-        'agama', // [DIUBAH] Menggunakan kolom enum 'agama'
+        'agama',
         'tahun_lulus',
         'status_pendaftaran',
     ];
@@ -55,11 +51,6 @@ class Siswa extends Authenticatable
         'password',
     ];
 
-    // [DIHAPUS] Relasi ke tabel Agama sudah tidak ada
-    // public function agama()
-    // {
-    //     return $this->belongsTo(Agama::class, 'agama_id');
-    // }
 
     public function orangTuaWali()
     {
@@ -71,15 +62,12 @@ class Siswa extends Authenticatable
         return $this->hasMany(Lampiran::class);
     }
 
-    // [BARU] Relasi ke Tabel Wilayah
     
     /**
      * Mendapatkan data provinsi siswa.
      */
     public function provinsi(): BelongsTo
     {
-        // Sesuaikan 'App\Models\Provinsi' jika namespace Anda berbeda
-        // Sesuaikan 'provinsi' jika nama tabel Anda berbeda
         return $this->belongsTo(Provinsi::class, 'provinsi_id', 'id');
     }
 

@@ -6,7 +6,7 @@
 <div class="bg-gray-50 min-h-screen">
     <div class="max-w-4xl mx-auto py-10 sm:py-16 px-4 sm:px-6 lg:px-8">
         
-        {{-- Header dengan Sapaan Personal --}}
+
         <div class="mb-8">
             <h1 class="text-3xl md:text-4xl font-bold text-gray-800">
                 Selamat Datang, {{ strtok(Auth::user()->nama_lengkap, ' ') }}!

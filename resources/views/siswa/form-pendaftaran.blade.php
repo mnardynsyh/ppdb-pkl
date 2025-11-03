@@ -3,13 +3,12 @@
 @section('title', 'Formulir Pendaftaran')
 
 @section('content')
-{{-- Menggunakan AlpineJS untuk manajemen step dan modal --}}
+
 <div x-data="{ step: 1, konfirmasi: false, showModal: false, status: '{{ $siswa->status_pendaftaran }}' }" class="max-w-full mx-auto bg-white shadow-2xl rounded-xl p-4 sm:p-8 my-6 sm:my-10 border border-gray-200 relative">
     
     <h1 class="text-2xl md:text-3xl font-bold mb-2 text-center text-gray-800">Formulir Pendaftaran Siswa Baru</h1>
     <p class="text-center text-gray-500 mb-8 px-4 sm:px-0">Silakan lengkapi semua data dengan benar.</p>
 
-    {{-- Menampilkan Ringkasan Error Validasi --}}
     @if ($errors->any())
         <div class="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-800 rounded-r-lg" role="alert">
             <p class="font-bold">Terjadi Kesalahan!</p>
@@ -22,17 +21,14 @@
         </div>
     @endif
 
-    {{-- Memanggil partial stepper --}}
-    @include('partials.siswa.stepper')
 
-    {{-- Konten Form Berdasarkan Step --}}
+    @include('partials.siswa.stepper')
     <div class="mt-8">
         <form x-ref="pendaftaranForm" action="{{ route('siswa.formulir.store') }}" method="POST" enctype="multipart/form-data" novalidate>
             @csrf
             
-            {{-- Fieldset ini akan menonaktifkan seluruh form jika status pendaftaran bukan 'Pending' --}}
             <fieldset :disabled="status !== 'Pending'">
-                {{-- Memanggil partial untuk setiap step --}}
+
                 @include('partials.siswa.step1')
                 @include('partials.siswa.step2')
                 @include('partials.siswa.step3')

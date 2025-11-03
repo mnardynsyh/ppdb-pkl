@@ -7,7 +7,7 @@
             <label for="asal_sekolah" class="block mb-2 text-sm font-medium text-gray-900">Nama Sekolah Asal</label>
             <input type="text" id="asal_sekolah" name="asal_sekolah" 
                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" 
-                   placeholder="Contoh: SMP Negeri 1 Jakarta" 
+                   placeholder="Contoh: SD Negeri 1 Jakarta" 
                    value="{{ old('asal_sekolah', $siswa->asal_sekolah) }}" required>
             @error('asal_sekolah') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
         </div>

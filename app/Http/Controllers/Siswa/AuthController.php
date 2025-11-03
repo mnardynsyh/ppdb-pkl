@@ -3,13 +3,11 @@
 namespace App\Http\Controllers\Siswa;
 
 use App\Http\Controllers\Controller;
-// [DIHAPUS] Model Agama tidak lagi digunakan
-// use App\Models\Agama;
 use App\Models\Siswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rule; // [PENTING] Ditambahkan untuk validasi enum
+use Illuminate\Validation\Rule;
 
 class AuthController extends Controller
 {
@@ -18,7 +16,6 @@ class AuthController extends Controller
      */
     public function showRegisterForm()
     {
-        // [DISESUAIKAN] Data agama sekarang didefinisikan sebagai array
         $agamaOptions = ['Islam', 'Kristen Protestan', 'Kristen Katolik', 'Hindu', 'Buddha', 'Konghucu'];
         return view('auth.register', compact('agamaOptions'));
     }
@@ -28,7 +25,6 @@ class AuthController extends Controller
      */
     public function register(Request $request)
     {
-        // [DISESUAIKAN] Opsi agama didefinisikan untuk validasi
         $agamaOptions = ['Islam', 'Kristen Protestan', 'Kristen Katolik', 'Hindu', 'Buddha', 'Konghucu'];
 
         $request->validate([
@@ -42,7 +38,6 @@ class AuthController extends Controller
             'jenis_kelamin' => 'required|in:L,P',
             'alamat'        => 'required|string',
             'asal_sekolah'  => 'required|string|max:100',
-            // [DISESUAIKAN] Validasi untuk kolom 'agama' (bukan 'agama_id')
             'agama'         => ['required', Rule::in($agamaOptions)],
         ]);
 
@@ -57,7 +52,6 @@ class AuthController extends Controller
             'jenis_kelamin' => $request->jenis_kelamin,
             'alamat'        => $request->alamat,
             'asal_sekolah'  => $request->asal_sekolah,
-            // [DISESUAIKAN] Menyimpan ke kolom 'agama'
             'agama'         => $request->agama,
         ]);
 
@@ -82,8 +76,6 @@ class AuthController extends Controller
             'nisn'     => 'required|numeric|digits:10',
             'password' => 'required',
         ]);
-
-        // Coba login sebagai Siswa (menggunakan guard 'siswa')
         if (Auth::guard('siswa')->attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
             return redirect()->intended(route('siswa.dashboard'));

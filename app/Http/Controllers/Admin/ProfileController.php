@@ -44,24 +44,20 @@ class ProfileController extends Controller
             'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
-        // Menyiapkan data untuk diupdate
         $updateData = [
             'name' => $validatedData['name'],
             'email' => $validatedData['email'],
         ];
 
-        // Update password jika diisi
         if ($request->filled('password')) {
             $updateData['password'] = Hash::make($validatedData['password']);
         }
 
-        // Handle upload foto profil
         if ($request->hasFile('foto')) {
-            // Hapus foto lama jika ada
+
             if ($user->foto && Storage::disk('public')->exists($user->foto)) {
                 Storage::disk('public')->delete($user->foto);
             }
-            // Simpan foto baru
             $updateData['foto'] = $request->file('foto')->store('profil-admin', 'public');
         }
 

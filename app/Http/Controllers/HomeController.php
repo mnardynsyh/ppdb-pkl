@@ -17,10 +17,6 @@ class HomeController extends Controller
         return view('home', compact('pengaturan'));
     }
 
-    /**
-     * [PENTING] Menampilkan halaman jadwal pendaftaran yang terpisah.
-     * Metode ini mengambil data jadwal dan juga data pengaturan untuk banner status.
-     */
     public function jadwal()
     {
         $jadwals = Jadwal::orderBy('order')->get();

@@ -25,7 +25,6 @@
     </div>
 
     @php
-        // Mengambil semua lampiran yang sudah ada dan mengindeksnya berdasarkan jenis berkas
         $berkasTersimpan = $siswa->Lampiran->keyBy('jenis_berkas');
     @endphp
 

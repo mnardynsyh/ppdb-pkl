@@ -1,7 +1,6 @@
 <nav class="bg-white/80 backdrop-blur-sm border-b border-gray-200 shadow-sm sticky top-0 z-50">
   <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
     
-    {{-- Logo / Nama Website --}}
     <a href="{{ route('siswa.dashboard') }}" class="flex items-center space-x-3 rtl:space-x-reverse">
       <span class="self-center text-2xl font-semibold whitespace-nowrap">PPDB Online</span>
     </a>
@@ -16,7 +15,6 @@
              transition-colors duration-300" 
              aria-current="page">Dashboard</a>
         </li>
-        {{-- Anda bisa menambahkan link lain di sini jika diperlukan --}}
       </ul>
     </div>
 

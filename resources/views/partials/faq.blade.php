@@ -10,7 +10,6 @@
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
 
             {{-- Kolom Kiri: Daftar Pertanyaan --}}
-            {{-- [DIPERBARUI] Menghapus fungsionalitas accordion --}}
             <div class="lg:col-span-2 space-y-4">
                 
                 {{-- FAQ 1 --}}

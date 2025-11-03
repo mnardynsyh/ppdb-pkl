@@ -1,7 +1,6 @@
-{{-- [BARU] Partial ini berisi ringkasan lengkap data siswa --}}
+
 <div class="space-y-6" data-aos="fade-up" data-aos-delay="100">
 
-    {{-- [DISEMPURNAKAN] Card: Data Calon Siswa dengan AlpineJS untuk Alamat --}}
     <div class="bg-white p-5 rounded-lg shadow-md border border-gray-100" 
          x-data="{
              provinceName: '...',
@@ -53,7 +52,7 @@
             @php renderDataRow('Agama', $siswa->agama->agama ?? '-'); @endphp
             @php renderDataRow('Anak Ke-', $siswa->anak_ke); @endphp
             
-            {{-- [DISEMPURNAKAN] Tampilan Alamat --}}
+            {{-- Alamat --}}
             <div class="flex flex-col sm:grid sm:grid-cols-3 sm:gap-4 py-2 border-b border-gray-100"><dt class="font-medium text-gray-500">Provinsi</dt><dd class="mt-1 text-gray-900 sm:mt-0 sm:col-span-2" x-text="provinceName"></dd></div>
             <div class="flex flex-col sm:grid sm:grid-cols-3 sm:gap-4 py-2 border-b border-gray-100"><dt class="font-medium text-gray-500">Kabupaten/Kota</dt><dd class="mt-1 text-gray-900 sm:mt-0 sm:col-span-2" x-text="regencyName"></dd></div>
             <div class="flex flex-col sm:grid sm:grid-cols-3 sm:gap-4 py-2 border-b border-gray-100"><dt class="font-medium text-gray-500">Kecamatan</dt><dd class="mt-1 text-gray-900 sm:mt-0 sm:col-span-2" x-text="districtName"></dd></div>
@@ -71,7 +70,6 @@
         </dl>
     </div>
     
-    {{-- [DISEMPURNAKAN] Card: Data Orang Tua & Wali dengan alamat sederhana --}}
     @if($siswa->orangTuaWali)
         <div class="bg-white p-5 rounded-lg shadow-md border border-gray-100">
             <h3 class="text-lg font-semibold text-gray-800 border-b pb-3 mb-4">Data Orang Tua & Wali</h3>

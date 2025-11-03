@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Jadwal;
 use App\Models\Pengaturan;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -19,9 +18,8 @@ class PengaturanController extends Controller
     public function index(): View
     {
         $pengaturan = Pengaturan::firstOrFail(); 
-        $jadwals = Jadwal::orderBy('order')->get();
         
-        return view('admin.pengaturan', compact('pengaturan', 'jadwals'));
+        return view('admin.pengaturan', compact('pengaturan'));
     }
 
     /**
@@ -46,49 +44,6 @@ class PengaturanController extends Controller
 
         return redirect()->route('admin.pengaturan.index')
                          ->with('success', 'Pengaturan berhasil diperbarui.');
-    }
-
-    /**
-     * [BARU] Menyimpan jadwal baru.
-     */
-    public function storeJadwal(Request $request): RedirectResponse
-    {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'date_range' => 'required|string|max:255',
-            'description' => 'required|string',
-            'order' => 'required|integer',
-        ]);
-
-        Jadwal::create($request->all());
-
-        return redirect()->route('admin.pengaturan.index')->with('success', 'Jadwal baru berhasil ditambahkan.');
-    }
-
-    /**
-     * [BARU] Memperbarui jadwal yang ada.
-     */
-    public function updateJadwal(Request $request, Jadwal $jadwal): RedirectResponse
-    {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'date_range' => 'required|string|max:255',
-            'description' => 'required|string',
-            'order' => 'required|integer',
-        ]);
-
-        $jadwal->update($request->all());
-
-        return redirect()->route('admin.pengaturan.index')->with('success', 'Jadwal berhasil diperbarui.');
-    }
-
-    /**
-     * [BARU] Menghapus jadwal.
-     */
-    public function destroyJadwal(Jadwal $jadwal): RedirectResponse
-    {
-        $jadwal->delete();
-        return redirect()->route('admin.pengaturan.index')->with('success', 'Jadwal berhasil dihapus.');
     }
 }
 

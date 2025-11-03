@@ -47,7 +47,6 @@ class ProfilController extends Controller
 
         $siswa->update($updateData);
 
-        // [DIPERBARUI] Mengembalikan ke halaman sebelumnya dengan pesan sukses.
         return back()->with('success', 'Profil berhasil diperbarui.');
     }
 }
