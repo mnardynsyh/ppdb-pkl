@@ -67,12 +67,6 @@
                 </select>
                 @error('agama_ayah') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
-             {{-- Alamat Ayah --}}
-            <div class="md:col-span-2">
-                <label for="alamat_ayah" class="block mb-2 text-sm font-medium text-slate-900">Alamat Ayah</label>
-                <textarea id="alamat_ayah" name="alamat_ayah" rows="3" class="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500" placeholder="Isi jika alamat Ayah berbeda dengan alamat siswa">{{ old('alamat_ayah', $siswa->orangTuaWali->alamat_ayah ?? '') }}</textarea>
-                @error('alamat_ayah') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
-            </div>
         </div>
     </div>
 
@@ -139,12 +133,6 @@
                     @endforeach
                 </select>
                 @error('agama_ibu') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
-            </div>
-            {{-- Alamat Ibu --}}
-            <div class="md:col-span-2">
-                <label for="alamat_ibu" class="block mb-2 text-sm font-medium text-slate-900">Alamat Ibu</label>
-                <textarea id="alamat_ibu" name="alamat_ibu" rows="3" class="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500" placeholder="Isi jika alamat Ibu berbeda dengan alamat siswa">{{ old('alamat_ibu', $siswa->orangTuaWali->alamat_ibu ?? '') }}</textarea>
-                @error('alamat_ibu') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
         </div>
     </div>
@@ -219,12 +207,6 @@
                     @endforeach
                 </select>
                 @error('agama_wali') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
-            </div>
-            {{-- Alamat Wali --}}
-             <div class="md:col-span-2">
-                <label for="alamat_wali" class="block mb-2 text-sm font-medium text-slate-900">Alamat Wali</label>
-                <textarea id="alamat_wali" name="alamat_wali" rows="3" class="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-blue-500 focus:border-blue-500" placeholder="Masukkan alamat lengkap Wali">{{ old('alamat_wali', $siswa->orangTuaWali->alamat_wali ?? '') }}</textarea>
-                @error('alamat_wali') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
             </div>
         </div>

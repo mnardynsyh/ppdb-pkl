@@ -53,9 +53,7 @@
         </form>
     </div>
 
-    {{-- Kontainer Tabel Responsif --}}
     <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
-        {{-- Tampilan Desktop --}}
         <div class="hidden md:block">
             <table class="w-full text-sm text-left text-gray-600 dark:text-gray-300">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">

@@ -44,7 +44,6 @@
             @endforeach
         </div>
 
-        <!-- Tampilan Mobile: Alur Vertikal -->
         <div class="md:hidden space-y-10">
              @foreach ($steps as $step)
                 <div class="flex items-start gap-6" data-aos="fade-left" data-aos-delay="{{ $loop->index * 50 }}">

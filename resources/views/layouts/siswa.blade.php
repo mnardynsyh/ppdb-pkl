@@ -10,7 +10,6 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 </head>
-{{-- [BARU] Menggunakan AlpineJS untuk mengontrol modal --}}
 <body class="bg-gray-50" x-data="{ profileModalOpen: false }" @keydown.escape.window="profileModalOpen = false">
 
     @include('partials.nav-siswa')
@@ -19,7 +18,6 @@
         @yield('content')
     </main>
     
-    {{-- [BARU] Modal Edit Profil --}}
     <div x-show="profileModalOpen" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50" style="display: none;">
         <div @click.away="profileModalOpen = false" class="bg-white rounded-lg shadow-xl p-6 sm:p-8 w-11/12 max-w-2xl mx-auto max-h-[90vh] overflow-y-auto">
             <div class="mb-4 flex items-start justify-between">
@@ -72,7 +70,6 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
         AOS.init({ duration: 800, once: true });
-        // Jika ada error validasi, buka kembali modalnya
         @if ($errors->any())
             window.addEventListener('alpine:init', () => {
                 Alpine.data('page', () => ({

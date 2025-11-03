@@ -74,7 +74,6 @@
                     {{-- Agama --}}
                     <div>
                         <label for="agama" class="block mb-2 text-sm font-medium text-slate-900">Agama</label>
-                        {{-- [DISESUAIKAN] Menggunakan $agamaOptions dan name="agama" --}}
                         <select name="agama" id="agama" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
                             <option value="" disabled selected>-- Pilih Agama --</option>
                             @foreach ($agamaOptions as $option) 

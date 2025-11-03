@@ -1,4 +1,3 @@
-{{-- Section Tanya Jawab (FAQ) --}}
 <section class="bg-gray-50 py-20" id="faq">
     <div class="max-w-screen-xl mx-auto px-4">
         <div class="text-center mb-16">
@@ -6,10 +5,8 @@
             <p class="text-gray-500 mt-2">Temukan jawaban untuk pertanyaan yang sering diajukan.</p>
         </div>
 
-        {{-- Kontainer dua kolom untuk tampilan desktop --}}
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
 
-            {{-- Kolom Kiri: Daftar Pertanyaan --}}
             <div class="lg:col-span-2 space-y-4">
                 
                 {{-- FAQ 1 --}}

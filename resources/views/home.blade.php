@@ -16,7 +16,6 @@
     <p>{{ $statusInfo['pesan'] }}</p>
 </div>
 
-{{-- [DISEMPURNAKAN] Hero Section sekarang menggunakan Carousel yang dinamis --}}
 <section class="relative w-full" data-carousel="slide" style="font-family: 'Poppins', sans-serif;">
     <!-- Carousel wrapper -->
     <div class="relative h-[85vh] min-h-[500px] overflow-hidden">
@@ -121,7 +120,7 @@
 
 @include('partials.footer')
 
-{{-- [WAJIB] Script untuk animasi dan fungsionalitas Carousel --}}
+
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>

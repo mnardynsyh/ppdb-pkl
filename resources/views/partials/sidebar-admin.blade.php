@@ -174,7 +174,6 @@
                     <i class="fa-solid fa-calendar-alt w-4 text-center text-gray-400"></i>
                     <span>Jadwal Pendaftaran</span>
                 </a>
-                {{-- Link Manajemen Pengguna yang duplikat telah dihapus --}}
                 </div>
             </div>
         </ul>

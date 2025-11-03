@@ -4,7 +4,6 @@
 
 @section('content')
 <div class="p-4 sm:p-6 mt-12">
-    {{-- [DIPERBARUI] Menambahkan tombol Kembali --}}
     <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6">
         <div>
             <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-100">
@@ -34,7 +33,7 @@
             @method('PUT')
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                {{-- [DIPERBARUI] Kolom Foto Profil dengan AlpineJS untuk Pratinjau Instan --}}
+                
                 <div class="md:col-span-1 text-center" 
                      x-data="{ photoPreview: '{{ $user->foto ? Storage::url($user->foto) : 'https://ui-avatars.com/api/?name='.urlencode(Auth::user()->name) }}' }">
                     <img :src="photoPreview" 
@@ -89,7 +88,7 @@
     </div>
 </div>
 
-{{-- Memastikan AlpineJS dimuat untuk fungsionalitas pratinjau --}}
+
 <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 @endsection
 

@@ -7,7 +7,6 @@
             Daftar Pekerjaan Orang Tua
         </h1>
 
-        {{-- Buka Modal Tambah --}}
         <button type="button"
                 onclick="openAddModal()"
                 class="px-4 py-2 text-white bg-blue-600 rounded-lg shadow hover:bg-blue-700 focus:ring-4 focus:ring-blue-300">
@@ -149,11 +148,10 @@
     }
     function closeEditModal() { editModal.classList.add('hidden'); }
 
-    // Klik backdrop untuk menutup
+
     addModal?.addEventListener('click', (e) => { if (e.target === addModal) closeAddModal(); });
     editModal?.addEventListener('click', (e) => { if (e.target === editModal) closeEditModal(); });
 
-    // ESC untuk menutup
     window.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') { closeAddModal(); closeEditModal(); }
     });

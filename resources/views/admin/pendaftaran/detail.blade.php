@@ -12,13 +12,11 @@
             </h1>
             <p class="text-sm text-gray-500 mt-1">Lihat rincian lengkap data calon siswa.</p>
         </div>
-        {{-- Mengganti url()->previous() dengan javascript:history.back() untuk memastikan fungsionalitas kembali --}}
         <a href="javascript:history.back()" class="mt-4 sm:mt-0 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300">
             &larr; Kembali
         </a>
     </div>
 
-    {{-- Notifikasi Sukses --}}
     @if(session('success'))
         <div class="mb-4 rounded-lg border border-green-200 bg-green-50 p-4 text-green-700">
             {{ session('success') }}
@@ -28,15 +26,11 @@
     {{-- Kontainer Utama --}}
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
-        {{-- Kolom Kiri: Detail Data --}}
         <div class="lg:col-span-2 space-y-6">
-            {{-- Memanggil partial yang menampilkan detail data siswa --}}
             @include('partials.siswa.detail-siswa')
         </div>
 
-        {{-- Kolom Kanan: Aksi & Status --}}
         <div class="lg:col-span-1 space-y-6">
-            {{-- Card Aksi --}}
             <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-5">
                 <h3 class="text-lg font-semibold text-gray-800 dark:text-white border-b dark:border-gray-600 pb-3 mb-4">Aksi Verifikasi</h3>
                 <p class="text-sm text-gray-500 mb-4">Ubah status pendaftaran untuk siswa ini.</p>

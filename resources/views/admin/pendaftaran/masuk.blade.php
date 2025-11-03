@@ -40,12 +40,10 @@
                         <td class="px-6 py-4">{{ $siswa->created_at->isoFormat('D MMMM YYYY') }}</td>
                         <td class="px-6 py-4">
                             <div class="flex items-center justify-center gap-2">
-                                {{-- [FIX] Mengarahkan tombol detail ke route yang benar --}}
                                 <a href="{{ route('admin.pendaftaran.detail', $siswa) }}" class="px-3 py-2 text-xs font-medium text-center text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300">
                                     Detail
                                 </a>
                                 
-                                {{-- [FIX] Mengubah route dari 'diterima' ke 'terima' dan menambahkan @method('PATCH') --}}
                                 <form action="{{ route('admin.pendaftaran.terima', $siswa) }}" method="POST"
                                       onsubmit="return confirm('Apakah Anda yakin ingin MENERIMA pendaftar ini?')">
                                     @csrf
@@ -55,7 +53,6 @@
                                     </button>
                                 </form>
                                 
-                                {{-- [FIX] Menambahkan @method('PATCH') --}}
                                 <form action="{{ route('admin.pendaftaran.tolak', $siswa) }}" method="POST"
                                       onsubmit="return confirm('Apakah Anda yakin ingin MENOLAK pendaftar ini?')">
                                     @csrf
@@ -77,7 +74,6 @@
             </tbody>
         </table>
     </div>
-    {{-- [FIX] Menambahkan link untuk paginasi --}}
     <div class="mt-4">
         {{ $siswas->links() }}
     </div>

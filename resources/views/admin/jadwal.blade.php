@@ -4,12 +4,10 @@
 
 @section('content')
 <div class="p-4 sm:p-6 mt-12">
-    {{-- Header Halaman --}}
     <div class="flex justify-between items-center mb-6">
         <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-100">
             Manajemen Jadwal Pendaftaran
         </h1>
-        {{-- Tombol Buka Modal Tambah --}}
         <button type="button"
                 onclick="openAddModal()"
                 class="px-4 py-2 text-white bg-blue-600 rounded-lg shadow hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 flex items-center gap-2">
@@ -139,7 +137,6 @@
     </div>
 </div>
 
-{{-- Script untuk Modal --}}
 <script>
     const addModal = document.getElementById('addModal');
     const editModal = document.getElementById('editModal');
@@ -159,7 +156,6 @@
         editModal.classList.remove('hidden');
     }
 
-    // Fungsionalitas untuk menutup modal saat klik di luar area modal atau menekan tombol ESC
     window.addEventListener('click', (e) => {
         if (e.target === addModal) closeAddModal();
         if (e.target === editModal) closeEditModal();

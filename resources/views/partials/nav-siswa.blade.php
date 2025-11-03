@@ -18,7 +18,6 @@
       </ul>
     </div>
 
-    {{-- User Profile Dropdown & Hamburger Menu --}}
     <div class="flex items-center md:order-2 space-x-3">
         <button type="button" class="flex items-center text-sm rounded-full focus:ring-4 focus:ring-gray-300" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
             <span class="sr-only">Open user menu</span>
@@ -51,7 +50,7 @@
               </li>
             </ul>
         </div>
-        {{-- Tombol Hamburger untuk Mobile --}}
+
         <button data-collapse-toggle="navbar-mobile-menu" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100" aria-controls="navbar-mobile-menu" aria-expanded="false">
           <span class="sr-only">Open main menu</span>
           <svg class="w-5 h-5" fill="none" viewBox="0 0 17 14"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/></svg>

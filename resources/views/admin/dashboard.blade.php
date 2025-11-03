@@ -5,7 +5,7 @@
 @section('content')
 <div class="p-4 sm:p-6 mt-8">
 
-    {{-- Grid untuk Kartu Statistik --}}
+    {{-- Grid Kartu Statistik --}}
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
         {{-- Total Pendaftar --}}
         <div class="p-5 bg-white dark:bg-gray-800 rounded-xl shadow-md flex items-center justify-between">
@@ -49,7 +49,7 @@
         </div>
     </div>
 
-    {{-- Grid untuk Grafik dan Aktivitas Terbaru --}}
+    {{-- Grid Grafik --}}
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {{-- Grafik Pendaftaran --}}
         <div class="lg:col-span-2 bg-white dark:bg-gray-800 rounded-xl shadow-md p-6">
@@ -107,7 +107,7 @@
     </div>
 </div>
 
-{{-- Script untuk Chart.js --}}
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     const ctx = document.getElementById('pendaftaranChart').getContext('2d');

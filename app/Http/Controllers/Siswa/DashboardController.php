@@ -3,10 +3,6 @@
 namespace App\Http\Controllers\Siswa;
 
 use Barryvdh\DomPDF\Facade\Pdf;
-// Model Agama dan Pendidikan tidak lagi digunakan
-// use App\Models\Agama; 
-// use App\Models\Pendidikan;
-// Model Wilayah, Pekerjaan, dan Penghasilan digunakan
 use App\Models\Provinsi;
 use App\Models\Siswa;
 use App\Models\Penghasilan;
@@ -14,7 +10,7 @@ use App\Models\OrangTuaWali;
 use Illuminate\Http\Request;
 use App\Models\Lampiran;
 use Illuminate\Validation\Rule;
-use App\Models\Job as Pekerjaan; // Model Pekerjaan tetap digunakan
+use App\Models\Job as Pekerjaan;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -40,15 +36,13 @@ class DashboardController extends Controller
     public function showForm(): View
     {
         $siswa = Siswa::with(['orangTuaWali', 'lampiran'])->find(Auth::id());
-        
-        // Data agama dan pendidikan sekarang berupa array
+ 
         $agamaOptions = ['Islam', 'Kristen Protestan', 'Kristen Katolik', 'Hindu', 'Buddha', 'Konghucu'];
         $pendidikanOptions = [
             'Tidak Sekolah', 'SD/Sederajat', 'SMP/Sederajat', 'SMA/Sederajat',
             'Diploma (D1/D2/D3)', 'Sarjana (S1)', 'Magister (S2)', 'Doktor (S3)', 'Lainnya'
         ];
         
-        // Data provinsi, pekerjaan, dan penghasilan diambil dari database
         $provinsi = Provinsi::orderBy('nama')->get(); 
         $pekerjaans = Pekerjaan::all();
         $penghasilans = Penghasilan::all();
@@ -71,7 +65,7 @@ class DashboardController extends Controller
         // Memuat semua relasi yang diperlukan untuk halaman status
         $siswa = Siswa::with([
             'lampiran',
-            'provinsi', 'kabupaten', 'kecamatan', 'desa', // Relasi wilayah baru
+            'provinsi', 'kabupaten', 'kecamatan', 'desa',
             'orangTuaWali.pekerjaanAyah', 'orangTuaWali.penghasilanAyah',
             'orangTuaWali.pekerjaanIbu', 'orangTuaWali.penghasilanIbu',
             'orangTuaWali.pekerjaanWali', 'orangTuaWali.penghasilanWali'
@@ -118,7 +112,6 @@ class DashboardController extends Controller
             'penghasilan_ayah_id'   => 'required|exists:penghasilan,id',
             'pendidikan_ayah'       => ['required', Rule::in($pendidikanOptions)],
             'agama_ayah'            => ['required', Rule::in($agamaOptions)], 
-            'alamat_ayah'           => 'nullable|string',
             'nama_ibu'              => 'required|string|max:255',
             'nik_ibu'               => ['required', 'string', 'digits:16', Rule::unique('orang_tua_wali', 'nik_ibu')->ignore($orangTuaWaliId)],
             'tempat_lahir_ibu'      => 'required|string|max:100',
@@ -127,7 +120,6 @@ class DashboardController extends Controller
             'penghasilan_ibu_id'    => 'required|exists:penghasilan,id',
             'pendidikan_ibu'        => ['required', Rule::in($pendidikanOptions)],
             'agama_ibu'             => ['required', Rule::in($agamaOptions)], 
-            'alamat_ibu'            => 'nullable|string',
             'tinggal_dengan_wali'   => 'nullable|string',
             'nama_wali'             => 'required_if:tinggal_dengan_wali,on|nullable|string|max:255',
             'nik_wali'              => ['required_if:tinggal_dengan_wali,on', 'nullable', 'string', 'digits:16', Rule::unique('orang_tua_wali', 'nik_wali')->ignore($orangTuaWaliId)],
@@ -137,7 +129,6 @@ class DashboardController extends Controller
             'penghasilan_wali_id'   => 'required_if:tinggal_dengan_wali,on|nullable|exists:penghasilan,id',
             'pendidikan_wali'       => ['required_if:tinggal_dengan_wali,on', 'nullable', Rule::in($pendidikanOptions)],
             'agama_wali'            => ['required_if:tinggal_dengan_wali,on', 'nullable', Rule::in($agamaOptions)], 
-            'alamat_wali'           => 'required_if:tinggal_dengan_wali,on|nullable|string',
 
             // Step 3: Sekolah Asal
             'asal_sekolah'          => 'required|string|max:255',
@@ -175,7 +166,6 @@ class DashboardController extends Controller
             'penghasilan_ayah_id' => 'Penghasilan Ayah',
             'pendidikan_ayah' => 'Pendidikan Ayah',
             'agama_ayah' => 'Agama Ayah',
-            'alamat_ayah' => 'Alamat Ayah',
             'nama_ibu'        => 'Nama Ibu',
             'nik_ibu'         => 'NIK Ibu',
             'tempat_lahir_ibu' => 'Tempat Lahir Ibu',
@@ -184,7 +174,6 @@ class DashboardController extends Controller
             'penghasilan_ibu_id' => 'Penghasilan Ibu',
             'pendidikan_ibu' => 'Pendidikan Ibu',
             'agama_ibu' => 'Agama Ibu',
-            'alamat_ibu' => 'Alamat Ibu',
             'nama_wali'       => 'Nama Wali',
             'nik_wali'        => 'NIK Wali',
             'tempat_lahir_wali' => 'Tempat Lahir Wali',
@@ -193,7 +182,6 @@ class DashboardController extends Controller
             'penghasilan_wali_id' => 'Penghasilan Wali',
             'pendidikan_wali' => 'Pendidikan Wali',
             'agama_wali' => 'Agama Wali',
-            'alamat_wali' => 'Alamat Wali',
             'asal_sekolah'    => 'Asal Sekolah',
             'alamat_sekolah_asal' => 'Alamat Sekolah Asal',
             'tahun_lulus'     => 'Tahun Lulus',
@@ -238,8 +226,7 @@ class DashboardController extends Controller
             'penghasilan_wali_id'   => $validated['penghasilan_wali_id'],
             'pendidikan_wali'       => $validated['pendidikan_wali'], 
             'agama_wali'            => $validated['agama_wali'],       
-            'alamat_wali'           => $validated['alamat_wali'],
-        ] : array_fill_keys(['nama_wali', 'nik_wali', 'tempat_lahir_wali', 'tanggal_lahir_wali', 'pekerjaan_wali_id', 'penghasilan_wali_id', 'pendidikan_wali', 'agama_wali', 'alamat_wali'], null);
+        ] : array_fill_keys(['nama_wali', 'nik_wali', 'tempat_lahir_wali', 'tanggal_lahir_wali', 'pekerjaan_wali_id', 'penghasilan_wali_id', 'pendidikan_wali', 'agama_wali'], null);
 
         OrangTuaWali::updateOrCreate(
             ['siswa_id' => $siswa->id],
@@ -252,7 +239,6 @@ class DashboardController extends Controller
                 'penghasilan_ayah_id'   => $validated['penghasilan_ayah_id'],
                 'pendidikan_ayah'       => $validated['pendidikan_ayah'], 
                 'agama_ayah'            => $validated['agama_ayah'],       
-                'alamat_ayah'           => $validated['alamat_ayah'],
                 'nama_ibu'              => $validated['nama_ibu'],
                 'nik_ibu'               => $validated['nik_ibu'],
                 'tempat_lahir_ibu'      => $validated['tempat_lahir_ibu'],
@@ -261,7 +247,6 @@ class DashboardController extends Controller
                 'penghasilan_ibu_id'    => $validated['penghasilan_ibu_id'],
                 'pendidikan_ibu'        => $validated['pendidikan_ibu'], 
                 'agama_ibu'             => $validated['agama_ibu'],       
-                'alamat_ibu'            => $validated['alamat_ibu'],
             ], $dataWali)
         );
         
