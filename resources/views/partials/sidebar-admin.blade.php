@@ -149,33 +149,40 @@
             </div>
 
             {{-- Dropdown Pengaturan --}}
-            <div x-data="{ open: {{ request()->routeIs(['admin.pengaturan.*', 'admin.jadwal.*']) ? 'true' : 'false' }} }">
-                <button @click="open = !open" 
-                        class="flex items-center justify-between gap-3 px-4 py-2 rounded-lg w-full text-left transition-colors duration-200 
-                        {{ request()->routeIs(['admin.pengaturan.*', 'admin.jadwal.*']) ? 'bg-blue-50 text-blue-700' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <span class="flex items-center gap-3">
-                        <i class="fa-solid fa-gears w-5 text-center text-gray-500"></i>
-                        <span>Pengaturan</span>
-                    </span>
-                    <svg :class="{ 'rotate-180': open }" class="w-4 h-4 transform transition-transform text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
-                    </svg>
-                </button>
-                <div x-show="open" x-transition class="mt-1 ml-5 pl-3 border-l-2 border-gray-300 flex flex-col">
-                <a href="{{ route('admin.pengaturan.index') }}" 
+            <div x-data="{ open: {{ request()->routeIs(['admin.pengaturan.*', 'admin.jadwal.*', 'admin.slider.*']) ? 'true' : 'false' }} }">
+            <button @click="open = !open" 
+                    class="flex items-center justify-between gap-3 px-4 py-2 rounded-lg w-full text-left transition-colors duration-200 
+                    {{ request()->routeIs(['admin.pengaturan.*', 'admin.jadwal.*', 'admin.slider.*']) ? 'bg-blue-50 text-blue-700' : 'text-gray-600 hover:bg-gray-100' }}">
+                <span class="flex items-center gap-3">
+                    <i class="fa-solid fa-gears w-5 text-center text-gray-500"></i>
+                    <span>Pengaturan</span>
+                </span>
+                <svg :class="{ 'rotate-180': open }" class="w-4 h-4 transform transition-transform text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+                </svg>
+            </button>
+            <div x-show="open" x-transition class="mt-1 ml-5 pl-3 border-l-2 border-gray-300 flex flex-col">
+               <a href="{{ route('admin.pengaturan.index') }}" 
+                  class="flex items-center gap-3 px-4 py-2 rounded text-sm transition-colors duration-200 
+                  {{ request()->routeIs('admin.pengaturan.*') ? 'bg-blue-50 text-blue-700 font-semibold border-l-4 border-blue-500' : 'text-gray-500 hover:bg-gray-100 hover:text-gray-900' }}">
+                  <i class="fa-solid fa-toggle-on w-4 text-center text-gray-400"></i>
+                  <span>Status Pendaftaran</span>
+               </a>
+               <a href="{{ route('admin.jadwal.index') }}" 
+                  class="flex items-center gap-3 px-4 py-2 rounded text-sm transition-colors duration-200 
+                  {{ request()->routeIs('admin.jadwal.*') ? 'bg-blue-50 text-blue-700 font-semibold border-l-4 border-blue-500' : 'text-gray-500 hover:bg-gray-100 hover:text-gray-900' }}">
+                  <i class="fa-solid fa-calendar-alt w-4 text-center text-gray-400"></i>
+                  <span>Jadwal Pendaftaran</span>
+               </a>
+               {{-- [DIPERBAIKI] Menggunakan route('admin.slider.index') --}}
+                <a href="{{ route('admin.slider.index') }}" 
                     class="flex items-center gap-3 px-4 py-2 rounded text-sm transition-colors duration-200 
-                    {{ request()->routeIs('admin.pengaturan.*') ? 'bg-blue-50 text-blue-700 font-semibold border-l-4 border-blue-500' : 'text-gray-500 hover:bg-gray-100 hover:text-gray-900' }}">
-                    <i class="fa-solid fa-toggle-on w-4 text-center text-gray-400"></i>
-                    <span>Status Pendaftaran</span>
+                    {{ request()->routeIs('admin.slider.*') ? 'bg-blue-50 text-blue-700 font-semibold border-l-4 border-blue-500' : 'text-gray-500 hover:bg-gray-100 hover:text-gray-900' }}">
+                    <i class="fa-solid fa-images w-4 text-center text-gray-400"></i>
+                    <span>Manajemen Slider</span>
                 </a>
-                <a href="{{ route('admin.jadwal.index') }}" 
-                    class="flex items-center gap-3 px-4 py-2 rounded text-sm transition-colors duration-200 
-                    {{ request()->routeIs('admin.jadwal.*') ? 'bg-blue-50 text-blue-700 font-semibold border-l-4 border-blue-500' : 'text-gray-500 hover:bg-gray-100 hover:text-gray-900' }}">
-                    <i class="fa-solid fa-calendar-alt w-4 text-center text-gray-400"></i>
-                    <span>Jadwal Pendaftaran</span>
-                </a>
-                </div>
             </div>
+         </div>
         </ul>
     </div>
     </aside>

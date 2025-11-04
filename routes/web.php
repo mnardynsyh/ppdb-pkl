@@ -2,10 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\WilayahController;
 use App\Http\Controllers\Admin\JobController;
 use App\Http\Controllers\Admin\JadwalController;
+use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\ProfileController;
-use App\Http\Controllers\WilayahController;
 use App\Http\Controllers\Admin\PengaturanController;
 use App\Http\Controllers\Admin\PendaftaranController;
 use App\Http\Controllers\Admin\PenghasilanController;
@@ -89,7 +90,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('job', JobController::class)->only(['index', 'store', 'update', 'destroy']);
         Route::resource('penghasilan', PenghasilanController::class)->only(['index', 'store', 'update', 'destroy']);
         Route::resource('jadwal', JadwalController::class)->only(['index', 'store', 'update', 'destroy']);
-
+        Route::resource('slider', SliderController::class)->except(['show', 'create', 'edit']);
+        
         Route::prefix('pendaftaran')->name('pendaftaran.')->controller(PendaftaranController::class)->group(function () {
             Route::get('/masuk', 'masuk')->name('masuk');
             Route::get('/diterima', 'diterima')->name('diterima');
