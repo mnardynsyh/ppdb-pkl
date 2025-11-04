@@ -8,7 +8,6 @@ use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\WilayahController;
 use App\Http\Controllers\Admin\PengaturanController;
 use App\Http\Controllers\Admin\PendaftaranController;
-use App\Http\Controllers\Admin\PenghasilanController;
 use App\Http\Controllers\Admin\AuthController as AdminAuth;
 use App\Http\Controllers\Siswa\AuthController as SiswaAuth;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
@@ -87,7 +86,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [AdminDashboard::class, 'index'])->name('dashboard');
         
         Route::resource('job', JobController::class)->only(['index', 'store', 'update', 'destroy']);
-        Route::resource('penghasilan', PenghasilanController::class)->only(['index', 'store', 'update', 'destroy']);
         Route::resource('jadwal', JadwalController::class)->only(['index', 'store', 'update', 'destroy']);
 
         Route::prefix('pendaftaran')->name('pendaftaran.')->controller(PendaftaranController::class)->group(function () {

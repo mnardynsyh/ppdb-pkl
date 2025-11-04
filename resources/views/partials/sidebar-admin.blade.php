@@ -88,14 +88,6 @@
                 </button>
 
                 <div x-show="open" x-transition class="mt-1 ml-5 pl-3 border-l-2 border-gray-300 flex flex-col">
-                <a href="{{route ('admin.penghasilan.index')}}" 
-                    class="flex items-center gap-3 px-4 py-2 rounded text-sm transition-colors duration-200 
-                    {{ request()->routeIs('admin.penghasilan.*') 
-                        ? 'bg-blue-50 text-blue-700 font-semibold border-l-4 border-blue-500' 
-                        : 'text-gray-500 hover:bg-gray-100 hover:text-gray-900' }}">
-                    <i class="fa-solid fa-dollar-sign w-4 text-center text-gray-400"></i>
-                    <span>Penghasilan Ortu</span>
-                </a>
                 <a href="{{route ('admin.job.index')}}" 
                     class="flex items-center gap-3 px-4 py-2 rounded text-sm transition-colors duration-200 
                     {{ request()->routeIs('admin.job.*') 

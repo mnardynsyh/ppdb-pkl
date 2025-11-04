@@ -2,9 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Job; // [DIKEMBALIKAN] Model Job tetap digunakan
-// [DIHAPUS] Model Pendidikan tidak lagi digunakan
-// use App\Models\Pendidikan; 
+use App\Models\Job;
 use App\Models\Penghasilan;
 use App\Models\Siswa;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -33,31 +31,30 @@ class OrangTuaWali extends Model
         'nik_ayah',
         'tempat_lahir_ayah',
         'tanggal_lahir_ayah',
-        'pekerjaan_ayah_id', // [DIKEMBALIKAN] Tetap menggunakan ID untuk pekerjaan
+        'pekerjaan_ayah_id',
         'penghasilan_ayah_id',
-        // [DIUBAH] Menggunakan nama kolom enum baru untuk pendidikan
+
         'pendidikan_ayah', 
-        'agama_ayah', // Disesuaikan dari langkah sebelumnya
-        'alamat_ayah', // Disesuaikan dari langkah sebelumnya
+        'agama_ayah',
+        'alamat_ayah',
         'nama_ibu',
         'nik_ibu',
         'tempat_lahir_ibu',
         'tanggal_lahir_ibu',
-        'pekerjaan_ibu_id', // [DIKEMBALIKAN] Tetap menggunakan ID untuk pekerjaan
+        'pekerjaan_ibu_id',
         'penghasilan_ibu_id',
-         // [DIUBAH] Menggunakan nama kolom enum baru untuk pendidikan
         'pendidikan_ibu', 
-        'agama_ibu', // Disesuaikan dari langkah sebelumnya
-        'alamat_ibu', // Disesuaikan dari langkah sebelumnya
+        'agama_ibu',
+        'alamat_ibu',
         'nama_wali',
         'nik_wali',
         'tempat_lahir_wali',
         'tanggal_lahir_wali',
-        'pekerjaan_wali_id', // [DIKEMBALIKAN] Tetap menggunakan ID untuk pekerjaan
+        'pekerjaan_wali_id',
         'penghasilan_wali_id',
         'pendidikan_wali', 
-        'agama_wali', // Disesuaikan dari langkah sebelumnya
-        'alamat_wali', // Disesuaikan dari langkah sebelumnya
+        'agama_wali',
+        'alamat_wali',
     ];
 
     /**
