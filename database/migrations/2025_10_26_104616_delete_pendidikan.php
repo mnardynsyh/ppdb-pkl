@@ -21,7 +21,6 @@ return new class extends Migration
             'Sarjana (S1)',
             'Magister (S2)',
             'Doktor (S3)',
-            'Lainnya'
         ];
 
         Schema::table('orang_tua_wali', function (Blueprint $table) use ($pendidikanOptions) {

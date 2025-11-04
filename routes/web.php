@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\Admin\JobController;
 use App\Http\Controllers\Admin\JadwalController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\WilayahController;
@@ -85,7 +84,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('/logout', [AdminAuth::class, 'logout'])->name('logout');
         Route::get('/dashboard', [AdminDashboard::class, 'index'])->name('dashboard');
         
-        Route::resource('job', JobController::class)->only(['index', 'store', 'update', 'destroy']);
         Route::resource('jadwal', JadwalController::class)->only(['index', 'store', 'update', 'destroy']);
 
         Route::prefix('pendaftaran')->name('pendaftaran.')->controller(PendaftaranController::class)->group(function () {

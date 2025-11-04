@@ -72,32 +72,6 @@
                 <span>Dashboard</span>
                 </a>
             </li>
-            
-            {{-- Dropdown Master Data --}}
-            <div x-data="{ open: {{ request()->routeIs(['admin.penghasilan.*', 'admin.job.*']) ? 'true' : 'false' }} }">
-                <button @click="open = !open" 
-                        class="flex items-center justify-between gap-3 px-4 py-2 rounded-lg w-full text-left transition-colors duration-200 
-                        {{ request()->routeIs(['admin.penghasilan.*', 'admin.job.*']) ? 'bg-blue-50 text-blue-700' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <span class="flex items-center gap-3">
-                        <i class="fa-solid fa-database w-5 text-center text-gray-500"></i>
-                        <span>Master Data</span>
-                    </span>
-                    <svg :class="{ 'rotate-180': open }" class="w-4 h-4 transform transition-transform text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
-                    </svg>
-                </button>
-
-                <div x-show="open" x-transition class="mt-1 ml-5 pl-3 border-l-2 border-gray-300 flex flex-col">
-                <a href="{{route ('admin.job.index')}}" 
-                    class="flex items-center gap-3 px-4 py-2 rounded text-sm transition-colors duration-200 
-                    {{ request()->routeIs('admin.job.*') 
-                        ? 'bg-blue-50 text-blue-700 font-semibold border-l-4 border-blue-500' 
-                        : 'text-gray-500 hover:bg-gray-100 hover:text-gray-900' }}">
-                    <i class="fa-solid fa-briefcase w-4 text-center text-gray-400"></i>
-                    <span>Pekerjaan Ortu</span>
-                </a>
-                </div>
-            </div>
 
             {{-- Dropdown Manajemen Pendaftar --}}
             <div x-data="{ open: {{ request()->routeIs('admin.pendaftaran.*') ? 'true' : 'false' }} }">
