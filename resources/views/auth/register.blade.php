@@ -3,132 +3,175 @@
 @section('title', 'Registrasi Akun Siswa')
 
 @section('content')
-<section class="bg-gray-50 dark:bg-gray-900 py-20">
-  <div class="max-w-full mx-auto px-6">
+<div class="min-h-screen bg-[#f8fafc] dark:bg-gray-900 py-16">
+    <div class="max-w-6xl mx-auto px-6">
 
-      <div class="bg-white rounded-xl shadow-lg dark:bg-gray-800 dark:border-gray-700 border border-gray-200 p-8">
+        {{-- Heading --}}
+        <div class="text-center mb-12">
+            <h1 class="text-3xl font-bold text-slate-800 dark:text-white">Registrasi Akun Siswa Baru</h1>
+            <p class="text-slate-600 dark:text-slate-300 mt-2">Silakan isi data berikut dengan benar.</p>
+        </div>
 
-          <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-8 text-center">
-              Registrasi Akun Siswa
-          </h1>
-
-          @if ($errors->any())
-              <div class="mb-6 p-4 bg-red-50 border border-red-300 text-red-800 rounded-lg text-sm">
-                  <ul class="list-disc pl-5 space-y-1">
-                      @foreach ($errors->all() as $error)
-                          <li>{{ $error }}</li>
-                      @endforeach
-                  </ul>
-              </div>
-          @endif
-
-          <form action="{{ route('register.siswa.submit') }}" method="POST" class="space-y-8">
-    @csrf
-
-    @php
-    $input = "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
-              focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 
-              dark:bg-gray-700 dark:border-gray-600 dark:text-white";
-    @endphp
-
-    {{-- DATA DIRI --}}
-    <div>
-        <h3 class="text-lg font-semibold text-gray-800 mb-3">Data Diri</h3>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            
-            <div>
-                <label class="text-sm font-medium text-gray-900 mb-1 block">Nama Lengkap</label>
-                <input type="text" name="nama_lengkap" value="{{ old('nama_lengkap') }}" class="{{ $input }}" required>
-            </div>
-
-            <div>
-                <label class="text-sm font-medium text-gray-900 mb-1 block">NIK</label>
-                <input type="text" name="nik" value="{{ old('nik') }}" class="{{ $input }}" required>
-            </div>
-
-            <div>
-                <label class="text-sm font-medium text-gray-900 mb-1 block">NISN</label>
-                <input type="text" name="nisn" value="{{ old('nisn') }}" class="{{ $input }}" required>
-            </div>
-
-            <div>
-                <label class="text-sm font-medium text-gray-900 mb-1 block">Tempat Lahir</label>
-                <input type="text" name="tempat_lahir" value="{{ old('tempat_lahir') }}" class="{{ $input }}" required>
-            </div>
-
-            <div>
-                <label class="text-sm font-medium text-gray-900 mb-1 block">Tanggal Lahir</label>
-                <input type="date" name="tanggal_lahir" value="{{ old('tanggal_lahir') }}" class="{{ $input }}" required>
-            </div>
-
-            <div>
-                <label class="text-sm font-medium text-gray-900 mb-1 block">Jenis Kelamin</label>
-                <select name="jenis_kelamin" class="{{ $input }}" required>
-                    <option value="">-- Pilih --</option>
-                    <option value="L" @selected(old('jenis_kelamin')=='L')>Laki-Laki</option>
-                    <option value="P" @selected(old('jenis_kelamin')=='P')>Perempuan</option>
-                </select>
-            </div>
-
-            <div>
-                <label class="text-sm font-medium text-gray-900 mb-1 block">Agama</label>
-                <select name="agama" class="{{ $input }}" required>
-                    <option value="">-- Pilih Agama --</option>
-                    @foreach ($agamaOptions as $option)
-                        <option value="{{ $option }}" @selected(old('agama')==$option)>{{ $option }}</option>
+        {{-- Error Alert --}}
+        @if ($errors->any())
+            <div class="mb-10 p-4 bg-red-100 border border-red-300 text-red-800 rounded-lg text-sm">
+                <ul class="space-y-1 list-disc pl-5">
+                    @foreach ($errors->all() as $e)
+                        <li>{{ $e }}</li>
                     @endforeach
-                </select>
+                </ul>
+            </div>
+        @endif
+
+        <form action="{{ route('register.siswa.submit') }}" method="POST" class="space-y-14">
+            @csrf
+
+            @php
+            $input = "bg-white border border-slate-300 text-slate-900 text-sm rounded-lg shadow-sm 
+                      focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5";
+            @endphp
+
+
+            {{-- ================= DATA DIRI ================= --}}
+            <div class="space-y-6">
+                <h3 class="text-lg font-semibold text-slate-800 dark:text-slate-200 border-l-4 border-blue-600 pl-3">
+                    Data Diri
+                </h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Nama Lengkap</label>
+                        <input type="text" class="{{ $input }}" name="nama_lengkap" value="{{ old('nama_lengkap') }}" required>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">NIK</label>
+                        <input type="text" id="nik" class="{{ $input }}" maxlength="16" name="nik" value="{{ old('nik') }}" required>
+                        <p id="nikError" class="hidden text-xs text-red-600 mt-1">NIK harus 16 digit angka</p>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">NISN</label>
+                        <input type="text" id="nisn" class="{{ $input }}" maxlength="10" name="nisn" value="{{ old('nisn') }}" required>
+                        <p id="nisnError" class="hidden text-xs text-red-600 mt-1">NISN harus 10 digit angka</p>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Tempat Lahir</label>
+                        <input type="text" class="{{ $input }}" name="tempat_lahir" value="{{ old('tempat_lahir') }}" required>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Tanggal Lahir</label>
+                        <input type="date" class="{{ $input }}" name="tanggal_lahir" value="{{ old('tanggal_lahir') }}" required>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Jenis Kelamin</label>
+                        <select name="jenis_kelamin" class="{{ $input }}" required>
+                            <option value="">-- Pilih --</option>
+                            <option value="L" @selected(old('jenis_kelamin')=='L')>Laki-Laki</option>
+                            <option value="P" @selected(old('jenis_kelamin')=='P')>Perempuan</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Agama</label>
+                        <select name="agama" class="{{ $input }}" required>
+                            <option value="">-- Pilih Agama --</option>
+                            @foreach ($agamaOptions as $option)
+                                <option value="{{ $option }}" @selected(old('agama')==$option)>{{ $option }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="lg:col-span-3">
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Asal Sekolah</label>
+                        <input type="text" class="{{ $input }}" name="asal_sekolah" value="{{ old('asal_sekolah') }}" required>
+                    </div>
+
+                    <div class="lg:col-span-3">
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Alamat Lengkap</label>
+                        <textarea class="{{ $input }}" name="alamat" rows="3" required>{{ old('alamat') }}</textarea>
+                    </div>
+
+                </div>
             </div>
 
-            <div class="lg:col-span-3">
-                <label class="text-sm font-medium text-gray-900 mb-1 block">Asal Sekolah</label>
-                <input type="text" name="asal_sekolah" value="{{ old('asal_sekolah') }}" class="{{ $input }}" required>
+
+            {{-- ================= INFORMASI AKUN ================= --}}
+            <div class="space-y-6">
+                <h3 class="text-lg font-semibold text-slate-800 border-l-4 border-indigo-500 pl-3">
+                    Informasi Akun
+                </h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Email</label>
+                        <input type="email" class="{{ $input }}" name="email" value="{{ old('email') }}" required>
+                    </div>
+
+                    {{-- PASSWORD --}}
+                    <div x-data="{show:false}" class="relative">
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Password</label>
+                        <input :type="show ? 'text' : 'password'" class="{{ $input }} pr-10" name="password" required>
+                        <button type="button" @click="show=!show" class="absolute right-3 top-9 text-slate-600 hover:text-blue-600">
+                            <!-- Heroicon Eye -->
+                            <svg x-show="!show" xmlns="http://www.w3.org/2000/svg" class="h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-.91 3.05-3.3 5.567-6.233 6.566"/>
+                            </svg>
+                            <!-- Heroicon Eye Off -->
+                            <svg x-show="show" xmlns="http://www.w3.org/2000/svg" class="h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M13.875 18.825A10.05 10.05 0 0112 19c-4.477 0-8.268-2.943-9.542-7a9.968 9.968 0 011.62-3.023M9.88 9.88a3 3 0 104.24 4.24"/>
+                            </svg>
+                        </button>
+                    </div>
+
+                    {{-- CONFIRM PASSWORD --}}
+                    <div x-data="{show:false}" class="relative">
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Konfirmasi Password</label>
+                        <input :type="show ? 'text' : 'password'" class="{{ $input }} pr-10" name="password_confirmation" required>
+                        <button type="button" @click="show=!show" class="absolute right-3 top-9 text-slate-600 hover:text-blue-600">
+                            <svg x-show="!show" xmlns="http://www.w3.org/2000/svg" class="h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
+                            <svg x-show="show" xmlns="http://www.w3.org/2000/svg" class="h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path d="M13.875 18.825A10.05 10.05 0 0112 19"/>
+                            </svg>
+                        </button>
+                    </div>
+
+                </div>
             </div>
 
-            <div class="lg:col-span-3">
-                <label class="text-sm font-medium text-gray-900 mb-1 block">Alamat Lengkap</label>
-                <textarea name="alamat" rows="3" class="{{ $input }}" required>{{ old('alamat') }}</textarea>
-            </div>
+            <button type="submit"
+                class="w-full py-3 text-white font-semibold rounded-lg bg-blue-600 hover:bg-blue-700 transition shadow-md">
+                Daftar Akun
+            </button>
 
-        </div>
+            <p class="text-center text-sm text-slate-700 mt-2">
+                Sudah punya akun? <a href="{{ route('login') }}" class="text-blue-600 hover:underline">Login di sini</a>
+            </p>
+
+        </form>
+
     </div>
+</div>
 
-    {{-- INFORMASI AKUN --}}
-    <div>
-        <h3 class="text-lg font-semibold text-gray-800 mb-3">Informasi Akun</h3>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-
-            <div>
-                <label class="text-sm font-medium text-gray-900 mb-1 block">Email</label>
-                <input type="email" name="email" value="{{ old('email') }}" class="{{ $input }}" required>
-            </div>
-
-            <div>
-                <label class="text-sm font-medium text-gray-900 mb-1 block">Password</label>
-                <input type="password" name="password" class="{{ $input }}" required>
-            </div>
-
-            <div>
-                <label class="text-sm font-medium text-gray-900 mb-1 block">Konfirmasi Password</label>
-                <input type="password" name="password_confirmation" class="{{ $input }}" required>
-            </div>
-
-        </div>
-    </div>
-
-    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg text-sm px-5 py-3 transition">
-        Daftar Akun
-    </button>
-
-    <p class="text-sm text-center text-gray-600 mt-2">
-        Sudah punya akun?
-        <a href="{{ route('login') }}" class="text-blue-600 hover:underline">Login di sini</a>
-    </p>
-
-</form>
-
-      </div>
-
-  </div>
-</section>
+{{-- VALIDASI REALTIME --}}
+<script>
+nik.addEventListener('input', () => {
+    nik.value = nik.value.replace(/\D/g,'');
+    nikError.classList.toggle('hidden', nik.value.length === 16);
+});
+nisn.addEventListener('input', () => {
+    nisn.value = nisn.value.replace(/\D/g,'');
+    nisnError.classList.toggle('hidden', nisn.value.length === 10);
+});
+</script>
 @endsection
