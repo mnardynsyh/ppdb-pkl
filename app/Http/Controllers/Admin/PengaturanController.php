@@ -11,22 +11,25 @@ use Illuminate\View\View;
 class PengaturanController extends Controller
 {
     /**
-     * Menampilkan halaman untuk melihat dan mengedit semua pengaturan.
-     *
-     * @return \Illuminate\View\View
+     * Menampilkan halaman pengaturan.
      */
     public function index(): View
     {
-        $pengaturan = Pengaturan::firstOrFail(); 
-        
+
+        $pengaturan = Pengaturan::first() ?? Pengaturan::create([
+            'status' => 'Ditutup',
+            'tanggal_buka' => null,
+            'tanggal_tutup' => null,
+            'alamat_sekolah' => '',
+            'telepon' => '',
+            'email_kontak' => '',
+        ]);
+
         return view('admin.pengaturan', compact('pengaturan'));
     }
 
     /**
-     * Memperbarui pengaturan pendaftaran dan kontak.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * Memperbarui pengaturan.
      */
     public function update(Request $request): RedirectResponse
     {
@@ -39,11 +42,12 @@ class PengaturanController extends Controller
             'email_kontak' => 'nullable|email|max:255',
         ]);
 
-        $pengaturan = Pengaturan::firstOrFail();
+
+        $pengaturan = Pengaturan::first() ?? new Pengaturan();
+
         $pengaturan->update($validatedData);
 
         return redirect()->route('admin.pengaturan.index')
                          ->with('success', 'Pengaturan berhasil diperbarui.');
     }
 }
-

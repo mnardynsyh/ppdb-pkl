@@ -9,11 +9,11 @@
     <!-- Tombol Aksi (Kanan) & Hamburger Menu -->
     <div class="flex items-center md:order-2 space-x-2 rtl:space-x-reverse">
       {{-- Tombol "Masuk" dengan gaya sekunder (outline) berwarna Indigo --}}
-      <a href="{{ route('siswa.login') }}" class="hidden sm:inline-block text-indigo-600 hover:bg-indigo-50 border border-indigo-600 font-medium rounded-lg text-sm px-4 py-2 text-center transition-colors duration-300">
+      <a href="{{ route('login') }}" class="hidden sm:inline-block text-indigo-600 hover:bg-indigo-50 border border-indigo-600 font-medium rounded-lg text-sm px-4 py-2 text-center transition-colors duration-300">
         Masuk
       </a>
       {{-- Tombol "Daftar Sekarang" dengan warna aksen Teal yang menonjol --}}
-      <a href="{{ route('siswa.register') }}" class="text-white bg-teal-500 hover:bg-teal-600 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-4 py-2 text-center transition-colors duration-300">
+      <a href="{{ route('register.siswa') }}" class="text-white bg-teal-500 hover:bg-teal-600 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-4 py-2 text-center transition-colors duration-300">
         Daftar Sekarang
       </a>
       {{-- Ikon hamburger --}}

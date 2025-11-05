@@ -4,7 +4,7 @@
         <p>&copy; {{ date('Y') }} PPDB Online SMP Muhammadiyah 1 Sirampog. All Rights Reserved.</p>
         <p class="text-sm text-gray-400 mt-2">Jalan Raya Karanganyar, Sirampog, Brebes, Jawa Tengah 52272</p>
         <div class="mt-4">
-            <a href="{{ route('admin.login') }}" class="text-sm text-gray-400 hover:underline">Login Admin</a>
+            <a href="{{ route('login') }}" class="text-sm text-gray-400 hover:underline">Login Admin</a>
         </div>
     </div>
 </footer>

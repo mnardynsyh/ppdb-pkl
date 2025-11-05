@@ -1,146 +1,86 @@
 @extends('layouts.app')
 
-@section('title', 'Registrasi Siswa')
+@section('title', 'Registrasi Akun Siswa')
 
 @section('content')
-<div class="min-h-screen flex items-center justify-center bg-slate-50 py-12 px-4">
-    <div class="w-full max-w-4xl bg-white rounded-2xl shadow-xl p-8 border border-slate-200">
-        <div class="text-center mb-10">
-            <h2 class="text-3xl font-extrabold text-slate-900">Formulir Registrasi Siswa Baru</h2>
-            <p class="mt-2 text-slate-600">Buat akun untuk memulai proses pendaftaran.</p>
+<div class="min-h-screen flex items-center justify-center bg-slate-100 py-12 px-4">
+    <div class="w-full max-w-4xl bg-white rounded-xl shadow-lg p-8 border border-slate-200">
+        
+        <div class="text-center mb-8">
+            <h2 class="text-3xl font-bold text-slate-900">Registrasi Akun Siswa</h2>
+            <p class="mt-2 text-slate-600">Lengkapi data berikut untuk membuat akun.</p>
         </div>
 
-        <form action="{{ route('siswa.register.submit') }}" method="POST" class="space-y-8">
+        @if ($errors->any())
+            <div class="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700 rounded">
+                <p class="font-bold mb-1">Terjadi Kesalahan:</p>
+                <ul class="text-sm list-disc pl-6">
+                    @foreach ($errors->all() as $e)
+                        <li>{{ $e }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <form action="{{ route('register.siswa.submit') }}" method="POST" class="space-y-8">
             @csrf
 
-            {{-- === Bagian Data Pribadi === --}}
+            {{-- DATA DIRI --}}
             <div class="space-y-6">
-                <h3 class="text-lg font-semibold text-slate-700 border-b border-slate-200 pb-2">Data Pribadi</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {{-- Nama Lengkap --}}
-                    <div>
-                        <label for="nama_lengkap" class="block mb-2 text-sm font-medium text-slate-900">Nama Lengkap</label>
-                        <input type="text" name="nama_lengkap" id="nama_lengkap" value="{{ old('nama_lengkap') }}"
-                            class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                            placeholder="Sesuai Akta Kelahiran" required>
-                        @error('nama_lengkap') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
-                    </div>
+                <h3 class="text-lg font-semibold text-slate-700 border-b pb-2">Data Diri</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    
+                    <x-input label="Nama Lengkap" name="nama_lengkap" placeholder="Sesuai Akta Kelahiran" required />
+                    <x-input label="NIK" name="nik" placeholder="16 Digit" required />
+                    <x-input label="NISN" name="nisn" placeholder="10 Digit" required />
 
-                    {{-- NIK --}}
-                    <div>
-                        <label for="nik" class="block mb-2 text-sm font-medium text-slate-900">NIK</label>
-                        <input type="text" name="nik" id="nik" value="{{ old('nik') }}"
-                            class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                            placeholder="16 Digit Angka" required>
-                        @error('nik') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
-                    </div>
+                    <x-input label="Tempat Lahir" name="tempat_lahir" required />
+                    <x-input type="date" label="Tanggal Lahir" name="tanggal_lahir" required />
 
-                    {{-- NISN --}}
                     <div>
-                        <label for="nisn" class="block mb-2 text-sm font-medium text-slate-900">NISN</label>
-                        <input type="text" name="nisn" id="nisn" value="{{ old('nisn') }}"
-                            class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                            placeholder="10 Digit Angka" required>
-                        @error('nisn') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
-                    </div>
-
-                    {{-- Tempat & Tanggal Lahir --}}
-                    <div>
-                        <label for="tempat_lahir" class="block mb-2 text-sm font-medium text-slate-900">Tempat Lahir</label>
-                        <input type="text" name="tempat_lahir" id="tempat_lahir" value="{{ old('tempat_lahir') }}"
-                            class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                            placeholder="Kota Kelahiran" required>
-                        @error('tempat_lahir') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
-                    </div>
-                    <div>
-                        <label for="tanggal_lahir" class="block mb-2 text-sm font-medium text-slate-900">Tanggal Lahir</label>
-                        <input type="date" name="tanggal_lahir" id="tanggal_lahir" value="{{ old('tanggal_lahir') }}"
-                            class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                            required>
-                        @error('tanggal_lahir') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
-                    </div>
-
-                    {{-- Jenis Kelamin --}}
-                    <div>
-                        <label for="jenis_kelamin" class="block mb-2 text-sm font-medium text-slate-900">Jenis Kelamin</label>
-                        <select name="jenis_kelamin" id="jenis_kelamin" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
-                            <option value="" disabled selected>-- Pilih --</option>
-                            <option value="L" @if(old('jenis_kelamin') == 'L') selected @endif>Laki-Laki</option>
-                            <option value="P" @if(old('jenis_kelamin') == 'P') selected @endif>Perempuan</option>
+                        <label class="block mb-2 text-sm font-medium text-slate-900">Jenis Kelamin</label>
+                        <select name="jenis_kelamin" class="form-select">
+                            <option value="">-- Pilih --</option>
+                            <option value="L">Laki-Laki</option>
+                            <option value="P">Perempuan</option>
                         </select>
-                        @error('jenis_kelamin') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
                     </div>
 
-                    {{-- Agama --}}
                     <div>
-                        <label for="agama" class="block mb-2 text-sm font-medium text-slate-900">Agama</label>
-                        <select name="agama" id="agama" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
-                            <option value="" disabled selected>-- Pilih Agama --</option>
-                            @foreach ($agamaOptions as $option) 
-                                <option value="{{ $option }}" @if(old('agama') == $option) selected @endif>{{ $option }}</option>
+                        <label class="block mb-2 text-sm font-medium text-slate-900">Agama</label>
+                        <select name="agama" class="form-select">
+                            <option value="">-- Pilih Agama --</option>
+                            @foreach ($agamaOptions as $a)
+                                <option value="{{ $a }}">{{ $a }}</option>
                             @endforeach
                         </select>
-                        @error('agama') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
                     </div>
 
-                    {{-- Asal Sekolah --}}
-                    <div class="md:col-span-2">
-                        <label for="asal_sekolah" class="block mb-2 text-sm font-medium text-slate-900">Asal Sekolah</label>
-                        <input type="text" name="asal_sekolah" id="asal_sekolah" value="{{ old('asal_sekolah') }}"
-                            class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                            placeholder="Contoh: SMP Negeri 1 Jakarta" required>
-                        @error('asal_sekolah') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
-                    </div>
-                    
-                    {{-- Alamat --}}
-                    <div class="md:col-span-3">
-                        <label for="alamat" class="block mb-2 text-sm font-medium text-slate-900">Alamat Lengkap</label>
-                        <textarea name="alamat" id="alamat" rows="3" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Sesuai Kartu Keluarga" required>{{ old('alamat') }}</textarea>
-                        @error('alamat') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
-                    </div>
+                    <x-input label="Asal Sekolah" name="asal_sekolah" placeholder="Contoh: SMP Negeri 1" class="md:col-span-2" required />
                 </div>
+
+                <x-textarea label="Alamat Lengkap" name="alamat" required />
             </div>
 
-            {{-- === Bagian Informasi Akun === --}}
+            {{-- INFORMASI AKUN --}}
             <div class="space-y-6">
-                <h3 class="text-lg font-semibold text-slate-700 border-b border-slate-200 pb-2">Informasi Akun</h3>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {{-- Email --}}
-                    <div>
-                        <label for="email" class="block mb-2 text-sm font-medium text-slate-900">Email</label>
-                        <input type="email" name="email" id="email" value="{{ old('email') }}"
-                            class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                            placeholder="nama@email.com" required>
-                        @error('email') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
-                    </div>
-
-                    {{-- Password --}}
-                    <div>
-                        <label for="password" class="block mb-2 text-sm font-medium text-slate-900">Password</label>
-                        <input type="password" name="password" id="password"
-                            class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                            placeholder="Minimal 6 karakter" required>
-                        @error('password') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
-                    </div>
-
-                    {{-- Konfirmasi Password --}}
-                    <div>
-                        <label for="password_confirmation" class="block mb-2 text-sm font-medium text-slate-900">Konfirmasi Password</label>
-                        <input type="password" name="password_confirmation" id="password_confirmation"
-                            class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                            placeholder="Ulangi password" required>
-                    </div>
+                <h3 class="text-lg font-semibold text-slate-700 border-b pb-2">Informasi Akun</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <x-input type="email" label="Email" name="email" required />
+                    <x-input type="password" label="Password" name="password" required />
+                    <x-input type="password" label="Konfirmasi Password" name="password_confirmation" required />
                 </div>
             </div>
 
-            <div class="flex flex-col sm:flex-row justify-between items-center pt-6 border-t border-slate-200">
-                <a href="{{ route('siswa.login') }}" class="text-sm font-medium text-blue-600 hover:underline mb-4 sm:mb-0">
-                    Sudah punya akun? Login di sini
+            <div class="flex justify-between items-center pt-6 border-t">
+                <a href="{{ route('login') }}" class="text-sm font-medium text-blue-600 hover:underline">
+                    Sudah punya akun? Login
                 </a>
-                <button type="submit" class="w-full sm:w-auto px-8 py-3 text-base font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg focus:outline-none focus:ring-4 focus:ring-blue-300 shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 transition-all duration-300">
+                <button class="btn-primary">
                     Daftar Akun
                 </button>
             </div>
+
         </form>
     </div>
 </div>

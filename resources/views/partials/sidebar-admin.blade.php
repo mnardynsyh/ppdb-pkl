@@ -41,7 +41,7 @@
                     </a>
                     </li>
                     <li>
-                    <form action="{{ route('admin.logout') }}" method="POST" class="w-full">
+                    <form action="{{ route('logout') }}" method="POST" class="w-full">
                         @csrf
                         <button type="submit"
                                 class="w-full text-left block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"

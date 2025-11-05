@@ -40,7 +40,7 @@
                                 <a href="#" class="px-3 py-2 text-xs font-medium text-center text-white bg-blue-600 rounded-lg hover:bg-blue-700">
                                     Detail
                                 </a>
-                                <form action="{{ route('admin.pendaftaran.kembalikan', $siswa) }}" method="POST"
+                                <form action="{{ route('admin.pendaftaran.batalkan', $siswa) }}" method="POST"
                                       onsubmit="return confirm('Batalkan status DITOLAK dan kembalikan ke Pending?')">
                                     @csrf
                                     <button type="submit" class="px-3 py-2 text-xs font-medium text-center text-white bg-yellow-500 rounded-lg hover:bg-yellow-600">

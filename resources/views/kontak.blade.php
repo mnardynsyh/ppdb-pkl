@@ -50,17 +50,6 @@
                 </div>
             </div>
 
-            {{-- Peta Lokasi --}}
-            <div data-aos="fade-up" data-aos-delay="100">
-                <iframe 
-                    class="w-full h-96 rounded-lg shadow-md border"
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3958.2741246168994!2d109.08392747416322!3d-7.209536570779387!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e6f8e218543313b%3A0x2605c8c12486ea4b!2sSMP%20Muhammadiyah%201%20Sirampog!5e0!3m2!1sen!2sid!4v1761137687088!5m2!1sen!2sid" 
-                    style="border:0;" 
-                    allowfullscreen="" 
-                    loading="lazy" 
-                    referrerpolicy="no-referrer-when-downgrade">
-                </iframe>
-            </div>
         </div>
     </div>
 </section>
