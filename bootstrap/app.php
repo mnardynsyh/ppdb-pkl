@@ -16,7 +16,6 @@ return Application::configure(basePath: dirname(__DIR__))
         'siswa' => \Illuminate\Auth\Middleware\Authenticate::class . ':siswa',
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'pendaftaran.status' => \App\Http\Middleware\CheckPendaftaranStatus::class,
-        'prevent-back' => \App\Http\Middleware\PreventBackHistory::class,
     ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

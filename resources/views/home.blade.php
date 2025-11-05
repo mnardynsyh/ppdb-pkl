@@ -33,7 +33,7 @@
                 </p>
                 @if($statusInfo['status'] == 'Dibuka')
                   <div>
-                    <a href="{{ route('siswa.register') }}" class="inline-flex items-center justify-center px-6 py-3.5 mr-3 text-base font-medium text-center text-white rounded-lg bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 transition-all duration-300">
+                    <a href="{{ route('register.siswa') }}" class="inline-flex items-center justify-center px-6 py-3.5 mr-3 text-base font-medium text-center text-white rounded-lg bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 transition-all duration-300">
                         Daftar Sekarang
                         <svg class="w-5 h-5 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                     </a>
@@ -56,13 +56,6 @@
                 <p class="max-w-2xl mb-8 font-normal text-slate-200 lg:mb-10 md:text-lg lg:text-xl">
                     Berbagai pilihan kegiatan untuk menunjang prestasi non-akademik siswa.
                 </p>
-                 @if($statusInfo['status'] == 'Dibuka')
-                  <div>
-                     <a href="{{ route('siswa.register') }}" class="inline-flex items-center justify-center px-6 py-3.5 text-base font-medium text-center text-white rounded-lg bg-amber-500 hover:bg-amber-600 focus:ring-4 focus:ring-amber-300 shadow-lg shadow-amber-500/30 hover:shadow-xl hover:shadow-amber-500/40 transition-all duration-300">
-                        Daftar Sekarang
-                    </a>
-                  </div>
-                @endif
             </div>
         </div>
         <!-- Item 3: Fasilitas -->
@@ -77,13 +70,6 @@
                 <p class="max-w-2xl mb-8 font-normal text-slate-200 lg:mb-10 md:text-lg lg:text-xl">
                     Laboratorium, perpustakaan, dan sarana olahraga yang memadai untuk mendukung proses belajar.
                 </p>
-                 @if($statusInfo['status'] == 'Dibuka')
-                  <div>
-                     <a href="{{ route('siswa.register') }}" class="inline-flex items-center justify-center px-6 py-3.5 text-base font-medium text-center text-white rounded-lg bg-emerald-500 hover:bg-emerald-600 focus:ring-4 focus:ring-emerald-300 shadow-lg shadow-emerald-500/30 hover:shadow-xl hover:shadow-emerald-500/40 transition-all duration-300">
-                        Daftar Sekarang
-                    </a>
-                  </div>
-                @endif
             </div>
         </div>
     </div>

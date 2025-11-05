@@ -3,18 +3,15 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\WilayahController;
-
-// AUTH Gabungan
+// AUTH
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
-
 // Admin
 use App\Http\Controllers\Admin\JadwalController;
 use App\Http\Controllers\Admin\PengaturanController;
 use App\Http\Controllers\Admin\PendaftaranController;
 use App\Http\Controllers\Admin\ProfileController as AdminProfile;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
-
 // Siswa
 use App\Http\Controllers\Siswa\ProfilController as SiswaProfile;
 use App\Http\Controllers\Siswa\DashboardController as SiswaDashboard;
@@ -32,10 +29,10 @@ Route::get('/kontak', [HomeController::class, 'kontak'])->name('kontak');
 
 /*
 |--------------------------------------------------------------------------
-| Login Gabungan (Admin & Siswa)
+| Login (Admin & Siswa)
 |--------------------------------------------------------------------------
 */
-Route::middleware(['guest', 'prevent-back'])->group(function () {
+Route::middleware(['guest'])->group(function () {
     Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
 
@@ -47,11 +44,10 @@ Route::middleware(['guest', 'prevent-back'])->group(function () {
 
 /*
 |--------------------------------------------------------------------------
-| Logout (Untuk Kedua Role)
+| Logout
 |--------------------------------------------------------------------------
 */
 Route::post('/logout', [LoginController::class, 'logout'])
-    ->middleware('prevent-back')
     ->name('logout');
 
 
@@ -60,7 +56,7 @@ Route::post('/logout', [LoginController::class, 'logout'])
 | Route Siswa
 |--------------------------------------------------------------------------
 */
-Route::prefix('siswa')->name('siswa.')->middleware(['auth:siswa', 'prevent-back'])->group(function () {
+Route::prefix('siswa')->name('siswa.')->middleware(['auth:siswa'])->group(function () {
 
     Route::get('/dashboard', [SiswaDashboard::class, 'index'])->name('dashboard');
 
@@ -84,7 +80,7 @@ Route::prefix('siswa')->name('siswa.')->middleware(['auth:siswa', 'prevent-back'
 | Route Admin
 |--------------------------------------------------------------------------
 */
-Route::prefix('admin')->name('admin.')->middleware(['auth:web', 'prevent-back'])->group(function () {
+Route::prefix('admin')->name('admin.')->middleware(['auth:web'])->group(function () {
 
     Route::get('/dashboard', [AdminDashboard::class, 'index'])->name('dashboard');
 
@@ -116,7 +112,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:web', 'prevent-back'])
 
 /*
 |--------------------------------------------------------------------------
-| API Wilayah (Dropdown Dinamis)
+| API Wilayah
 |--------------------------------------------------------------------------
 */
 Route::get('/wilayah/kabupaten', [WilayahController::class, 'getKabupaten'])->name('wilayah.kabupaten');
