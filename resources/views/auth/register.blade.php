@@ -163,7 +163,7 @@
     </div>
 </div>
 
-{{-- VALIDASI REALTIME --}}
+
 <script>
 nik.addEventListener('input', () => {
     nik.value = nik.value.replace(/\D/g,'');

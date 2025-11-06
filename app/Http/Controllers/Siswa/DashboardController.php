@@ -6,113 +6,87 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Provinsi;
 use App\Models\Siswa;
 use App\Models\OrangTuaWali;
-use Illuminate\Http\Request;
 use App\Models\Lampiran;
+use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\View\View;
 
 class DashboardController extends Controller
 {
-    /**
-     * Menampilkan halaman dashboard pendaftaran atau halaman status.
-     */
+    private array $agama = ['Islam','Kristen Protestan','Kristen Katolik','Hindu','Buddha','Konghucu'];
+    private array $pendidikan = [
+        'Tidak Sekolah','SD/Sederajat','SMP/Sederajat','SMA/Sederajat',
+        'Diploma (D1/D2/D3)','Sarjana (S1)','Magister (S2)','Doktor (S3)'
+    ];
+    private array $penghasilan = [
+        '< Rp 1 juta','Rp 1–3 juta','Rp 3–5 juta','> Rp 5 juta','Tidak Berpenghasilan'
+    ];
+    private array $pekerjaan = [
+        'PNS','TNI/POLRI','Karyawan Swasta','Wiraswasta','Petani',
+        'Buruh','Guru/Dosen','Nelayan','Tidak Bekerja','Lainnya'
+    ];
+
+    private function siswa()
+    {
+        return Siswa::with(['orangTuaWali','lampiran'])
+            ->find(Auth::guard('siswa')->id());
+    }
+
+    /** Dashboard */
     public function index()
     {
-        $siswa = Siswa::with('orangTuaWali')->find(Auth::id());
+        $siswa = $this->siswa();
+
         if (!$siswa->orangTuaWali) {
             return redirect()->route('siswa.formulir');
         }
+
         return view('siswa.dashboard', compact('siswa'));
     }
 
-    /**
-     * Menampilkan formulir pendaftaran (multi-step).
-     */
-    public function showForm(): View
+    /** Halaman Formulir */
+    public function showForm()
     {
-        $siswa = Siswa::with(['orangTuaWali', 'lampiran'])->find(Auth::id());
-
-        $agamaOptions = ['Islam', 'Kristen Protestan', 'Kristen Katolik', 'Hindu', 'Buddha', 'Konghucu'];
-        $pendidikanOptions = [
-            'Tidak Sekolah', 'SD/Sederajat', 'SMP/Sederajat', 'SMA/Sederajat',
-            'Diploma (D1/D2/D3)', 'Sarjana (S1)', 'Magister (S2)', 'Doktor (S3)'
-        ];
-        $penghasilanOptions = [
-            '< Rp 1 juta',
-            'Rp 1–3 juta',
-            'Rp 3–5 juta',
-            '> Rp 5 juta',
-            'Tidak Berpenghasilan'
-        ];
-        $pekerjaanOptions = [
-            'PNS', 'TNI/POLRI', 'Karyawan Swasta', 'Wiraswasta',
-            'Petani', 'Buruh', 'Guru/Dosen', 'Nelayan', 'Tidak Bekerja', 'Lainnya'
-        ];
-
+        $siswa = $this->siswa();
         $provinsi = Provinsi::orderBy('nama')->get();
 
-        return view('siswa.form-pendaftaran', compact(
-            'siswa',
-            'agamaOptions',
-            'pendidikanOptions',
-            'penghasilanOptions',
-            'pekerjaanOptions',
-            'provinsi'
-        ));
+        return view('siswa.form-pendaftaran', [
+            'siswa' => $siswa,
+            'agamaOptions' => $this->agama,
+            'pendidikanOptions' => $this->pendidikan,
+            'penghasilanOptions' => $this->penghasilan,
+            'pekerjaanOptions' => $this->pekerjaan,
+            'provinsi' => $provinsi,
+        ]);
     }
 
-    /**
-     * Menampilkan halaman detail status pendaftaran.
-     */
-    public function showStatus(): View
+    /** Halaman Status */
+    public function showStatus()
     {
         $siswa = Siswa::with([
-            'lampiran',
-            'provinsi', 'kabupaten', 'kecamatan', 'desa',
-            'orangTuaWali'
-        ])->find(Auth::id());
+            'lampiran','provinsi','kabupaten','kecamatan','desa','orangTuaWali'
+        ])->find(Auth::guard('siswa')->id());
 
         return view('siswa.status', compact('siswa'));
     }
 
-    /**
-     * Menyimpan atau memperbarui data pendaftaran siswa.
-     */
+    /** Simpan Formulir */
     public function store(Request $request)
     {
-        $orangTuaWaliId = Auth::user()->orangTuaWali->id ?? null;
+        $siswa = $this->siswa();
+        $orangTuaWaliId = $siswa->orangTuaWali->id ?? null;
 
-        // ENUM options
-        $agamaOptions = ['Islam', 'Kristen Protestan', 'Kristen Katolik', 'Hindu', 'Buddha', 'Konghucu'];
-        $pendidikanOptions = [
-            'Tidak Sekolah', 'SD/Sederajat', 'SMP/Sederajat', 'SMA/Sederajat',
-            'Diploma (D1/D2/D3)', 'Sarjana (S1)', 'Magister (S2)', 'Doktor (S3)'
-        ];
-        $penghasilanOptions = [
-            '< Rp 1 juta',
-            'Rp 1–3 juta',
-            'Rp 3–5 juta',
-            '> Rp 5 juta',
-            'Tidak Berpenghasilan'
-        ];
-        $pekerjaanOptions = [
-            'PNS', 'TNI/POLRI', 'Karyawan Swasta', 'Wiraswasta',
-            'Petani', 'Buruh', 'Guru/Dosen', 'Nelayan', 'Tidak Bekerja', 'Lainnya'
-        ];
-
-        // Validasi
         $validated = $request->validate([
-            // Step 1: Data Diri Siswa
-            'nama_lengkap'    => 'required|string|max:255',
-            'nik'             => ['required', 'string', 'digits:16', Rule::unique('siswa')->ignore(Auth::id())],
-            'nisn'            => ['required', 'string', 'digits:10', Rule::unique('siswa')->ignore(Auth::id())],
+            // STEP 1 - Data Diri
+            'nama_lengkap'    => 'required|max:255',
+            'nik'             => ['required','digits:16',Rule::unique('siswa')->ignore($siswa->id)],
+            'nisn'            => ['required','digits:10',Rule::unique('siswa')->ignore($siswa->id)],
             'jenis_kelamin'   => 'required|in:L,P',
-            'tempat_lahir'    => 'required|string|max:100',
+            'tempat_lahir'    => 'required|max:100',
             'tanggal_lahir'   => 'required|date',
-            'agama'           => ['required', Rule::in($agamaOptions)],
+            'agama'           => ['required', Rule::in($this->agama)],
             'anak_ke'         => 'nullable|integer|min:1',
             'alamat'          => 'required|string',
             'provinsi_id'     => 'required|exists:provinsi,id',
@@ -120,142 +94,86 @@ class DashboardController extends Controller
             'kecamatan_id'    => 'required|exists:kecamatan,id',
             'desa_id'         => 'required|exists:desa,id',
 
-            // Step 2: Data Orang Tua / Wali
+            // STEP 2 - Orang Tua
             'nama_ayah'             => 'required|string|max:255',
-            'nik_ayah'              => ['required', 'string', 'digits:16', Rule::unique('orang_tua_wali', 'nik_ayah')->ignore($orangTuaWaliId)],
+            'nik_ayah'              => ['required','digits:16',Rule::unique('orang_tua_wali','nik_ayah')->ignore($orangTuaWaliId)],
             'tempat_lahir_ayah'     => 'required|string|max:100',
             'tanggal_lahir_ayah'    => 'required|date',
-            'pekerjaan_ayah'        => ['required', Rule::in($pekerjaanOptions)],
+            'pekerjaan_ayah'        => ['required', Rule::in($this->pekerjaan)],
             'pekerjaan_ayah_lainnya'=> 'nullable|string|max:100',
-            'penghasilan_ayah'      => ['required', Rule::in($penghasilanOptions)],
-            'pendidikan_ayah'       => ['required', Rule::in($pendidikanOptions)],
-            'agama_ayah'            => ['required', Rule::in($agamaOptions)],
+            'penghasilan_ayah'      => ['required', Rule::in($this->penghasilan)],
+            'pendidikan_ayah'       => ['required', Rule::in($this->pendidikan)],
+            'agama_ayah'            => ['required', Rule::in($this->agama)],
 
             'nama_ibu'              => 'required|string|max:255',
-            'nik_ibu'               => ['required', 'string', 'digits:16', Rule::unique('orang_tua_wali', 'nik_ibu')->ignore($orangTuaWaliId)],
+            'nik_ibu'               => ['required','digits:16',Rule::unique('orang_tua_wali','nik_ibu')->ignore($orangTuaWaliId)],
             'tempat_lahir_ibu'      => 'required|string|max:100',
             'tanggal_lahir_ibu'     => 'required|date',
-            'pekerjaan_ibu'         => ['required', Rule::in($pekerjaanOptions)],
+            'pekerjaan_ibu'         => ['required', Rule::in($this->pekerjaan)],
             'pekerjaan_ibu_lainnya' => 'nullable|string|max:100',
-            'penghasilan_ibu'       => ['required', Rule::in($penghasilanOptions)],
-            'pendidikan_ibu'        => ['required', Rule::in($pendidikanOptions)],
-            'agama_ibu'             => ['required', Rule::in($agamaOptions)],
+            'penghasilan_ibu'       => ['required', Rule::in($this->penghasilan)],
+            'pendidikan_ibu'        => ['required', Rule::in($this->pendidikan)],
+            'agama_ibu'             => ['required', Rule::in($this->agama)],
 
-            'tinggal_dengan_wali'   => 'nullable|string',
+            // STEP 2 (opsional wali)
+            'tinggal_dengan_wali'   => 'nullable',
             'nama_wali'             => 'required_if:tinggal_dengan_wali,on|nullable|string|max:255',
-            'nik_wali'              => ['required_if:tinggal_dengan_wali,on', 'nullable', 'string', 'digits:16', Rule::unique('orang_tua_wali', 'nik_wali')->ignore($orangTuaWaliId)],
+            'nik_wali'              => ['required_if:tinggal_dengan_wali,on','nullable','digits:16', Rule::unique('orang_tua_wali','nik_wali')->ignore($orangTuaWaliId)],
             'tempat_lahir_wali'     => 'required_if:tinggal_dengan_wali,on|nullable|string|max:100',
             'tanggal_lahir_wali'    => 'required_if:tinggal_dengan_wali,on|nullable|date',
-            'pekerjaan_wali'        => ['nullable', Rule::in($pekerjaanOptions)],
+            'pekerjaan_wali'        => ['nullable', Rule::in($this->pekerjaan)],
             'pekerjaan_wali_lainnya'=> 'nullable|string|max:100',
-            'penghasilan_wali'      => ['nullable', Rule::in($penghasilanOptions)],
-            'pendidikan_wali'       => ['nullable', Rule::in($pendidikanOptions)],
-            'agama_wali'            => ['nullable', Rule::in($agamaOptions)],
+            'penghasilan_wali'      => ['nullable', Rule::in($this->penghasilan)],
+            'pendidikan_wali'       => ['nullable', Rule::in($this->pendidikan)],
+            'agama_wali'            => ['nullable', Rule::in($this->agama)],
 
-            // Step 3: Sekolah Asal
+            // STEP 3 - Sekolah Asal
             'asal_sekolah'          => 'required|string|max:255',
             'alamat_sekolah_asal'   => 'nullable|string',
-            'tahun_lulus'           => 'required|digits:4|integer|min:2000',
+            'tahun_lulus'           => 'required|digits:4|integer|min:2000|max:' . date('Y'),
 
-            // Step 4: Berkas Lampiran
-            'berkas'                => 'nullable|array',
-            'berkas.*'              => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            // STEP 4 - Berkas
+            'berkas'      => 'nullable|array',
+            'berkas.*'    => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ]);
 
-        // Update siswa
-        $siswa = Siswa::find(Auth::id());
-        $siswa->update([
-            'nama_lengkap' => $validated['nama_lengkap'],
-            'nik' => $validated['nik'],
-            'nisn' => $validated['nisn'],
-            'jenis_kelamin' => $validated['jenis_kelamin'],
-            'tempat_lahir' => $validated['tempat_lahir'],
-            'tanggal_lahir' => $validated['tanggal_lahir'],
-            'agama' => $validated['agama'],
-            'anak_ke' => $validated['anak_ke'] ?? null,
-            'alamat' => $validated['alamat'],
-            'provinsi_id' => $validated['provinsi_id'],
-            'kabupaten_id' => $validated['kabupaten_id'],
-            'kecamatan_id' => $validated['kecamatan_id'],
-            'desa_id' => $validated['desa_id'],
-            'asal_sekolah' => $validated['asal_sekolah'],
-            'alamat_sekolah_asal' => $validated['alamat_sekolah_asal'] ?? null,
-            'tahun_lulus' => $validated['tahun_lulus'],
-        ]);
+        /** Update Siswa */
+        $siswa->update($validated);
 
-        // Update atau buat data Orang Tua/Wali
-        OrangTuaWali::updateOrCreate(
-            ['siswa_id' => $siswa->id],
-            array_merge([
-                'nama_ayah' => $validated['nama_ayah'],
-                'nik_ayah' => $validated['nik_ayah'],
-                'tempat_lahir_ayah' => $validated['tempat_lahir_ayah'],
-                'tanggal_lahir_ayah' => $validated['tanggal_lahir_ayah'],
-                'pekerjaan_ayah' => $validated['pekerjaan_ayah'],
-                'pekerjaan_ayah_lainnya' => $validated['pekerjaan_ayah_lainnya'] ?? null,
-                'penghasilan_ayah' => $validated['penghasilan_ayah'],
-                'pendidikan_ayah' => $validated['pendidikan_ayah'],
-                'agama_ayah' => $validated['agama_ayah'],
+        /** Update Orang Tua / Wali */
+        OrangTuaWali::updateOrCreate(['siswa_id' => $siswa->id], $validated);
 
-                'nama_ibu' => $validated['nama_ibu'],
-                'nik_ibu' => $validated['nik_ibu'],
-                'tempat_lahir_ibu' => $validated['tempat_lahir_ibu'],
-                'tanggal_lahir_ibu' => $validated['tanggal_lahir_ibu'],
-                'pekerjaan_ibu' => $validated['pekerjaan_ibu'],
-                'pekerjaan_ibu_lainnya' => $validated['pekerjaan_ibu_lainnya'] ?? null,
-                'penghasilan_ibu' => $validated['penghasilan_ibu'],
-                'pendidikan_ibu' => $validated['pendidikan_ibu'],
-                'agama_ibu' => $validated['agama_ibu'],
-            ], [
-                // Data wali opsional
-                'nama_wali' => $validated['nama_wali'] ?? null,
-                'nik_wali' => $validated['nik_wali'] ?? null,
-                'tempat_lahir_wali' => $validated['tempat_lahir_wali'] ?? null,
-                'tanggal_lahir_wali' => $validated['tanggal_lahir_wali'] ?? null,
-                'pekerjaan_wali' => $validated['pekerjaan_wali'] ?? null,
-                'pekerjaan_wali_lainnya' => $validated['pekerjaan_wali_lainnya'] ?? null,
-                'penghasilan_wali' => $validated['penghasilan_wali'] ?? null,
-                'pendidikan_wali' => $validated['pendidikan_wali'] ?? null,
-                'agama_wali' => $validated['agama_wali'] ?? null,
-            ])
-        );
-
-        // Simpan berkas lampiran
+        /** Upload Berkas */
         if ($request->hasFile('berkas')) {
-            foreach ($request->file('berkas') as $jenisBerkas => $file) {
-                $berkasLama = Lampiran::where('siswa_id', $siswa->id)
-                    ->where('jenis_berkas', $jenisBerkas)
-                    ->first();
+            foreach ($request->file('berkas') as $jenis => $file) {
 
-                if ($berkasLama && Storage::disk('public')->exists($berkasLama->path_file)) {
-                    Storage::disk('public')->delete($berkasLama->path_file);
+                $old = Lampiran::where('siswa_id',$siswa->id)->where('jenis_berkas',$jenis)->first();
+                if ($old && Storage::disk('public')->exists($old->path_file)) {
+                    Storage::disk('public')->delete($old->path_file);
                 }
 
                 $path = $file->store("berkas_siswa/{$siswa->id}", 'public');
 
                 Lampiran::updateOrCreate(
-                    ['siswa_id' => $siswa->id, 'jenis_berkas' => $jenisBerkas],
-                    ['path_file' => $path, 'nama_file_asli' => $file->getClientOriginalName()]
+                    ['siswa_id'=>$siswa->id,'jenis_berkas'=>$jenis],
+                    ['path_file'=>$path,'nama_file_asli'=>$file->getClientOriginalName()]
                 );
             }
         }
 
-        return redirect()->route('siswa.dashboard')->with('success', 'Data pendaftaran berhasil diperbarui!');
+        return redirect()->route('siswa.dashboard')->with('success','Data berhasil disimpan.');
     }
 
-    /**
-     * Cetak bukti pendaftaran dalam bentuk PDF.
-     */
+    /** Cetak Bukti */
     public function cetakBukti()
     {
-        $siswa = Siswa::with(['orangTuaWali', 'provinsi', 'kabupaten', 'kecamatan', 'desa'])->find(Auth::id());
+        $siswa = $this->siswa();
 
         if ($siswa->status_pendaftaran !== 'Diterima') {
-            return redirect()->route('siswa.dashboard')->with('error', 'Anda tidak dapat mencetak bukti pendaftaran saat ini.');
+            return redirect()->route('siswa.dashboard')->with('error','Belum bisa mencetak bukti.');
         }
 
         $pdf = Pdf::loadView('siswa.cetak-bukti', compact('siswa'));
-        $fileName = 'bukti-pendaftaran-' . str_replace(' ', '-', strtolower($siswa->nama_lengkap)) . '.pdf';
-        return $pdf->stream($fileName);
+        return $pdf->stream('bukti-pendaftaran-'.$siswa->id.'.pdf');
     }
 }
