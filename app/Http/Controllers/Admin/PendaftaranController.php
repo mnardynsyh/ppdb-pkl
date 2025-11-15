@@ -7,10 +7,6 @@ use App\Models\Siswa;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Models\OrangTuaWali;
-use App\Models\Pendidikan;
-use App\Models\Penghasilan;
-use App\Models\Job as Pekerjaan;
 
 class PendaftaranController extends Controller
 {
