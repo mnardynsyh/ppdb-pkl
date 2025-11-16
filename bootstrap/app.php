@@ -12,11 +12,12 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
-        'admin' => \Illuminate\Auth\Middleware\Authenticate::class . ':web',
-        'siswa' => \Illuminate\Auth\Middleware\Authenticate::class . ':siswa',
+        'auth' => \App\Http\Middleware\Authenticate::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'pendaftaran.status' => \App\Http\Middleware\CheckPendaftaranStatus::class,
     ]);
+
+
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

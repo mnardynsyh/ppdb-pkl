@@ -29,7 +29,7 @@ class LoginController extends Controller
         $username = $request->username;
         $password = $request->password;
 
-        // Login sebagai Admin (Email)
+        // Login Admin
         if (filter_var($username, FILTER_VALIDATE_EMAIL)) {
             if (Auth::guard('web')->attempt(['email' => $username, 'password' => $password])) {
                 $request->session()->regenerate();
@@ -37,7 +37,7 @@ class LoginController extends Controller
             }
         }
 
-        // Login sebagai Siswa (NISN)
+        // Login Siswa
         if (is_numeric($username)) {
             if (Auth::guard('siswa')->attempt(['nisn' => $username, 'password' => $password])) {
                 $request->session()->regenerate();

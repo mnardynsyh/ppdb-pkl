@@ -34,7 +34,7 @@
                 @click="setActive('home')"
             >
                 <span class="relative z-10">Beranda</span>
-                <div x-show="activeMenu === 'home'" class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 bg-blue-500 rounded-full"></div>
+                {{-- <div x-show="activeMenu === 'home'" class="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-blue-400 to-blue-600"></div> --}}
             </a>
 
             <!-- Informasi Pendaftaran Dropdown -->
@@ -75,7 +75,6 @@
                             </div>
                             <div>
                                 <div class="font-semibold">Alur Pendaftaran</div>
-                                <div class="text-xs text-gray-500">Proses step by step</div>
                             </div>
                         </a>
                         
@@ -90,7 +89,6 @@
                             </div>
                             <div>
                                 <div class="font-semibold">Jadwal Penting</div>
-                                <div class="text-xs text-gray-500">Timeline pendaftaran</div>
                             </div>
                         </a>
                         
@@ -105,7 +103,6 @@
                             </div>
                             <div>
                                 <div class="font-semibold">Persyaratan</div>
-                                <div class="text-xs text-gray-500">Dokumen yang diperlukan</div>
                             </div>
                         </a>
                     </div>
@@ -150,7 +147,6 @@
                             </div>
                             <div>
                                 <div class="font-semibold">Tentang Kami</div>
-                                <div class="text-xs text-gray-500">Sejarah & identitas</div>
                             </div>
                         </a>
                         
@@ -166,7 +162,6 @@
                             </div>
                             <div>
                                 <div class="font-semibold">Visi & Misi</div>
-                                <div class="text-xs text-gray-500">Tujuan pendidikan</div>
                             </div>
                         </a>
                         
@@ -181,7 +176,6 @@
                             </div>
                             <div>
                                 <div class="font-semibold">Kontak Kami</div>
-                                <div class="text-xs text-gray-500">Hubungi sekolah</div>
                             </div>
                         </a>
                     </div>
@@ -197,7 +191,6 @@
                 @click="setActive('faq')"
             >
                 <span class="relative z-10">FAQ</span>
-                <div x-show="activeMenu === 'faq'" class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 bg-blue-500 rounded-full"></div>
             </a>
         </div>
 
