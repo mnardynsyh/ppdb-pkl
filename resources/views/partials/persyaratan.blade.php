@@ -1,5 +1,5 @@
 {{-- Section Persyaratan Pendaftaran --}}
-<section class="bg-slate-50 py-20" id="persyaratan">
+<section class="bg-slate-50 py-28" id="persyaratan">
     <div class="max-w-screen-xl mx-auto px-4">
         {{-- Header Section --}}
         <div class="text-center mb-16" data-aos="fade-up">

@@ -1,5 +1,5 @@
 {{-- Section Alur Pendaftaran --}}
-<section class="bg-slate-50 py-20" id="alur">
+<section class="bg-slate-50 py-28" id="alur">
     <div class="max-w-screen-xl mx-auto px-4">
         <div class="text-center mb-16" data-aos="fade-up">
             <h2 class="text-4xl font-extrabold text-slate-900">Alur Pendaftaran</h2>
