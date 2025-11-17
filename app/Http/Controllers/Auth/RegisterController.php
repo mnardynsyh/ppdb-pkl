@@ -56,9 +56,7 @@ class RegisterController extends Controller
 
         Auth::guard('siswa')->login($siswa);
 
-        return redirect()->route('siswa.dashboard')
-                        ->with('success', 'Registrasi berhasil! Selamat datang 🎉');
-        // return redirect()->route('login')->with('success', 'Akun berhasil dibuat. Silakan login.');
+        return redirect()->route('login')->with('success', 'Akun berhasil dibuat. Silakan login.');
     }
         
 }

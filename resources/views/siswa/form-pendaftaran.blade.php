@@ -62,9 +62,7 @@
                     </div>
                 </fieldset>
             @else
-                <!-- Form Disabled dengan Status Info -->
                 <fieldset disabled>
-                    <!-- Status Info Banner -->
                     <div class="mb-6 p-4 bg-blue-50 border-l-4 border-blue-500 rounded-r-lg">
                         <div class="flex items-center">
                             <svg class="w-5 h-5 text-blue-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -88,14 +86,12 @@
                         </div>
                     </div>
 
-                    <!-- Tetap tampilkan form tapi dalam state disabled -->
                     @include('partials.siswa.step1')
                     @include('partials.siswa.step2')
                     @include('partials.siswa.step3')
                     @include('partials.siswa.step4')
                     @include('partials.siswa.step5')
 
-                    {{-- Tombol Navigasi (disabled) --}}
                     <div class="flex justify-between mt-10 pt-6 border-t">
                         <button type="button"
                                 class="px-4 py-2 sm:px-6 text-sm sm:text-base bg-gray-400 text-white rounded-lg cursor-not-allowed"
