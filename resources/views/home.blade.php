@@ -23,7 +23,7 @@
                     <h1 class="mb-4 text-3xl sm:text-4xl md:text-5xl font-black leading-tight">
                         Selamat Datang di PPDB 
                         <span class="block bg-gradient-to-r from-cyan-300 to-blue-300 bg-clip-text text-transparent mt-3 pt-1">
-                            SMP Muhammadiyah 1 Sirampog
+                            SMP Negeri Unggulan Kami
                         </span>
                     </h1>
                     <p class="mb-8 text-base sm:text-lg md:text-xl font-normal text-slate-200 leading-relaxed max-w-2xl mx-auto px-4">
