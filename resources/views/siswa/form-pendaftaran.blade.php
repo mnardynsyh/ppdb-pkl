@@ -26,100 +26,42 @@
     <div class="mt-8">
         <form x-ref="pendaftaranForm" action="{{ route('siswa.formulir.store') }}" method="POST" enctype="multipart/form-data" novalidate>
             @csrf
-            
-            @if($siswa->status_pendaftaran === 'Pending')
-                <!-- Form Editable -->
-                <fieldset>
-                    @include('partials.siswa.step1')
-                    @include('partials.siswa.step2')
-                    @include('partials.siswa.step3')
-                    @include('partials.siswa.step4')
-                    @include('partials.siswa.step5')
+            <fieldset>
+                @include('partials.siswa.step1')
+                @include('partials.siswa.step2')
+                @include('partials.siswa.step3')
+                @include('partials.siswa.step4')
+                @include('partials.siswa.step5')
 
-                    {{-- Tombol Navigasi --}}
-                    <div class="flex justify-between mt-10 pt-6 border-t">
-                        <button type="button"
-                                class="px-4 py-2 sm:px-6 text-sm sm:text-base bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                                @click="if(step > 1) step--"
-                                :disabled="step === 1">
-                            Sebelumnya
-                        </button>
+                {{-- Tombol Navigasi --}}
+                <div class="flex justify-between mt-10 pt-6 border-t">
+                    <button type="button"
+                            class="px-4 py-2 sm:px-6 text-sm sm:text-base bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                            @click="if(step > 1) step--"
+                            :disabled="step === 1">
+                        Sebelumnya
+                    </button>
 
-                        <button type="button"
-                                class="px-4 py-2 sm:px-6 text-sm sm:text-base bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300"
-                                @click="if(step < 5) step++"
-                                x-show="step < 5">
-                            Berikutnya
-                        </button>
+                    <button type="button"
+                            class="px-4 py-2 sm:px-6 text-sm sm:text-base bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300"
+                            @click="if(step < 5) step++"
+                            x-show="step < 5">
+                        Berikutnya
+                    </button>
 
-                        <button type="button"
-                                @click="showModal = true"
-                                class="px-4 py-2 sm:px-6 text-sm sm:text-base bg-green-600 text-white rounded-lg hover:bg-green-700 transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                                x-show="step === 5"
-                                :disabled="!konfirmasi">
-                            <span>{{ $siswa->orangTuaWali ? 'Simpan Perubahan' : 'Kirim Pendaftaran' }}</span>
-                        </button>
-                    </div>
-                </fieldset>
-            @else
-                <fieldset disabled>
-                    <div class="mb-6 p-4 bg-blue-50 border-l-4 border-blue-500 rounded-r-lg">
-                        <div class="flex items-center">
-                            <svg class="w-5 h-5 text-blue-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                            </svg>
-                            <div>
-                                <p class="text-blue-700 font-medium">
-                                    Form tidak dapat diedit karena status pendaftaran Anda: 
-                                    <span class="capitalize font-bold">{{ $siswa->status_pendaftaran }}</span>
-                                </p>
-                                <p class="text-blue-600 text-sm mt-1">
-                                    @if($siswa->status_pendaftaran === 'Diterima')
-                                        Selamat! Pendaftaran Anda telah diterima.
-                                    @elseif($siswa->status_pendaftaran === 'Ditolak')
-                                        Maaf, pendaftaran Anda tidak dapat diterima.
-                                    @else
-                                        Status pendaftaran sedang dalam proses verifikasi.
-                                    @endif
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    @include('partials.siswa.step1')
-                    @include('partials.siswa.step2')
-                    @include('partials.siswa.step3')
-                    @include('partials.siswa.step4')
-                    @include('partials.siswa.step5')
-
-                    <div class="flex justify-between mt-10 pt-6 border-t">
-                        <button type="button"
-                                class="px-4 py-2 sm:px-6 text-sm sm:text-base bg-gray-400 text-white rounded-lg cursor-not-allowed"
-                                disabled>
-                            Sebelumnya
-                        </button>
-
-                        <button type="button"
-                                class="px-4 py-2 sm:px-6 text-sm sm:text-base bg-blue-400 text-white rounded-lg cursor-not-allowed"
-                                x-show="step < 5"
-                                disabled>
-                            Berikutnya
-                        </button>
-
-                        <button type="button"
-                                class="px-4 py-2 sm:px-6 text-sm sm:text-base bg-green-400 text-white rounded-lg cursor-not-allowed"
-                                x-show="step === 5"
-                                disabled>
-                            <span>{{ $siswa->orangTuaWali ? 'Simpan Perubahan' : 'Kirim Pendaftaran' }}</span>
-                        </button>
-                    </div>
-                </fieldset>
-            @endif
+                    <button type="button"
+                            @click="showModal = true"
+                            class="px-4 py-2 sm:px-6 text-sm sm:text-base bg-green-600 text-white rounded-lg hover:bg-green-700 transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                            x-show="step === 5"
+                            :disabled="!konfirmasi">
+                        <span>{{ $siswa->orangTuaWali ? 'Simpan Perubahan' : 'Kirim Pendaftaran' }}</span>
+                    </button>
+                </div>
+            </fieldset>
         </form>
     </div>
 
-    <!-- Modal Konfirmasi - Hanya tampil jika status Pending -->
-    @if($siswa->status_pendaftaran === 'Pending')
+    <!-- Modal Konfirmasi -->
     <div x-show="showModal" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50" style="display: none;">
         <div @click.away="showModal = false" class="bg-white rounded-lg shadow-xl p-6 sm:p-8 w-11/12 max-w-md mx-auto">
             <div class="text-center">
@@ -145,7 +87,6 @@
             </div>
         </div>
     </div>
-    @endif
 </div>
 
 @endsection
