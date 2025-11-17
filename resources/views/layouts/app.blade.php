@@ -16,8 +16,6 @@
         html {
             scroll-behavior: smooth;
         }
-        
-        
     </style>
     
     @vite(['resources/css/app.css', 'resources/js/app.js'])
