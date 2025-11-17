@@ -1,4 +1,3 @@
-
 <div x-show="step === 1" class="space-y-8 animate-fade-in" x-data="addressHandler({{ $provinsi->toJson() }})">
     
     {{-- === Bagian Data Diri === --}}
@@ -49,9 +48,10 @@
                 </select>
                 @error('agama') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror 
             </div>
-             <div>
+            
+            <div>
                 <label for="anak_ke" class="block mb-2 text-sm font-medium text-slate-900">Anak Ke-</label>
-                <input type="number" id="anak_ke" name="anak_ke" value="{{ old('anak_ke', $siswa->anak_ke) }}" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Contoh: 1">
+                <input type="number" id="anak_ke" name="anak_ke" value="{{ old('anak_ke', $siswa->anak_ke) }}" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Contoh: 1" min="1" max="20">
                 @error('anak_ke') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
         </div>
@@ -64,7 +64,7 @@
             {{-- Dropdown Provinsi --}}
             <div>
                 <label for="provinsi_id" class="block mb-2 text-sm font-medium text-slate-900">Provinsi</label>
-                <select id="provinsi_id" name="provinsi_id" x-model="selectedProvince" @change="fetchRegencies()" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                <select id="provinsi_id" name="provinsi_id" x-model="selectedProvince" @change="fetchRegencies()" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
                     <option value="">-- Pilih Provinsi --</option>
                     <template x-for="province in provinces" :key="province.id">
                         <option :value="province.id" x-text="province.nama" :selected="province.id == selectedProvince"></option>
@@ -76,7 +76,7 @@
             {{-- Dropdown Kabupaten/Kota --}}
             <div>
                 <label for="kabupaten_id" class="block mb-2 text-sm font-medium text-slate-900">Kabupaten/Kota</label>
-                <select id="kabupaten_id" name="kabupaten_id" x-model="selectedRegency" @change="fetchDistricts()" :disabled="!selectedProvince" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 disabled:bg-slate-200">
+                <select id="kabupaten_id" name="kabupaten_id" x-model="selectedRegency" @change="fetchDistricts()" :disabled="!selectedProvince" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 disabled:bg-slate-200" required>
                     <option value="">-- Pilih Kabupaten/Kota --</option>
                     <template x-for="regency in regencies" :key="regency.id">
                         <option :value="regency.id" x-text="regency.nama" :selected="regency.id == selectedRegency"></option>
@@ -88,7 +88,7 @@
             {{-- Dropdown Kecamatan --}}
             <div>
                 <label for="kecamatan_id" class="block mb-2 text-sm font-medium text-slate-900">Kecamatan</label>
-                <select id="kecamatan_id" name="kecamatan_id" x-model="selectedDistrict" @change="fetchVillages()" :disabled="!selectedRegency" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 disabled:bg-slate-200">
+                <select id="kecamatan_id" name="kecamatan_id" x-model="selectedDistrict" @change="fetchVillages()" :disabled="!selectedRegency" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 disabled:bg-slate-200" required>
                     <option value="">-- Pilih Kecamatan --</option>
                     <template x-for="district in districts" :key="district.id">
                         <option :value="district.id" x-text="district.nama" :selected="district.id == selectedDistrict"></option>
@@ -100,7 +100,7 @@
             {{-- Dropdown Desa/Kelurahan --}}
             <div>
                 <label for="desa_id" class="block mb-2 text-sm font-medium text-slate-900">Desa/Kelurahan</label>
-                <select id="desa_id" name="desa_id" x-model="selectedVillage" :disabled="!selectedDistrict" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 disabled:bg-slate-200">
+                <select id="desa_id" name="desa_id" x-model="selectedVillage" :disabled="!selectedDistrict" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 disabled:bg-slate-200" required>
                     <option value="">-- Pilih Desa/Kelurahan --</option>
                     <template x-for="village in villages" :key="village.id">
                         <option :value="village.id" x-text="village.nama" :selected="village.id == selectedVillage"></option>
@@ -118,4 +118,3 @@
         </div>
     </div>
 </div>
-

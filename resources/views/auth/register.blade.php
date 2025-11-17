@@ -1,177 +1,248 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrasi - PPDB Online</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-white">
+    <section class="min-h-screen flex">
+        <!-- Left Container - Hidden on mobile -->
+        <div class="hidden lg:flex lg:w-1/2 bg-gray-900 items-center justify-center p-12">
+            <div class="max-w-md text-center">
+                <!-- Logo dari public/img -->
+                <div>
+                    <div class="flex justify-center">
+                        <img 
+                            src="/img/register.png" 
+                            alt="Logo PPDB Online" 
+                            class="w-80 h-80 object-contain"
+                            onerror="this.style.display='none'">
+                    </div>
+                </div>
 
-@section('title', 'Registrasi Akun Siswa')
-
-@section('content')
-<div class="min-h-screen bg-[#f8fafc] dark:bg-gray-900 py-16">
-    <div class="max-w-6xl mx-auto px-6">
-
-        {{-- Heading --}}
-        <div class="text-center mb-12">
-            <h1 class="text-3xl font-bold text-slate-800 dark:text-white">Registrasi Akun Siswa Baru</h1>
-            <p class="text-slate-600 dark:text-slate-300 mt-2">Silakan isi data berikut dengan benar.</p>
+                <!-- Copywriter -->
+                <div class="mb-8">
+                    <p class="text-gray-300 leading-relaxed text-lg">
+                        Sistem penerimaan peserta didik baru yang modern, 
+                        aman, dan terpercaya untuk masa depan pendidikan yang lebih baik.
+                    </p>
+                </div>
+            </div>
         </div>
 
-        {{-- Error Alert --}}
-        @if ($errors->any())
-            <div class="mb-10 p-4 bg-red-100 border border-red-300 text-red-800 rounded-lg text-sm">
-                <ul class="space-y-1 list-disc pl-5">
-                    @foreach ($errors->all() as $e)
-                        <li>{{ $e }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-
-        <form action="{{ route('register.siswa.submit') }}" method="POST" class="space-y-14">
-            @csrf
-
-            @php
-            $input = "bg-white border border-slate-300 text-slate-900 text-sm rounded-lg shadow-sm 
-                      focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5";
-            @endphp
-
-
-            {{-- ================= DATA DIRI ================= --}}
-            <div class="space-y-6">
-                <h3 class="text-lg font-semibold text-slate-800 dark:text-slate-200 border-l-4 border-blue-600 pl-3">
-                    Data Diri
-                </h3>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">Nama Lengkap</label>
-                        <input type="text" class="{{ $input }}" name="nama_lengkap" value="{{ old('nama_lengkap') }}" required>
+        <!-- Right Container - Form -->
+        <div class="w-full lg:w-1/2 flex items-center justify-center p-8">
+            <div class="w-full max-w-md">
+                <!-- Header -->
+                <div class="mb-10">
+                    <h1 class="text-3xl font-bold text-gray-900 mb-2">Daftar Akun</h1>
+                    <p class="text-gray-600">Registrasi siswa baru PPDB Online SMP</p>
+                    
+                    <!-- Info untuk siswa -->
+                    <div class="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
+                        <p class="text-sm text-blue-700 flex items-center">
+                            <svg class="w-4 h-4 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            Pastikan data yang Anda masukkan sudah benar sebelum mendaftar.
+                        </p>
                     </div>
+                </div>
 
+                <!-- Form -->
+                <form class="space-y-6" action="{{ route('register.siswa.submit') }}" method="POST">
+                    @csrf
+                    
+                    <!-- Nama Lengkap -->
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">NIK</label>
-                        <input type="text" id="nik" class="{{ $input }}" maxlength="16" name="nik" value="{{ old('nik') }}" required>
-                        <p id="nikError" class="hidden text-xs text-red-600 mt-1">NIK harus 16 digit angka</p>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">NISN</label>
-                        <input type="text" id="nisn" class="{{ $input }}" maxlength="10" name="nisn" value="{{ old('nisn') }}" required>
-                        <p id="nisnError" class="hidden text-xs text-red-600 mt-1">NISN harus 10 digit angka</p>
+                        <label for="nama_lengkap" class="block text-sm font-medium text-gray-700 mb-3">
+                            Nama Lengkap
+                        </label>
+                        <input
+                            id="nama_lengkap"
+                            name="nama_lengkap"
+                            type="text"
+                            required
+                            class="w-full px-4 py-3.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-gray-900 focus:border-gray-900 transition-colors placeholder-gray-500 bg-white"
+                            placeholder="Masukkan nama lengkap"
+                            value="{{ old('nama_lengkap') }}">
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">Tempat Lahir</label>
-                        <input type="text" class="{{ $input }}" name="tempat_lahir" value="{{ old('tempat_lahir') }}" required>
+                        <label for="nik" class="block text-sm font-medium text-gray-700 mb-3">
+                            NIK (Nomor Induk Kependudukan)
+                        </label>
+                        <input
+                            id="nik"
+                            name="nik"
+                            type="text"
+                            required
+                            maxlength="16"
+                            class="w-full px-4 py-3.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-gray-900 focus:border-gray-900 transition-colors placeholder-gray-500 bg-white"
+                            placeholder="Masukkan 16 digit NIK"
+                            value="{{ old('nik') }}">
                     </div>
 
+                    <!-- NISN -->
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">Tanggal Lahir</label>
-                        <input type="date" class="{{ $input }}" name="tanggal_lahir" value="{{ old('tanggal_lahir') }}" required>
+                        <label for="nisn" class="block text-sm font-medium text-gray-700 mb-3">
+                            NISN
+                        </label>
+                        <input
+                            id="nisn"
+                            name="nisn"
+                            type="text"
+                            required
+                            maxlength="10"
+                            class="w-full px-4 py-3.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-gray-900 focus:border-gray-900 transition-colors placeholder-gray-500 bg-white"
+                            placeholder="Masukkan 10 digit NISN"
+                            value="{{ old('nisn') }}">
                     </div>
 
+                    <!-- Tanggal Lahir & Jenis Kelamin -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label for="tanggal_lahir" class="block text-sm font-medium text-gray-700 mb-3">
+                                Tanggal Lahir
+                            </label>
+                            <input
+                                id="tanggal_lahir"
+                                name="tanggal_lahir"
+                                type="date"
+                                required
+                                class="w-full px-4 py-3.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-gray-900 focus:border-gray-900 transition-colors bg-white"
+                                value="{{ old('tanggal_lahir') }}">
+                        </div>
+                        <div>
+                            <label for="jenis_kelamin" class="block text-sm font-medium text-gray-700 mb-3">
+                                Jenis Kelamin
+                            </label>
+                            <select
+                                id="jenis_kelamin"
+                                name="jenis_kelamin"
+                                required
+                                class="w-full px-4 py-3.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-gray-900 focus:border-gray-900 transition-colors bg-white">
+                                <option value="">Pilih</option>
+                                <option value="L" @selected(old('jenis_kelamin')=='L')>Laki-Laki</option>
+                                <option value="P" @selected(old('jenis_kelamin')=='P')>Perempuan</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Email -->
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">Jenis Kelamin</label>
-                        <select name="jenis_kelamin" class="{{ $input }}" required>
-                            <option value="">-- Pilih --</option>
-                            <option value="L" @selected(old('jenis_kelamin')=='L')>Laki-Laki</option>
-                            <option value="P" @selected(old('jenis_kelamin')=='P')>Perempuan</option>
-                        </select>
+                        <label for="email" class="block text-sm font-medium text-gray-700 mb-3">
+                            Email
+                        </label>
+                        <input
+                            id="email"
+                            name="email"
+                            type="email"
+                            required
+                            class="w-full px-4 py-3.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-gray-900 focus:border-gray-900 transition-colors placeholder-gray-500 bg-white"
+                            placeholder="Masukkan email Anda"
+                            value="{{ old('email') }}">
                     </div>
 
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">Agama</label>
-                        <select name="agama" class="{{ $input }}" required>
-                            <option value="">-- Pilih Agama --</option>
-                            @foreach ($agamaOptions as $option)
-                                <option value="{{ $option }}" @selected(old('agama')==$option)>{{ $option }}</option>
-                            @endforeach
-                        </select>
+                    <!-- Password -->
+                    <div x-data="{ show: false }">
+                        <label for="password" class="block text-sm font-medium text-gray-700 mb-3">
+                            Password
+                        </label>
+                        <div class="relative">
+                            <input
+                                :type="show ? 'text' : 'password'"
+                                id="password"
+                                name="password"
+                                required
+                                class="w-full px-4 py-3.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-gray-900 focus:border-gray-900 transition-colors placeholder-gray-500 bg-white pr-24"
+                                placeholder="Masukkan password Anda">
+                            <button 
+                                type="button" 
+                                @click="show = !show"
+                                class="absolute right-4 top-1/2 transform -translate-y-1/2 text-sm text-gray-500 hover:text-gray-700 font-medium transition-colors">
+                                <span x-text="show ? 'Sembunyikan' : 'Tampilkan'"></span>
+                            </button>
+                        </div>
                     </div>
 
-                    <div class="lg:col-span-3">
-                        <label class="block text-sm font-medium text-slate-700 mb-1">Asal Sekolah</label>
-                        <input type="text" class="{{ $input }}" name="asal_sekolah" value="{{ old('asal_sekolah') }}" required>
+                    <!-- Confirm Password -->
+                    <div x-data="{ show: false }">
+                        <label for="password_confirmation" class="block text-sm font-medium text-gray-700 mb-3">
+                            Konfirmasi Password
+                        </label>
+                        <div class="relative">
+                            <input
+                                :type="show ? 'text' : 'password'"
+                                id="password_confirmation"
+                                name="password_confirmation"
+                                required
+                                class="w-full px-4 py-3.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-gray-900 focus:border-gray-900 transition-colors placeholder-gray-500 bg-white pr-24"
+                                placeholder="Ulangi password Anda">
+                            <button 
+                                type="button" 
+                                @click="show = !show"
+                                class="absolute right-4 top-1/2 transform -translate-y-1/2 text-sm text-gray-500 hover:text-gray-700 font-medium transition-colors">
+                                <span x-text="show ? 'Sembunyikan' : 'Tampilkan'"></span>
+                            </button>
+                        </div>
                     </div>
 
-                    <div class="lg:col-span-3">
-                        <label class="block text-sm font-medium text-slate-700 mb-1">Alamat Lengkap</label>
-                        <textarea class="{{ $input }}" name="alamat" rows="3" required>{{ old('alamat') }}</textarea>
-                    </div>
+                    <!-- Submit Button -->
+                    <button
+                        type="submit"
+                        class="w-full bg-gray-900 text-white py-3.5 px-4 rounded-xl font-semibold hover:bg-gray-800 focus:ring-2 focus:ring-gray-900 focus:ring-offset-2 transition-colors">
+                        Daftar Akun
+                    </button>
+                </form>
 
+                <!-- Login Link -->
+                <div class="text-center mt-4 pt-4 border-t border-gray-200">
+                    <p class="text-sm text-gray-500">
+                        Sudah punya akun? 
+                        <a href="{{ route('login') }}" class="text-gray-700 hover:text-gray-900 font-medium underline">
+                            Login di sini
+                        </a>
+                    </p>
+                </div>
+
+                <!-- Back Link -->
+                <div class="text-center mt-4">
+                    <a href="{{ route('home') }}" class="text-sm text-gray-500 hover:text-gray-700 transition-colors inline-flex items-center">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                        </svg>
+                        Kembali ke beranda
+                    </a>
                 </div>
             </div>
+        </div>
+    </section>
 
-
-            {{-- ================= INFORMASI AKUN ================= --}}
-            <div class="space-y-6">
-                <h3 class="text-lg font-semibold text-slate-800 border-l-4 border-indigo-500 pl-3">
-                    Informasi Akun
-                </h3>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">Email</label>
-                        <input type="email" class="{{ $input }}" name="email" value="{{ old('email') }}" required>
-                    </div>
-
-                    {{-- PASSWORD --}}
-                    <div x-data="{show:false}" class="relative">
-                        <label class="block text-sm font-medium text-slate-700 mb-1">Password</label>
-                        <input :type="show ? 'text' : 'password'" class="{{ $input }} pr-10" name="password" required>
-                        <button type="button" @click="show=!show" class="absolute right-3 top-9 text-slate-600 hover:text-blue-600">
-                            <!-- Heroicon Eye -->
-                            <svg x-show="!show" xmlns="http://www.w3.org/2000/svg" class="h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-.91 3.05-3.3 5.567-6.233 6.566"/>
-                            </svg>
-                            <!-- Heroicon Eye Off -->
-                            <svg x-show="show" xmlns="http://www.w3.org/2000/svg" class="h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M13.875 18.825A10.05 10.05 0 0112 19c-4.477 0-8.268-2.943-9.542-7a9.968 9.968 0 011.62-3.023M9.88 9.88a3 3 0 104.24 4.24"/>
-                            </svg>
-                        </button>
-                    </div>
-
-                    {{-- CONFIRM PASSWORD --}}
-                    <div x-data="{show:false}" class="relative">
-                        <label class="block text-sm font-medium text-slate-700 mb-1">Konfirmasi Password</label>
-                        <input :type="show ? 'text' : 'password'" class="{{ $input }} pr-10" name="password_confirmation" required>
-                        <button type="button" @click="show=!show" class="absolute right-3 top-9 text-slate-600 hover:text-blue-600">
-                            <svg x-show="!show" xmlns="http://www.w3.org/2000/svg" class="h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                            </svg>
-                            <svg x-show="show" xmlns="http://www.w3.org/2000/svg" class="h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path d="M13.875 18.825A10.05 10.05 0 0112 19"/>
-                            </svg>
-                        </button>
-                    </div>
-
-                </div>
-            </div>
-
-            <button type="submit"
-                class="w-full py-3 text-white font-semibold rounded-lg bg-blue-600 hover:bg-blue-700 transition shadow-md">
-                Daftar Akun
-            </button>
-
-            <p class="text-center text-sm text-slate-700 mt-2">
-                Sudah punya akun? <a href="{{ route('login') }}" class="text-blue-600 hover:underline">Login di sini</a>
-            </p>
-
-        </form>
-
-    </div>
-</div>
-
-
-<script>
-nik.addEventListener('input', () => {
-    nik.value = nik.value.replace(/\D/g,'');
-    nikError.classList.toggle('hidden', nik.value.length === 16);
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const nisn = document.getElementById('nisn');
+    const nik = document.getElementById('nik'); // TAMBAHKAN INI
+    
+    // Validasi NISN hanya angka
+    nisn.addEventListener('input', function() {
+        this.value = this.value.replace(/\D/g, '');
+    });
+    
+    // Validasi NIK hanya angka
+    nik.addEventListener('input', function() {
+        this.value = this.value.replace(/\D/g, '');
+    });
 });
-nisn.addEventListener('input', () => {
-    nisn.value = nisn.value.replace(/\D/g,'');
-    nisnError.classList.toggle('hidden', nisn.value.length === 10);
-});
-</script>
-@endsection
+    </script>
+</body>
+</html>

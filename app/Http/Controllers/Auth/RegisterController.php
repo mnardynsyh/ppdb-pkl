@@ -15,8 +15,7 @@ class RegisterController extends Controller
      */
     public function showRegisterForm()
     {
-        $agamaOptions = ['Islam', 'Kristen Protestan', 'Kristen Katolik', 'Hindu', 'Buddha', 'Konghucu'];
-        return view('auth.register', compact('agamaOptions'));
+        return view('auth.register');
     }
 
     /**
@@ -24,40 +23,36 @@ class RegisterController extends Controller
      */
     public function register(Request $request)
     {
- 
         $validated = $request->validate([
             'nama_lengkap'     => 'required|string|max:255',
-            'nik'              => 'required|digits:16|unique:siswa,nik',
             'nisn'             => 'required|digits:10|unique:siswa,nisn',
-            'tempat_lahir'     => 'required|string|max:100',
+            'nik'              => 'required|digits:16|unique:siswa,nik',
             'tanggal_lahir'    => 'required|date',
             'jenis_kelamin'    => 'required|in:L,P',
-            'agama'            => 'required|string',
-            'asal_sekolah'     => 'required|string|max:255',
-            'alamat'           => 'required|string',
             'email'            => 'required|email|max:255|unique:siswa,email',
             'password'         => 'required|min:6|confirmed',
+        ], 
+        [
+            'nisn.digits' => 'NISN harus terdiri dari 10 digit angka.',
+            'nisn.unique' => 'NISN sudah terdaftar.',
+            'nik.digits' => 'NIK harus terdiri dari 16 digit angka.',
+            'nik.unique' => 'NIK sudah terdaftar.',
+            'email.unique' => 'Email sudah terdaftar.',
+            'password.confirmed' => 'Konfirmasi password tidak sesuai.',
         ]);
 
         $siswa = Siswa::create([
             'nama_lengkap'   => trim($validated['nama_lengkap']),
-            'nik'            => trim($validated['nik']),
             'nisn'           => trim($validated['nisn']),
-            'tempat_lahir'   => trim($validated['tempat_lahir']),
+            'nik'            => trim($validated['nik']), // TAMBAHKAN INI
             'tanggal_lahir'  => $validated['tanggal_lahir'],
             'jenis_kelamin'  => $validated['jenis_kelamin'],
-            'agama'          => $validated['agama'],
-            'asal_sekolah'   => trim($validated['asal_sekolah']),
-            'alamat'         => trim($validated['alamat']),
-            'email'          => strtolower($validated['email']),
+            'email'          => strtolower(trim($validated['email'])),
             'password'       => Hash::make($validated['password']),
+            'status_pendaftaran' => 'Pending',
         ]);
 
-
         Auth::guard('siswa')->login($siswa);
-
         return redirect()->route('login')->with('success', 'Akun berhasil dibuat. Silakan login.');
     }
-        
 }
-
