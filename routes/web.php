@@ -84,8 +84,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:web'])->group(function
 
     Route::get('/dashboard', [AdminDashboard::class, 'index'])->name('dashboard');
 
-    Route::resource('jadwal', JadwalController::class)->only(['index', 'store', 'update', 'destroy']);
-
+    // Manajemen Pendaftaran
     Route::prefix('pendaftaran')->name('pendaftaran.')->controller(PendaftaranController::class)->group(function () {
         Route::get('/masuk', 'masuk')->name('masuk');
         Route::get('/diterima', 'diterima')->name('diterima');
@@ -98,15 +97,23 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:web'])->group(function
         Route::get('/export', 'exportExcel')->name('export');
     });
 
-    Route::prefix('pengaturan')->name('pengaturan.')->controller(PengaturanController::class)->group(function () {
-        Route::get('/', 'index')->name('index');
-        Route::put('/', 'update')->name('update');
+
+    Route::controller(PengaturanController::class)->group(function () {
+        Route::get('/pengaturan', 'index')->name('pengaturan.index');
+        Route::put('/pengaturan', 'update')->name('pengaturan.update');
+
+
+        Route::post('/jadwal', 'storeJadwal')->name('jadwal.store');
+        Route::put('/jadwal/{jadwal}', 'updateJadwal')->name('jadwal.update');
+        Route::delete('/jadwal/{jadwal}', 'destroyJadwal')->name('jadwal.destroy');
     });
 
+    // Profil Admin
     Route::prefix('profil')->name('profil.')->controller(AdminProfile::class)->group(function () {
         Route::get('/', 'edit')->name('edit');
         Route::put('/', 'update')->name('update');
     });
+
 });
 
 

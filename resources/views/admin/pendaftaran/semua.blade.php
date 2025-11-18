@@ -1,168 +1,293 @@
 @extends('layouts.admin')
 
-@section('title', 'Semua Pendaftar')
+@section('title', 'Data Pendaftar')
 
 @section('content')
-<div class="p-4 sm:p-6 mt-12">
-    {{-- Header Halaman --}}
-    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6">
-        <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-100">
-            Semua Data Pendaftar
-        </h1>
-    </div>
+<div class="w-full min-h-screen bg-[#F8FAFC] px-4 pt-20 pb-10 lg:px-8 lg:pt-20 lg:pb-10 flex flex-col font-sans text-slate-800">
 
-    {{-- Notifikasi Sukses --}}
-    @if(session('success'))
-        <div class="mb-4 rounded-lg border border-green-200 bg-green-50 p-4 text-green-700">
-            {{ session('success') }}
-        </div>
-    @endif
+    <div class="max-w-7xl mx-auto w-full flex-1 flex flex-col">
 
-    {{-- Card Filter dan Pencarian --}}
-    <div class="mb-6 p-4 bg-white dark:bg-gray-800 rounded-xl shadow-md">
-        <form action="{{ route('admin.pendaftaran.semua') }}" method="GET" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div class="lg:col-span-2 relative">
-                <label for="search" class="sr-only">Cari</label>
-                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                </div>
-                <input type="text" name="search" id="search" placeholder="Cari nama, NISN, atau asal sekolah..."
-                       value="{{ request('search') }}"
-                       class="w-full pl-10 rounded-lg border-gray-300 p-2 text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
-            </div>
-
+        {{-- 1. HEADER SECTION --}}
+        <div class="shrink-0 mb-8 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
             <div>
-                <label for="status" class="sr-only">Status</label>
-                <select name="status" id="status" class="w-full rounded-lg border-gray-300 p-2 text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
-                    <option value="">Semua Status</option>
-                    <option value="Pending" @selected(request('status') == 'Pending')>Pending</option>
-                    <option value="Diterima" @selected(request('status') == 'Diterima')>Diterima</option>
-                    <option value="Ditolak" @selected(request('status') == 'Ditolak')>Ditolak</option>
-                </select>
+                <h1 class="text-2xl font-bold tracking-tight text-slate-900">Data Pendaftar</h1>
+                <p class="text-sm text-slate-500 mt-1 font-medium">Kelola dan verifikasi data calon peserta didik baru.</p>
+            </div>
+            
+            {{-- Total Count Badge --}}
+            <div class="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-xl shadow-sm">
+                <span class="flex h-2 w-2 rounded-full bg-blue-600"></span>
+                <span class="text-xs font-bold text-slate-600 uppercase tracking-wider">Total Data:</span>
+                <span class="text-sm font-bold text-slate-900">{{ $siswas->total() }}</span>
+            </div>
+        </div>
+
+        {{-- 2. ALERTS (AlpineJS Dismissible) --}}
+        @if(session('success'))
+            <div x-data="{ show: true }" x-show="show" x-transition.duration.300ms
+                 class="shrink-0 mb-6 p-4 rounded-xl bg-emerald-50 border border-emerald-100 text-emerald-700 flex items-center justify-between shadow-sm">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-check text-sm"></i>
+                    </div>
+                    <span class="text-sm font-bold">{{ session('success') }}</span>
+                </div>
+                <button @click="show = false" class="text-emerald-500 hover:text-emerald-700"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+        @endif
+
+        {{-- 3. FILTER & SEARCH BAR --}}
+        <div class="shrink-0 mb-6 bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+            <form action="{{ route('admin.pendaftaran.semua') }}" method="GET" class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+                
+                {{-- Search Input --}}
+                <div class="lg:col-span-5 relative">
+                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                    <input type="text" name="search" value="{{ request('search') }}" 
+                           class="w-full pl-10 pr-4 py-2.5 rounded-xl border-2 border-slate-100 bg-slate-50 text-sm font-medium focus:border-blue-500 focus:ring-0 focus:bg-white transition-colors placeholder-slate-400" 
+                           placeholder="Cari Nama, NISN, atau Asal Sekolah...">
+                </div>
+
+                {{-- Status Filter --}}
+                <div class="lg:col-span-3 relative">
+                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                        <i class="fa-solid fa-filter"></i>
+                    </div>
+                    <select name="status" class="w-full pl-10 pr-8 py-2.5 rounded-xl border-2 border-slate-100 bg-slate-50 text-sm font-bold text-slate-600 focus:border-blue-500 focus:ring-0 focus:bg-white appearance-none cursor-pointer transition-colors">
+                        <option value="">Semua Status</option>
+                        <option value="Pending" @selected(request('status') == 'Pending')>Pending</option>
+                        <option value="Diterima" @selected(request('status') == 'Diterima')>Diterima</option>
+                        <option value="Ditolak" @selected(request('status') == 'Ditolak')>Ditolak</option>
+                    </select>
+                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-slate-400">
+                        <i class="fa-solid fa-chevron-down text-xs"></i>
+                    </div>
+                </div>
+
+                {{-- Action Buttons --}}
+                <div class="lg:col-span-4 flex gap-2">
+                    <button type="submit" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-xl text-sm font-bold shadow-sm shadow-blue-200 transition-all flex items-center justify-center gap-2">
+                        Cari Data
+                    </button>
+                    <a href="{{ route('admin.pendaftaran.export', request()->query()) }}" class="bg-white border-2 border-slate-100 text-slate-600 hover:border-emerald-500 hover:text-emerald-600 px-4 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-2" title="Export Excel">
+                        <i class="fa-solid fa-file-excel text-lg"></i>
+                    </a>
+                </div>
+            </form>
+        </div>
+
+        {{-- 4. CONTENT TABLE / CARDS --}}
+        <div class="flex-1">
+            
+            {{-- DESKTOP VIEW (TABLE) --}}
+            <div class="hidden lg:block bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                <table class="w-full text-left border-collapse">
+                    <thead class="bg-slate-50/50 border-b border-slate-200">
+                        <tr>
+                            <th class="px-6 py-4 text-xs font-extrabold text-slate-500 uppercase tracking-wider">Calon Siswa</th>
+                            <th class="px-6 py-4 text-xs font-extrabold text-slate-500 uppercase tracking-wider">NISN</th>
+                            <th class="px-6 py-4 text-xs font-extrabold text-slate-500 uppercase tracking-wider">Asal Sekolah</th>
+                            <th class="px-6 py-4 text-xs font-extrabold text-slate-500 uppercase tracking-wider text-center">Status</th>
+                            <th class="px-6 py-4 text-xs font-extrabold text-slate-500 uppercase tracking-wider text-center">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        @forelse($siswas as $siswa)
+                            <tr class="hover:bg-blue-50/30 transition-colors group">
+                                {{-- Nama --}}
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-4">
+                                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-100 to-indigo-100 text-blue-600 flex items-center justify-center text-sm font-bold border border-white shadow-sm">
+                                            {{ substr($siswa->nama_lengkap, 0, 2) }}
+                                        </div>
+                                        <div>
+                                            <p class="text-sm font-bold text-slate-800">{{ $siswa->nama_lengkap }}</p>
+                                            <p class="text-xs text-slate-500">{{ $siswa->email ?? '-' }}</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                
+                                {{-- NISN --}}
+                                <td class="px-6 py-4">
+                                    <span class="font-mono text-xs font-bold text-slate-600 bg-slate-100 px-2 py-1 rounded-md border border-slate-200">
+                                        {{ $siswa->nisn }}
+                                    </span>
+                                </td>
+
+                                {{-- Sekolah --}}
+                                <td class="px-6 py-4">
+                                    <p class="text-sm font-medium text-slate-700 flex items-center gap-2">
+                                        <i class="fa-solid fa-school text-slate-400 text-xs"></i>
+                                        {{ $siswa->asal_sekolah }}
+                                    </p>
+                                </td>
+
+                                {{-- Status --}}
+                                <td class="px-6 py-4 text-center">
+                                    @php
+                                        $statusColor = match($siswa->status_pendaftaran) {
+                                            'Diterima' => 'bg-emerald-50 text-emerald-700 border-emerald-200',
+                                            'Ditolak' => 'bg-rose-50 text-rose-700 border-rose-200',
+                                            default => 'bg-amber-50 text-amber-700 border-amber-200',
+                                        };
+                                        $statusIcon = match($siswa->status_pendaftaran) {
+                                            'Diterima' => 'fa-check-circle',
+                                            'Ditolak' => 'fa-circle-xmark',
+                                            default => 'fa-clock',
+                                        };
+                                    @endphp
+                                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border {{ $statusColor }}">
+                                        <i class="fa-solid {{ $statusIcon }}"></i>
+                                        {{ $siswa->status_pendaftaran }}
+                                    </span>
+                                </td>
+
+                                {{-- Aksi --}}
+                                <td class="px-6 py-4 text-center">
+                                    <div class="flex items-center justify-center gap-2 opacity-100 lg:opacity-60 lg:group-hover:opacity-100 transition-all">
+                                        
+                                        {{-- Detail --}}
+                                        <a href="{{ route('admin.pendaftaran.detail', $siswa) }}" class="w-8 h-8 rounded-lg flex items-center justify-center bg-white border border-slate-200 text-slate-500 hover:text-blue-600 hover:border-blue-200 hover:shadow-sm transition-all" title="Detail">
+                                            <i class="fa-solid fa-eye"></i>
+                                        </a>
+
+                                        @if($siswa->status_pendaftaran == 'Pending')
+                                            {{-- Terima --}}
+                                            <form action="{{ route('admin.pendaftaran.terima', $siswa) }}" method="POST" onsubmit="return confirm('Terima siswa ini?')">
+                                                @csrf @method('PATCH')
+                                                <button type="submit" class="w-8 h-8 rounded-lg flex items-center justify-center bg-white border border-slate-200 text-slate-500 hover:text-emerald-600 hover:border-emerald-200 hover:shadow-sm transition-all" title="Terima">
+                                                    <i class="fa-solid fa-check"></i>
+                                                </button>
+                                            </form>
+
+                                            {{-- Tolak --}}
+                                            <form action="{{ route('admin.pendaftaran.tolak', $siswa) }}" method="POST" onsubmit="return confirm('Tolak siswa ini?')">
+                                                @csrf @method('PATCH')
+                                                <button type="submit" class="w-8 h-8 rounded-lg flex items-center justify-center bg-white border border-slate-200 text-slate-500 hover:text-rose-600 hover:border-rose-200 hover:shadow-sm transition-all" title="Tolak">
+                                                    <i class="fa-solid fa-xmark"></i>
+                                                </button>
+                                            </form>
+                                        @else
+                                            {{-- Reset --}}
+                                            <form action="{{ route('admin.pendaftaran.batalkan', $siswa) }}" method="POST" onsubmit="return confirm('Reset status ke Pending?')">
+                                                @csrf @method('PATCH')
+                                                <button type="submit" class="w-8 h-8 rounded-lg flex items-center justify-center bg-white border border-slate-200 text-slate-500 hover:text-amber-600 hover:border-amber-200 hover:shadow-sm transition-all" title="Reset Status">
+                                                    <i class="fa-solid fa-rotate-left"></i>
+                                                </button>
+                                            </form>
+                                        @endif
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="5" class="px-6 py-12 text-center">
+                                    <div class="flex flex-col items-center justify-center">
+                                        <div class="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mb-4">
+                                            <i class="fa-solid fa-user-slash text-3xl text-slate-300"></i>
+                                        </div>
+                                        <h3 class="text-slate-900 font-bold text-lg">Tidak ada data ditemukan</h3>
+                                        <p class="text-slate-500 text-sm mt-1">Coba ubah filter pencarian atau status.</p>
+                                        <a href="{{ route('admin.pendaftaran.semua') }}" class="mt-4 text-sm font-bold text-blue-600 hover:underline">Reset Filter</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
 
-            <div class="flex items-center gap-2">
-                <button type="submit" class="w-full px-4 py-2 text-white bg-blue-600 rounded-lg shadow hover:bg-blue-700 transition duration-300">
-                    Filter
-                </button>
-                <a href="{{ route('admin.pendaftaran.export', request()->query()) }}" class="w-full px-4 py-2 text-center text-white bg-green-600 rounded-lg shadow hover:bg-green-700 transition duration-300 flex items-center justify-center gap-2">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                    <span>Ekspor</span>
-                </a>
-            </div>
-        </form>
-    </div>
+            {{-- MOBILE VIEW (CARDS) --}}
+            <div class="lg:hidden space-y-4">
+                @forelse($siswas as $siswa)
+                    <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm relative overflow-hidden">
+                        
+                        {{-- Status Banner --}}
+                        <div class="absolute top-0 left-0 w-1.5 h-full 
+                            {{ $siswa->status_pendaftaran == 'Diterima' ? 'bg-emerald-500' : ($siswa->status_pendaftaran == 'Ditolak' ? 'bg-rose-500' : 'bg-amber-500') }}">
+                        </div>
 
-    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
-        <div class="hidden md:block">
-            <table class="w-full text-sm text-left text-gray-600 dark:text-gray-300">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                    <tr>
-                        <th class="px-6 py-3">Nama Lengkap</th>
-                        <th class="px-6 py-3">NISN</th>
-                        <th class="px-6 py-3">Asal Sekolah</th>
-                        <th class="px-6 py-3 text-center">Status</th>
-                        <th class="px-6 py-3 text-center">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse($siswas as $siswa)
-                        <tr class="odd:bg-white even:bg-gray-50 dark:odd:bg-gray-800 dark:even:bg-gray-700/50 border-t dark:border-gray-700">
-                            <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">{{ $siswa->nama_lengkap }}</td>
-                            <td class="px-6 py-4">{{ $siswa->nisn }}</td>
-                            <td class="px-6 py-4">{{ $siswa->asal_sekolah }}</td>
-                            <td class="px-6 py-4 text-center">
-                                <span @class([
-                                    'px-2.5 py-1 text-xs font-semibold rounded-full',
-                                    'bg-yellow-100 text-yellow-800' => $siswa->status_pendaftaran == 'Pending',
-                                    'bg-green-100 text-green-800' => $siswa->status_pendaftaran == 'Diterima',
-                                    'bg-red-100 text-red-800' => $siswa->status_pendaftaran == 'Ditolak',
-                                ])>
+                        <div class="pl-3">
+                            <div class="flex justify-between items-start mb-3">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 font-bold text-sm">
+                                        {{ substr($siswa->nama_lengkap, 0, 2) }}
+                                    </div>
+                                    <div>
+                                        <h3 class="text-sm font-bold text-slate-900">{{ $siswa->nama_lengkap }}</h3>
+                                        <p class="text-xs text-slate-500">{{ $siswa->nisn }}</p>
+                                    </div>
+                                </div>
+                                
+                                {{-- Mobile Status Badge --}}
+                                @php
+                                    $statusColor = match($siswa->status_pendaftaran) {
+                                        'Diterima' => 'bg-emerald-50 text-emerald-700 border-emerald-100',
+                                        'Ditolak' => 'bg-rose-50 text-rose-700 border-rose-100',
+                                        default => 'bg-amber-50 text-amber-700 border-amber-100',
+                                    };
+                                @endphp
+                                <span class="px-2.5 py-1 rounded-lg text-[10px] font-bold border {{ $statusColor }}">
                                     {{ $siswa->status_pendaftaran }}
                                 </span>
-                            </td>
-                            <td class="px-6 py-4">
-                                <div class="flex items-center justify-center gap-2">
-                                    <a href="{{ route('admin.pendaftaran.detail', $siswa)}}" title="Lihat Detail" class="p-2 text-white bg-indigo-500 hover:bg-indigo-600 rounded-lg">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
-                                    </a>
-                                    @if ($siswa->status_pendaftaran == 'Pending')
-                                        <form action="{{ route('admin.pendaftaran.terima', $siswa) }}" method="POST" onsubmit="return confirm('Yakin ingin menerima siswa ini?')">@csrf @method('PATCH')
-                                            <button type="submit" title="Terima" class="p-2 text-white bg-green-500 hover:bg-green-600 rounded-lg">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                                            </button>
-                                        </form>
-                                        <form action="{{ route('admin.pendaftaran.tolak', $siswa) }}" method="POST" onsubmit="return confirm('Yakin ingin menolak siswa ini?')">@csrf @method('PATCH')
-                                            <button type="submit" title="Tolak" class="p-2 text-white bg-red-500 hover:bg-red-600 rounded-lg">
-                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                                            </button>
-                                        </form>
-                                    @else
-                                        <form action="{{ route('admin.pendaftaran.batalkan', $siswa) }}" method="POST" onsubmit="return confirm('Yakin ingin membatalkan status siswa ini?')">@csrf @method('PATCH')
-                                            <button type="submit" title="Batalkan" class="p-2 text-white bg-gray-500 hover:bg-gray-600 rounded-lg">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                                            </button>
-                                        </form>
-                                    @endif
+                            </div>
+
+                            <div class="space-y-2 mb-5">
+                                <div class="flex items-center gap-2 text-xs text-slate-600">
+                                    <i class="fa-solid fa-school w-4 text-slate-400"></i>
+                                    {{ $siswa->asal_sekolah }}
                                 </div>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr><td class="p-6 text-center text-gray-500" colspan="5">Tidak ada data ditemukan.</td></tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
+                                @if($siswa->email)
+                                <div class="flex items-center gap-2 text-xs text-slate-600">
+                                    <i class="fa-solid fa-envelope w-4 text-slate-400"></i>
+                                    {{ $siswa->email }}
+                                </div>
+                                @endif
+                            </div>
 
-        {{-- Tampilan Mobile --}}
-        <div class="grid grid-cols-1 gap-4 p-4 md:hidden">
-            @forelse($siswas as $siswa)
-                <div class="bg-white dark:bg-gray-800/50 p-4 rounded-lg shadow border dark:border-gray-700 space-y-3">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <p class="font-bold text-gray-900 dark:text-white">{{ $siswa->nama_lengkap }}</p>
-                            <p class="text-sm text-gray-500">{{ $siswa->nisn }}</p>
+                            {{-- Mobile Actions --}}
+                            <div class="grid grid-cols-4 gap-2 pt-4 border-t border-slate-100">
+                                <a href="{{ route('admin.pendaftaran.detail', $siswa) }}" class="col-span-2 flex items-center justify-center gap-2 py-2 bg-blue-50 text-blue-700 text-xs font-bold rounded-lg">
+                                    <i class="fa-solid fa-eye"></i> Detail
+                                </a>
+                                
+                                @if($siswa->status_pendaftaran == 'Pending')
+                                    <form action="{{ route('admin.pendaftaran.terima', $siswa) }}" method="POST" class="col-span-1" onsubmit="return confirm('Terima?')">
+                                        @csrf @method('PATCH')
+                                        <button type="submit" class="w-full py-2 bg-emerald-50 text-emerald-700 text-xs font-bold rounded-lg"><i class="fa-solid fa-check"></i></button>
+                                    </form>
+                                    <form action="{{ route('admin.pendaftaran.tolak', $siswa) }}" method="POST" class="col-span-1" onsubmit="return confirm('Tolak?')">
+                                        @csrf @method('PATCH')
+                                        <button type="submit" class="w-full py-2 bg-rose-50 text-rose-700 text-xs font-bold rounded-lg"><i class="fa-solid fa-xmark"></i></button>
+                                    </form>
+                                @else
+                                    <form action="{{ route('admin.pendaftaran.batalkan', $siswa) }}" method="POST" class="col-span-2" onsubmit="return confirm('Reset?')">
+                                        @csrf @method('PATCH')
+                                        <button type="submit" class="w-full py-2 bg-amber-50 text-amber-700 text-xs font-bold rounded-lg flex items-center justify-center gap-1">
+                                            <i class="fa-solid fa-rotate-left"></i> Reset
+                                        </button>
+                                    </form>
+                                @endif
+                            </div>
                         </div>
-                        <span @class([
-                            'px-2.5 py-1 text-xs font-semibold rounded-full',
-                            'bg-yellow-100 text-yellow-800' => $siswa->status_pendaftaran == 'Pending',
-                            'bg-green-100 text-green-800' => $siswa->status_pendaftaran == 'Diterima',
-                            'bg-red-100 text-red-800' => $siswa->status_pendaftaran == 'Ditolak',
-                        ])>
-                            {{ $siswa->status_pendaftaran }}
-                        </span>
                     </div>
-                    <div class="text-sm text-gray-600 dark:text-gray-300">
-                        <p><span class="font-medium">Asal Sekolah:</span> {{ $siswa->asal_sekolah }}</p>
+                @empty
+                    <div class="text-center py-10">
+                        <p class="text-slate-500 text-sm">Tidak ada data.</p>
                     </div>
-                    <div class="border-t dark:border-gray-600 pt-3 flex items-center justify-end gap-2">
-                         <a href="{{ route('admin.pendaftaran.detail', $siswa)}}" class="flex-grow text-center text-white bg-indigo-500 hover:bg-indigo-600 font-medium rounded-lg text-xs px-3 py-2">
-                            Detail
-                        </a>
-                        @if ($siswa->status_pendaftaran == 'Pending')
-                            <form action="{{ route('admin.pendaftaran.terima', $siswa) }}" method="POST" onsubmit="return confirm('Yakin ingin menerima siswa ini?')">@csrf @method('PATCH')
-                                <button type="submit" class="w-full text-white bg-green-500 hover:bg-green-600 font-medium rounded-lg text-xs px-3 py-2">Terima</button>
-                            </form>
-                            <form action="{{ route('admin.pendaftaran.tolak', $siswa) }}" method="POST" onsubmit="return confirm('Yakin ingin menolak siswa ini?')">@csrf @method('PATCH')
-                                <button type="submit" class="w-full text-white bg-red-500 hover:bg-red-600 font-medium rounded-lg text-xs px-3 py-2">Tolak</button>
-                            </form>
-                        @else
-                            <form action="{{ route('admin.pendaftaran.batalkan', $siswa) }}" method="POST" onsubmit="return confirm('Yakin ingin membatalkan status siswa ini?')">@csrf @method('PATCH')
-                                <button type="submit" class="w-full text-white bg-gray-500 hover:bg-gray-600 font-medium rounded-lg text-xs px-3 py-2">Batalkan</button>
-                            </form>
-                        @endif
-                    </div>
-                </div>
-            @empty
-                 <div class="p-6 text-center text-gray-500">Tidak ada data ditemukan.</div>
-            @endforelse
-        </div>
-    </div>
+                @endforelse
+            </div>
 
-    {{-- Link Paginasi --}}
-    <div class="mt-6">
-        {{ $siswas->links() }}
+            {{-- PAGINATION --}}
+            @if($siswas->hasPages())
+                <div class="mt-6">
+                    {{ $siswas->withQueryString()->links('pagination::tailwind') }}
+                </div>
+            @endif
+
+        </div>
     </div>
 </div>
 @endsection
-

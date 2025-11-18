@@ -12,16 +12,14 @@ class Pengaturan extends Model
 
     protected $table = 'pengaturan';
 
-    /**
-     * [DIPERBARUI] Menambahkan kolom kontak ke fillable.
-     */
     protected $fillable = [
+        'tahun_ajaran',
         'status',
         'tanggal_buka',
         'tanggal_tutup',
         'alamat_sekolah',
         'telepon',
-        'email_kontak',
+        'email',
     ];
 
     /**
@@ -78,4 +76,3 @@ class Pengaturan extends Model
         ];
     }
 }
-
