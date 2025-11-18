@@ -11,29 +11,63 @@ use Maatwebsite\Excel\Facades\Excel;
 class PendaftaranController extends Controller
 {
     /**
+     * Helper private untuk logika pencarian agar tidak menulis ulang kode.
+     */
+    private function applySearch($query, $request)
+    {
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('nama_lengkap', 'like', "%{$search}%")
+                  ->orWhere('nisn', 'like', "%{$search}%")
+                  ->orWhere('nik', 'like', "%{$search}%")
+                  ->orWhere('asal_sekolah', 'like', "%{$search}%");
+            });
+        }
+    }
+
+    /**
      * Menampilkan halaman pendaftar yang statusnya 'Pending'.
      */
-    public function masuk()
+    public function masuk(Request $request)
     {
-        $siswas = Siswa::where('status_pendaftaran', 'Pending')->latest()->paginate(10);
+        // 1. Filter Status
+        $query = Siswa::where('status_pendaftaran', 'Pending');
+
+        // 2. Terapkan Pencarian
+        $this->applySearch($query, $request);
+
+        // 3. Paginate dengan query string (agar search tidak hilang saat ganti halaman)
+        $siswas = $query->latest()->paginate(10)->withQueryString();
+
         return view('admin.pendaftaran.masuk', compact('siswas'));
     }
 
     /**
      * Menampilkan halaman pendaftar yang statusnya 'Diterima'.
      */
-    public function diterima()
+    public function diterima(Request $request)
     {
-        $siswas = Siswa::where('status_pendaftaran', 'Diterima')->latest()->paginate(10);
+        $query = Siswa::where('status_pendaftaran', 'Diterima');
+
+        $this->applySearch($query, $request);
+
+        $siswas = $query->latest()->paginate(10)->withQueryString();
+
         return view('admin.pendaftaran.diterima', compact('siswas'));
     }
 
     /**
      * Menampilkan halaman pendaftar yang statusnya 'Ditolak'.
      */
-    public function ditolak()
+    public function ditolak(Request $request)
     {
-        $siswas = Siswa::where('status_pendaftaran', 'Ditolak')->latest()->paginate(10);
+        $query = Siswa::where('status_pendaftaran', 'Ditolak');
+
+        $this->applySearch($query, $request);
+
+        $siswas = $query->latest()->paginate(10)->withQueryString();
+
         return view('admin.pendaftaran.ditolak', compact('siswas'));
     }
 
@@ -48,15 +82,7 @@ class PendaftaranController extends Controller
             $query->where('status_pendaftaran', $request->status);
         }
 
-        if ($request->filled('search')) {
-            $search = $request->search;
-            $query->where(function ($q) use ($search) {
-                $q->where('nama_lengkap', 'like', "%{$search}%")
-                  ->orWhere('nisn', 'like', "%{$search}%")
-                  ->orWhere('nik', 'like', "%{$search}%")
-                  ->orWhere('asal_sekolah', 'like', "%{$search}%");
-            });
-        }
+        $this->applySearch($query, $request);
 
         $siswas = $query->latest()->paginate(10)->withQueryString();
 

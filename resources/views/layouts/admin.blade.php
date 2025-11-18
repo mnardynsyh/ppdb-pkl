@@ -19,7 +19,7 @@
         [x-cloak] { display: none !important; }
     </style>
 </head>
-<body class="bg-slate-50">
+<body class="bg-[#F0F2F5]">
 
     <div x-data="{ sidebarOpen: false }">
         @include('partials.sidebar-admin')
