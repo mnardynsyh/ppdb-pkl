@@ -97,7 +97,7 @@ class DashboardController extends Controller
             'tempat_lahir'   => 'required|string|max:100',
             'tanggal_lahir'  => 'required|date',
             'agama'          => ['required', Rule::in($this->agama)],
-            'anak_ke'        => 'nullable|integer|min:1',
+            'anak_ke'        => 'required|integer|min:1',
             'alamat'         => 'required|string',
             'provinsi_id'    => 'required|exists:provinsi,id',
             'kabupaten_id'   => 'required|exists:kabupaten,id',
@@ -106,9 +106,9 @@ class DashboardController extends Controller
 
             // Ayah
             'nama_ayah'           => 'required|string|max:255',
-            'nik_ayah'            => 'nullable|digits:16',
-            'tempat_lahir_ayah'   => 'nullable|string|max:100',
-            'tanggal_lahir_ayah'  => 'nullable|date',
+            'nik_ayah'            => 'required|digits:16',
+            'tempat_lahir_ayah'   => 'required|string|max:100',
+            'tanggal_lahir_ayah'  => 'required|date',
             'pekerjaan_ayah'      => ['required', Rule::in($this->pekerjaan)],
             'pendidikan_ayah'     => ['required', Rule::in($this->pendidikan)],
             'penghasilan_ayah'    => ['required', Rule::in($this->penghasilan)],
@@ -117,9 +117,9 @@ class DashboardController extends Controller
 
             // Ibu
             'nama_ibu'            => 'required|string|max:255',
-            'nik_ibu'             => 'nullable|digits:16',
-            'tempat_lahir_ibu'    => 'nullable|string|max:100',
-            'tanggal_lahir_ibu'   => 'nullable|date',
+            'nik_ibu'             => 'required|digits:16',
+            'tempat_lahir_ibu'    => 'required|string|max:100',
+            'tanggal_lahir_ibu'   => 'required|date',
             'pekerjaan_ibu'       => ['required', Rule::in($this->pekerjaan)],
             'pendidikan_ibu'      => ['required', Rule::in($this->pendidikan)],
             'penghasilan_ibu'     => ['required', Rule::in($this->penghasilan)],
@@ -144,8 +144,8 @@ class DashboardController extends Controller
             'tahun_lulus'         => 'required|digits:4',
 
             // Berkas
-            'berkas'              => 'nullable|array',
-            'berkas.*'            => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'berkas'              => 'required|array',
+            'berkas.*'            => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ]);
 
         DB::transaction(function () use ($request, $validated) {

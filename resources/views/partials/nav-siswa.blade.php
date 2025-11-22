@@ -23,7 +23,7 @@
             <span class="sr-only">Open user menu</span>
             <span class="hidden sm:inline text-sm text-gray-600 mr-3">Halo, {{ strtok($siswa->nama_lengkap ?? 'Siswa', '') }}</span>
             <img class="w-8 h-8 rounded-full object-cover" 
-                 src="{{ Auth::user()->pas_foto ? Storage::url(Auth::user()->pas_foto) : 'https://ui-avatars.com/api/?name='.urlencode(Auth::user()->nama_lengkap) }}" 
+                 src="{{ Auth::user()->pas_foto ? Storage::url(Auth::user()->pas_foto) : 'https://ui-avatars.com/api/?name='.urlencode($siswa->nama_lengkap) }}" 
                  alt="Foto Profil">
         </button>
         <!-- Dropdown menu -->

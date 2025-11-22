@@ -36,7 +36,7 @@ class PengaturanController extends Controller
     {
         $validatedData = $request->validate([
             'status'       => 'required|in:Dibuka,Ditutup',
-            'tahun_ajaran' => 'required|string|max:20',
+            // 'tahun_ajaran' => 'required|string|max:20', //tinggal kolom inputnya di blade
             'tanggal_buka' => 'required|date',
             'tanggal_tutup'=> 'required|date|after_or_equal:tanggal_buka',
         ]);
