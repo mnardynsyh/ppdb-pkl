@@ -103,15 +103,15 @@ class PendaftaranController extends Controller
      * Menampilkan halaman detail pendaftar.
      */
     public function detail(Siswa $siswa)
-    {
-        $siswa->load([
-            'lampiran',
-            'orangTuaWali.pekerjaanAyah', 'orangTuaWali.pendidikanAyah', 'orangTuaWali.penghasilanAyah',
-            'orangTuaWali.pekerjaanIbu', 'orangTuaWali.pendidikanIbu', 'orangTuaWali.penghasilanIbu',
-            'orangTuaWali.pekerjaanWali', 'orangTuaWali.pendidikanWali', 'orangTuaWali.penghasilanWali'
-        ]);
-        return view('admin.pendaftaran.detail', compact('siswa'));
-    }
+{
+    $siswa->load([
+        'lampiran',
+        'orangTua'
+    ]);
+
+    return view('admin.pendaftaran.detail', compact('siswa'));
+}
+
 
     /**
      * Mengubah status siswa menjadi 'Diterima'.

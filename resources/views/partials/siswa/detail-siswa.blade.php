@@ -1,107 +1,138 @@
-<div class="space-y-6" data-aos="fade-up" data-aos-delay="100">
+{{-- ====================== DATA SISWA ====================== --}}
+<div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-5">
+    <h2 class="text-xl font-semibold text-gray-800 dark:text-white border-b pb-3 mb-4">
+        Data Siswa
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+        <div>
+            <p class="font-medium text-gray-700">Nama Lengkap</p>
+            <p>{{ $siswa->nama_lengkap }}</p>
+        </div>
+
+        <div>
+            <p class="font-medium text-gray-700">NISN</p>
+            <p>{{ $siswa->nisn ?? '-' }}</p>
+        </div>
+
+        <div>
+            <p class="font-medium text-gray-700">NIK</p>
+            <p>{{ $siswa->nik ?? '-' }}</p>
+        </div>
+
+        <div>
+            <p class="font-medium text-gray-700">Jenis Kelamin</p>
+            <p>{{ $siswa->jenis_kelamin ?? '-' }}</p>
+        </div>
+
+        <div>
+            <p class="font-medium text-gray-700">Tempat Lahir</p>
+            <p>{{ $siswa->tempat_lahir ?? '-' }}</p>
+        </div>
+
+        <div>
+            <p class="font-medium text-gray-700">Tanggal Lahir</p>
+            <p>{{ $siswa->tanggal_lahir ?? '-' }}</p>
+        </div>
+
+        <div class="md:col-span-2">
+            <p class="font-medium text-gray-700">Alamat Lengkap</p>
+            <p>{{ $siswa->alamat ?? '-' }}</p>
+        </div>
+    </div>
+</div>
+
+
+{{-- ====================== DATA SEKOLAH ASAL ====================== --}}
+<div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-5 mt-6">
+    <h2 class="text-xl font-semibold text-gray-800 dark:text-white border-b pb-3 mb-4">
+        Data Sekolah Asal
+    </h2>
+
     @php
-        function renderDataRow($label, $value) {
-            echo '<div class="flex flex-col sm:grid sm:grid-cols-3 sm:gap-4 py-2 border-b border-gray-100 last:border-b-0">';
-            echo '<dt class="font-medium text-gray-500">' . e($label) . '</dt>';
-            echo '<dd class="mt-1 text-gray-900 sm:mt-0 sm:col-span-2">' . ($value ? e($value) : '-') . '</dd>';
-            echo '</div>';
-        }
+        $sekolah = $siswa->sekolahAsal;
     @endphp
 
-    {{-- ======================== DATA CALON SISWA ======================== --}}
-    <div class="bg-white p-5 rounded-lg shadow-md border border-gray-100">
-        <h3 class="text-lg font-semibold text-gray-800 border-b pb-3 mb-4">Data Calon Siswa</h3>
-        <dl class="grid grid-cols-1 md:grid-cols-2 gap-x-6 text-sm">
-            @php renderDataRow('Nama Lengkap', $siswa->nama_lengkap); @endphp
-            @php renderDataRow('NISN', $siswa->nisn); @endphp
-            @php renderDataRow('NIK', $siswa->nik); @endphp
-            @php renderDataRow('Jenis Kelamin', $siswa->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan'); @endphp
-            @php renderDataRow('Tempat, Tanggal Lahir', $siswa->tempat_lahir . ', ' . ($siswa->tanggal_lahir ? \Carbon\Carbon::parse($siswa->tanggal_lahir)->isoFormat('D MMMM Y') : '-')); @endphp
-            @php renderDataRow('Agama', $siswa->agama); @endphp
-            @php renderDataRow('Anak Ke-', $siswa->anak_ke); @endphp
-            @php renderDataRow('Provinsi', $siswa->provinsi->nama ?? null); @endphp
-            @php renderDataRow('Kabupaten/Kota', $siswa->kabupaten->nama ?? null); @endphp
-            @php renderDataRow('Kecamatan', $siswa->kecamatan->nama ?? null); @endphp
-            @php renderDataRow('Desa/Kelurahan', $siswa->desa->nama ?? null); @endphp
-            @php renderDataRow('Detail Alamat', $siswa->alamat); @endphp
-        </dl>
-    </div>
+    @if($sekolah)
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+            <div>
+                <p class="font-medium text-gray-700">Nama Sekolah</p>
+                <p>{{ $sekolah->nama_sekolah }}</p>
+            </div>
 
-    {{-- ======================== DATA SEKOLAH ASAL ======================== --}}
-    <div class="bg-white p-5 rounded-lg shadow-md border border-gray-100">
-        <h3 class="text-lg font-semibold text-gray-800 border-b pb-3 mb-4">Data Sekolah Asal</h3>
-        <dl class="grid grid-cols-1 md:grid-cols-2 gap-x-6 text-sm">
-            @php renderDataRow('Nama Sekolah', $siswa->asal_sekolah); @endphp
-            @php renderDataRow('Tahun Lulus', $siswa->tahun_lulus); @endphp
-            @php renderDataRow('Alamat Sekolah', $siswa->alamat_sekolah_asal); @endphp
-        </dl>
-    </div>
+            <div>
+                <p class="font-medium text-gray-700">Tahun Lulus</p>
+                <p>{{ $sekolah->tahun_lulus }}</p>
+            </div>
 
-    {{-- ======================== DATA ORANG TUA / WALI ======================== --}}
-    @if($siswa->orangTuaWali)
-        <div class="bg-white p-5 rounded-lg shadow-md border border-gray-100">
-            <h3 class="text-lg font-semibold text-gray-800 border-b pb-3 mb-4">Data Orang Tua & Wali</h3>
-            <div class="space-y-6">
-                {{-- ============ DATA AYAH ============ --}}
-                <div>
-                    <h4 class="font-semibold text-gray-700 mb-2">Data Ayah</h4>
-                    <dl class="grid grid-cols-1 md:grid-cols-2 gap-x-6 text-sm">
-                        @php renderDataRow('Nama Lengkap', $siswa->orangTuaWali->nama_ayah); @endphp
-                        @php renderDataRow('NIK', $siswa->orangTuaWali->nik_ayah); @endphp
-                        @php renderDataRow('Tempat, Tanggal Lahir', $siswa->orangTuaWali->tempat_lahir_ayah . ', ' . ($siswa->orangTuaWali->tanggal_lahir_ayah ? \Carbon\Carbon::parse($siswa->orangTuaWali->tanggal_lahir_ayah)->isoFormat('D MMMM Y') : '-')); @endphp
-                        @php renderDataRow('Pendidikan', $siswa->orangTuaWali->pendidikan_ayah); @endphp
-                        @php renderDataRow('Pekerjaan', $siswa->orangTuaWali->pekerjaanAyah->pekerjaan ?? '-'); @endphp
-                        @php renderDataRow('Penghasilan', $siswa->orangTuaWali->penghasilan_ayah); @endphp
-                        @php renderDataRow('Agama', $siswa->orangTuaWali->agama_ayah); @endphp
-                    </dl>
-                </div>
-
-                {{-- ============ DATA IBU ============ --}}
-                <div class="border-t pt-4">
-                    <h4 class="font-semibold text-gray-700 mb-2">Data Ibu</h4>
-                    <dl class="grid grid-cols-1 md:grid-cols-2 gap-x-6 text-sm">
-                        @php renderDataRow('Nama Lengkap', $siswa->orangTuaWali->nama_ibu); @endphp
-                        @php renderDataRow('NIK', $siswa->orangTuaWali->nik_ibu); @endphp
-                        @php renderDataRow('Tempat, Tanggal Lahir', $siswa->orangTuaWali->tempat_lahir_ibu . ', ' . ($siswa->orangTuaWali->tanggal_lahir_ibu ? \Carbon\Carbon::parse($siswa->orangTuaWali->tanggal_lahir_ibu)->isoFormat('D MMMM Y') : '-')); @endphp
-                        @php renderDataRow('Pendidikan', $siswa->orangTuaWali->pendidikan_ibu); @endphp
-                        @php renderDataRow('Pekerjaan', $siswa->orangTuaWali->pekerjaanIbu->pekerjaan ?? '-'); @endphp
-                        @php renderDataRow('Penghasilan', $siswa->orangTuaWali->penghasilan_ibu); @endphp
-                        @php renderDataRow('Agama', $siswa->orangTuaWali->agama_ibu); @endphp
-                    </dl>
-                </div>
-
-                {{-- ============ DATA WALI (Opsional) ============ --}}
-                @if($siswa->orangTuaWali->nama_wali)
-                    <div class="border-t pt-4">
-                        <h4 class="font-semibold text-gray-700 mb-2">Data Wali</h4>
-                        <dl class="grid grid-cols-1 md:grid-cols-2 gap-x-6 text-sm">
-                            @php renderDataRow('Nama Lengkap', $siswa->orangTuaWali->nama_wali); @endphp
-                            @php renderDataRow('NIK', $siswa->orangTuaWali->nik_wali); @endphp
-                            @php renderDataRow('Tempat, Tanggal Lahir', $siswa->orangTuaWali->tempat_lahir_wali . ', ' . ($siswa->orangTuaWali->tanggal_lahir_wali ? \Carbon\Carbon::parse($siswa->orangTuaWali->tanggal_lahir_wali)->isoFormat('D MMMM Y') : '-')); @endphp
-                            @php renderDataRow('Pendidikan', $siswa->orangTuaWali->pendidikan_wali); @endphp
-                            @php renderDataRow('Pekerjaan', $siswa->orangTuaWali->pekerjaanWali->pekerjaan ?? '-'); @endphp
-                            @php renderDataRow('Penghasilan', $siswa->orangTuaWali->penghasilan_wali); @endphp
-                            @php renderDataRow('Agama', $siswa->orangTuaWali->agama_wali); @endphp
-                        </dl>
-                    </div>
-                @endif
+            <div class="md:col-span-2">
+                <p class="font-medium text-gray-700">Alamat Sekolah</p>
+                <p>{{ $sekolah->alamat_sekolah }}</p>
             </div>
         </div>
+    @else
+        <p class="italic text-gray-500">Data sekolah asal belum diisi.</p>
+    @endif
+</div>
+
+
+{{-- ====================== DATA ORANG TUA ====================== --}}
+@php
+    $ayah = $siswa->orangTua->firstWhere('hubungan', 'Ayah');
+    $ibu  = $siswa->orangTua->firstWhere('hubungan', 'Ibu');
+    $wali = $siswa->orangTua->firstWhere('hubungan', 'Wali');
+@endphp
+
+<div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-5 mt-6">
+    <h2 class="text-xl font-semibold text-gray-800 dark:text-white border-b pb-3 mb-4">
+        Data Orang Tua / Wali
+    </h2>
+
+    {{-- AYAH --}}
+    <h3 class="text-lg font-bold mb-2">Ayah</h3>
+    @if ($ayah)
+        @include('partials.siswa.orang-tua-items', ['data' => $ayah])
+    @else
+        <p class="italic text-gray-500 mb-6">Data Ayah belum diisi.</p>
     @endif
 
-    {{-- ======================== BERKAS TERUNGGAH ======================== --}}
-    <div class="bg-white p-5 rounded-lg shadow-md border border-gray-100">
-        <h3 class="text-lg font-semibold text-gray-800 border-b pb-3 mb-4">Berkas Terunggah</h3>
-        <ul class="text-sm space-y-2">
-            @forelse ($siswa->lampiran as $file)
-                <li class="flex items-center justify-between p-2 bg-gray-50 rounded-md">
-                    <span class="font-medium text-gray-600">{{ ucwords(str_replace('_', ' ', $file->jenis_berkas)) }}</span>
-                    <a href="{{ Storage::url($file->path_file) }}" target="_blank"
-                       class="text-blue-600 hover:underline font-semibold">Lihat Berkas</a>
+    {{-- IBU --}}
+    <h3 class="text-lg font-bold mb-2">Ibu</h3>
+    @if ($ibu)
+        @include('partials.siswa.orang-tua-items', ['data' => $ibu])
+    @else
+        <p class="italic text-gray-500 mb-6">Data Ibu belum diisi.</p>
+    @endif
+
+    {{-- WALI --}}
+    <h3 class="text-lg font-bold mb-2">Wali</h3>
+    @if ($wali)
+        @include('partials.siswa.orang-tua-items', ['data' => $wali])
+    @else
+        <p class="italic text-gray-500">Data Wali belum diisi.</p>
+    @endif
+</div>
+
+
+{{-- ====================== LAMPIRAN ====================== --}}
+<div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-5 mt-6">
+    <h2 class="text-xl font-semibold text-gray-800 dark:text-white border-b pb-3 mb-4">
+        Lampiran
+    </h2>
+
+    @if ($siswa->lampiran && $siswa->lampiran->count())
+        <ul class="space-y-2 text-sm">
+            @foreach ($siswa->lampiran as $file)
+                <li>
+                    <a href="{{ asset('storage/'.$file->path) }}"
+                       target="_blank"
+                       class="text-blue-600 hover:underline">
+                        {{ $file->jenis }} — Klik untuk lihat
+                    </a>
                 </li>
-            @empty
-                <p class="text-gray-500">Belum ada berkas yang diunggah.</p>
-            @endforelse
+            @endforeach
         </ul>
-    </div>
+    @else
+        <p class="text-gray-500 italic">Belum ada lampiran.</p>
+    @endif
 </div>
