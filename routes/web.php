@@ -65,12 +65,6 @@ Route::prefix('siswa')
         // Status & cetak
         Route::get('/status-pendaftaran', [SiswaDashboard::class, 'showStatus'])->name('status');
         Route::get('/cetak-bukti', [SiswaDashboard::class, 'cetakBukti'])->name('cetak-bukti');
-
-        // Profil
-        Route::prefix('profil')->name('profil.')->controller(SiswaProfile::class)->group(function () {
-            Route::get('/', 'edit')->name('edit');
-            Route::put('/', 'update')->name('update');
-        });
     });
 
 
@@ -108,6 +102,14 @@ Route::prefix('admin')
             Route::put('/jadwal/{jadwal}', 'updateJadwal')->name('jadwal.update');
             Route::delete('/jadwal/{jadwal}', 'destroyJadwal')->name('jadwal.destroy');
         });
+
+        // INFORMASI KONTAK
+            Route::get('/admin/informasi-kontak', [App\Http\Controllers\Admin\KontakController::class, 'index'])
+                ->name('kontak.index');
+
+            Route::put('/admin/informasi-kontak/update', [App\Http\Controllers\Admin\KontakController::class, 'update'])
+                ->name('kontak.update');
+
 
         // Profil admin
         Route::prefix('profil')->name('profil.')->controller(AdminProfile::class)->group(function () {

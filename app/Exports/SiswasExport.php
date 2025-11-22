@@ -30,7 +30,7 @@ class SiswasExport implements FromQuery, WithHeadings, WithMapping, ShouldAutoSi
     */
     public function query()
     {
-        $query = Siswa::query()->with('orangTuaWali'); // Load relasi
+        $query = Siswa::query()->with('orangTua'); // Load relasi
 
         if ($this->request->filled('status')) {
             $query->where('status_pendaftaran', $this->request->status);
@@ -80,10 +80,10 @@ class SiswasExport implements FromQuery, WithHeadings, WithMapping, ShouldAutoSi
             $siswa->asal_sekolah,
             $siswa->tahun_lulus,
             $siswa->status_pendaftaran,
-            $siswa->orangTuaWali->nama_ayah ?? '-',
-            $siswa->orangTuaWali->nik_ayah ?? '-',
-            $siswa->orangTuaWali->nama_ibu ?? '-',
-            $siswa->orangTuaWali->nik_ibu ?? '-',
+            $siswa->orangTua->nama_ayah ?? '-',
+            $siswa->orangTua->nik_ayah ?? '-',
+            $siswa->orangTua->nama_ibu ?? '-',
+            $siswa->orangTua->nik_ibu ?? '-',
         ];
     }
     

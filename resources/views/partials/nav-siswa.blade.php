@@ -23,7 +23,7 @@
             <span class="sr-only">Open user menu</span>
             <span class="hidden sm:inline text-sm text-gray-600 mr-3">Halo, {{ strtok($siswa->nama_lengkap ?? 'Siswa', '') }}</span>
             <img class="w-8 h-8 rounded-full object-cover" 
-                 src="{{ Auth::user()->pas_foto ? Storage::url(Auth::user()->pas_foto) : 'https://ui-avatars.com/api/?name='.urlencode($siswa->nama_lengkap) }}" 
+                 src="{{ 'https://ui-avatars.com/api/?name='.urlencode($siswa->nama_lengkap) }}" 
                  alt="Foto Profil">
         </button>
         <!-- Dropdown menu -->
@@ -33,12 +33,6 @@
               <span class="block text-sm text-gray-500 truncate">{{ Auth::user()->email }}</span>
             </div>
             <ul class="py-2" aria-labelledby="user-menu-button">
-              <li>
-                <button @click="profileModalOpen = true" class="w-full flex items-center gap-2 text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                    <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-                    <span>Profil Saya</span>
-                </button>
-              </li>
               <li>
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf

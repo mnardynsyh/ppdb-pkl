@@ -96,6 +96,14 @@
                                 {{-- Additional Info --}}
                                 <div class="space-y-3 mt-6 pt-4 border-t border-slate-100">
                             
+                                    {{-- Tahun Ajaran --}}
+                                    <div class="flex justify-between items-center text-sm">
+                                        <span class="text-slate-500">Tahun Ajaran:</span>
+                                        <span class="font-bold text-slate-800">
+                                            {{ $pengaturan->tahun_ajaran ?? '-' }}
+                                        </span>
+                                    </div>
+
                                     <div class="flex justify-between items-center text-sm">
                                         <span class="text-slate-500">Periode:</span>
                                         <span class="font-bold text-slate-800">
@@ -244,6 +252,18 @@
                                     </label>
                                 </div>
                             </div>
+                            {{-- Tahun Ajaran --}}
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">
+                                    Tahun Ajaran
+                                </label>
+                                <input type="text" name="tahun_ajaran"
+                                    value="{{ old('tahun_ajaran', $pengaturan->tahun_ajaran) }}"
+                                    placeholder="Contoh: 2024/2025"
+                                    class="w-full px-3 py-2 bg-white border-2 border-slate-200 rounded-lg 
+                                            text-xs focus:border-blue-500 focus:ring-0 text-slate-700 font-bold shadow-sm">
+                            </div>
+
                         </div>
 
                         {{-- Kolom Kanan: Jadwal Dates --}}
@@ -357,6 +377,7 @@
                             </div>
                         </div>
                     </div>
+                        
                     <div class="bg-slate-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 border-t border-slate-100">
                         <button type="submit" class="inline-flex w-full justify-center rounded-lg bg-blue-600 px-3 py-2 text-sm font-bold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto">Update</button>
                         <button type="button" onclick="closeEditModal()" class="mt-3 inline-flex w-full justify-center rounded-lg bg-white px-3 py-2 text-sm font-bold text-slate-600 shadow-sm ring-1 ring-inset ring-slate-300 hover:bg-slate-50 sm:mt-0 sm:w-auto">Batal</button>

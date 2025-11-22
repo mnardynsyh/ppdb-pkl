@@ -164,14 +164,14 @@
             </li>
 
             <li>
-                <a href="#"
+                <a href="{{ route('admin.kontak.index') }}"
                    class="flex items-center gap-3 px-4 py-3 transition-all duration-200 border-l-[6px] text-[15px]
-                   {{ request()->routeIs('admin.sekolah.*') 
-                       ? 'border-purple-500 bg-slate-800 text-white shadow-[inset_0_1px_0_0_rgba(255,255,255,0.02)]' 
+                   {{ request()->routeIs('admin.kontak.*') 
+                       ? 'border-blue-500 bg-slate-800 text-white shadow-[inset_0_1px_0_0_rgba(255,255,255,0.02)]' 
                        : 'border-transparent text-slate-400 hover:text-slate-100 hover:bg-slate-800/50' }}">
                     
                     <i class="fa-solid fa-address-book w-5 text-center text-[18px] transition duration-200 
-                       {{ request()->routeIs('admin.sekolah.*') ? 'text-purple-500 drop-shadow-md' : 'text-slate-500' }}"></i>
+                       {{ request()->routeIs('admin.kontak.*') ? 'text-blue-500 drop-shadow-md' : 'text-slate-500' }}"></i>
                     <span class="flex-1 whitespace-nowrap tracking-wide">Informasi Kontak</span>
                 </a>
             </li>
