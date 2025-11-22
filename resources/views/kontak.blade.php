@@ -34,7 +34,7 @@
                         </div>
                         <div class="ml-4">
                             <h4 class="text-lg font-semibold text-gray-900">Email Panitia</h4>
-                            <p class="text-gray-600">{{ $pengaturan->email_kontak ?? 'Email belum diatur oleh admin.' }}</p>
+                            <p class="text-gray-600">{{ $pengaturan->email ?? 'Email belum diatur oleh admin.' }}</p>
                         </div>
                     </div>
                     {{-- Telepon --}}

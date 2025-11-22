@@ -1,5 +1,12 @@
 <nav 
-    x-data="navbar()"
+    x-data="navbar('{{ 
+        request()->routeIs('home') ? 'home' : 
+        (request()->routeIs('jadwal') ? 'info-jadwal' : 
+        (request()->routeIs('about') ? 'profil-tentang' : 
+        (request()->routeIs('visiMisi') ? 'profil-visi' : 
+        (request()->routeIs('kontak') ? 'profil-kontak' : 
+        (request()->is('faq') ? 'faq' : '')))))
+    }}')"
     class="bg-white/60 backdrop-blur-xl shadow-md sticky top-0 z-50 border-b border-gray-200"
     style="font-family: 'Poppins', sans-serif;"
 >
@@ -10,7 +17,7 @@
                 <span class="text-2xl font-bold text-gray-900 tracking-tight">
                     PPDB Online
                 </span>
-                <span class="text-xs text-gray-500 font-medium mt-0.5">TA 2024/2025</span>
+                <span class="text-xs text-gray-500 font-medium mt-0.5">TA {{ $tahun_ajaran ?? '2025/2026' }}</span>
             </div>
         </a>
 
@@ -69,6 +76,7 @@
                         <a href="{{ route('jadwal') }}"
                            @click="setActive('info-jadwal'); open = false"
                            class="flex items-center space-x-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200"
+                           :class="activeMenu === 'info-jadwal' ? 'bg-blue-50 text-blue-700' : ''"
                         >
                             <div class="w-7 h-7 bg-blue-100 rounded-lg flex items-center justify-center">
                                 <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -120,9 +128,10 @@
                     class="absolute left-0 mt-3 w-56 bg-white rounded-xl shadow-lg border border-gray-200 py-3 z-50"
                 >
                     <div class="space-y-2">
-                        <a href="#" 
+                        <a href="{{ route('about') }}" 
                            @click="setActive('profil-tentang'); open = false"
                            class="flex items-center space-x-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200"
+                           :class="activeMenu === 'profil-tentang' ? 'bg-blue-50 text-blue-700' : ''"
                         >
                             <div class="w-7 h-7 bg-blue-100 rounded-lg flex items-center justify-center">
                                 <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -132,9 +141,10 @@
                             <span class="font-medium">Tentang Kami</span>
                         </a>
                         
-                        <a href="#" 
+                        <a href="{{ route('visiMisi') }}" 
                            @click="setActive('profil-visi'); open = false"
                            class="flex items-center space-x-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200"
+                           :class="activeMenu === 'profil-visi' ? 'bg-blue-50 text-blue-700' : ''"
                         >
                             <div class="w-7 h-7 bg-blue-100 rounded-lg flex items-center justify-center">
                                 <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -148,6 +158,7 @@
                         <a href="{{ route('kontak') }}"
                            @click="setActive('profil-kontak'); open = false"
                            class="flex items-center space-x-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200"
+                           :class="activeMenu === 'profil-kontak' ? 'bg-blue-50 text-blue-700' : ''"
                         >
                             <div class="w-7 h-7 bg-blue-100 rounded-lg flex items-center justify-center">
                                 <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -217,7 +228,8 @@
         <div class="px-6 py-4 space-y-3">
             <a href="{{ route('home') }}" 
                @click="toggleMobile()"
-               class="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200 font-medium text-sm"
+               class="flex items-center space-x-3 px-4 py-3 rounded-lg font-medium text-sm transition-colors duration-200"
+               :class="activeMenu === 'home' ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-700'"
             >
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
@@ -227,7 +239,8 @@
             
             <a href="/#alur" 
                @click="toggleMobile()"
-               class="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200 font-medium text-sm"
+               class="flex items-center space-x-3 px-4 py-3 rounded-lg font-medium text-sm transition-colors duration-200"
+               :class="activeMenu === 'info-alur' ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-700'"
             >
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
@@ -237,7 +250,8 @@
             
             <a href="{{ route('jadwal') }}" 
                @click="toggleMobile()"
-               class="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200 font-medium text-sm"
+               class="flex items-center space-x-3 px-4 py-3 rounded-lg font-medium text-sm transition-colors duration-200"
+               :class="activeMenu === 'info-jadwal' ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-700'"
             >
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
@@ -247,7 +261,8 @@
 
             <a href="/#persyaratan" 
                @click="toggleMobile()"
-               class="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200 font-medium text-sm"
+               class="flex items-center space-x-3 px-4 py-3 rounded-lg font-medium text-sm transition-colors duration-200"
+               :class="activeMenu === 'info-persyaratan' ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-700'"
             >
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
@@ -255,9 +270,44 @@
                 <span>Persyaratan</span>
             </a>
 
+            <a href="{{ route('about') }}" 
+               @click="toggleMobile()"
+               class="flex items-center space-x-3 px-4 py-3 rounded-lg font-medium text-sm transition-colors duration-200"
+               :class="activeMenu === 'profil-tentang' ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-700'"
+            >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <span>Tentang Kami</span>
+            </a>
+
+            <a href="{{ route('visiMisi') }}" 
+               @click="toggleMobile()"
+               class="flex items-center space-x-3 px-4 py-3 rounded-lg font-medium text-sm transition-colors duration-200"
+               :class="activeMenu === 'profil-visi' ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-700'"
+            >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                </svg>
+                <span>Visi & Misi</span>
+            </a>
+
+            <a href="{{ route('kontak') }}" 
+               @click="toggleMobile()"
+               class="flex items-center space-x-3 px-4 py-3 rounded-lg font-medium text-sm transition-colors duration-200"
+               :class="activeMenu === 'profil-kontak' ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-700'"
+            >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                </svg>
+                <span>Kontak Kami</span>
+            </a>
+
             <a href="/#faq" 
                @click="toggleMobile()"
-               class="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200 font-medium text-sm"
+               class="flex items-center space-x-3 px-4 py-3 rounded-lg font-medium text-sm transition-colors duration-200"
+               :class="activeMenu === 'faq' ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-700'"
             >
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -279,10 +329,10 @@
 </nav>
 
 <script>
-function navbar() {
+function navbar(initialActive) {
     return {
         mobileOpen: false,
-        activeMenu: 'home',
+        activeMenu: initialActive,
         activeClass: 'bg-blue-50 text-blue-700',
         inactiveClass: 'text-gray-600 hover:text-gray-900 hover:bg-gray-50',
         

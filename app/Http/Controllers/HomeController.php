@@ -30,5 +30,15 @@ class HomeController extends Controller
         $pengaturan = Pengaturan::first();
         return view('kontak', compact('pengaturan'));
     }
-}
 
+    public function about()
+    {
+        return view('partials.about');
+    }
+
+    public function visi()
+    {
+        return view('partials.visi-misi');
+    }
+
+}

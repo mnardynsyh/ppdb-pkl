@@ -27,6 +27,8 @@ use App\Http\Controllers\Siswa\DashboardController as SiswaDashboard;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/jadwal', [HomeController::class, 'jadwal'])->name('jadwal');
 Route::get('/kontak', [HomeController::class, 'kontak'])->name('kontak');
+Route::get('/about', [HomeController::class, 'about'])->name('about');
+Route::get('/visi-misi', [HomeController::class, 'visi'])->name('visiMisi');
 
 
 /*

@@ -136,7 +136,7 @@ function carousel() {
         slides: [
             {
                 image: "{{ asset('img/school.png') }}",
-                badge: "PPDB 2025/2026",
+                badge: "PPDB {{ $tahun_ajaran ?? '2024/2025' }}",
                 title: 'Penerimaan Peserta <br> <span class="text-blue-400">Didik Baru</span>',
                 text: "Mari bergabung dengan sekolah unggulan. Pendaftaran kini dibuka secara online, mudah dan transparan.",
                 buttons: [
