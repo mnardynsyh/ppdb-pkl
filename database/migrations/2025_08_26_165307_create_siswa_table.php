@@ -25,7 +25,7 @@ return new class extends Migration
             $table->text('alamat');
             $table->string('asal_sekolah');
             $table->integer('anak_ke')->nullable();
-            $table->unsignedBigInteger('agama_id'); // Foreign key ke tabel agama
+            $table->unsignedBigInteger('agama_id');
             $table->year('tahun_lulus')->nullable();
             $table->string('pas_foto')->nullable();
             $table->enum('status_pendaftaran', ['pending', 'diterima', 'ditolak'])->default('pending');

@@ -40,6 +40,16 @@
         </div>
 
         <!-- Right Container - Form -->
+        @if ($errors->any())
+    <div class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded">
+        <ul class="list-disc pl-5">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
         <div class="w-full lg:w-1/2 flex items-center justify-center p-8">
             <div class="w-full max-w-md">
                 <!-- Header -->

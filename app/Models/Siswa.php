@@ -2,97 +2,136 @@
 
 namespace App\Models;
 
-use App\Models\Lampiran;
-use App\Models\OrangTuaWali;
-use App\Models\Provinsi;
-use App\Models\Kabupaten;
-use App\Models\Kecamatan;
-use App\Models\Desa;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class Siswa extends Authenticatable
+class Siswa extends Model
 {
     use HasFactory;
 
     protected $table = 'siswa';
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
+     * Kolom yang bisa diisi massal.
+     * HARUS sesuai tabel di database.
      */
     protected $fillable = [
-        'email',
-        'password',
+        'user_id',
+
         'nama_lengkap',
         'nik',
         'nisn',
-        'tanggal_lahir',
         'tempat_lahir',
+        'tanggal_lahir',
         'jenis_kelamin',
+        'agama',
+
         'alamat',
+
+        // Wilayah
         'provinsi_id',
         'kabupaten_id',
         'kecamatan_id',
         'desa_id',
-        'asal_sekolah',
-        'alamat_sekolah_asal',
+
+        // Lainnya
         'anak_ke',
-        'agama',
-        'tahun_lulus',
         'status_pendaftaran',
     ];
 
-
-    protected $hidden = [
-        'password',
-    ];
-
-
-    public function orangTuaWali()
-    {
-        return $this->hasOne(OrangTuaWali::class);
-    }
-
-    public function Lampiran(): HasMany
-    {
-        return $this->hasMany(Lampiran::class);
-    }
-
-    
+    protected $casts = [
+        'tanggal_lahir' => 'date',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];  
     /**
-     * Mendapatkan data provinsi siswa.
+     * Sinkronkan nama siswa ke tabel users.name
      */
+    protected static function booted()
+    {
+        static::created(function ($siswa) {
+            if ($siswa->user) {
+                $siswa->user->update(['name' => $siswa->nama_lengkap]);
+            }
+        });
+
+        static::updated(function ($siswa) {
+            if ($siswa->wasChanged('nama_lengkap') && $siswa->user) {
+                $siswa->user->update(['name' => $siswa->nama_lengkap]);
+            }
+        });
+    }
+
+    // ==============================================================
+    // RELASI KE USERS
+    // ==============================================================
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    // ==============================================================
+    // RELASI ORANG TUA (Ayah / Ibu / Wali)
+    // ==============================================================
+    public function orangTua(): HasMany
+    {
+        return $this->hasMany(OrangTua::class, 'siswa_id');
+    }
+
+    public function ayah(): HasOne
+    {
+        return $this->hasOne(OrangTua::class, 'siswa_id')->where('hubungan', 'Ayah');
+    }
+
+    public function ibu(): HasOne
+    {
+        return $this->hasOne(OrangTua::class, 'siswa_id')->where('hubungan', 'Ibu');
+    }
+
+    public function wali(): HasOne
+    {
+        return $this->hasOne(OrangTua::class, 'siswa_id')->where('hubungan', 'Wali');
+    }
+
+    // ==============================================================
+    // RELASI SEKOLAH ASAL
+    // ==============================================================
+    public function sekolahAsal(): HasOne
+    {
+        return $this->hasOne(SekolahAsal::class, 'siswa_id');
+    }
+
+    // ==============================================================
+    // RELASI LAMPIRAN
+    // ==============================================================
+    public function lampiran(): HasMany
+    {
+        return $this->hasMany(Lampiran::class, 'siswa_id');
+    }
+
+    // ==============================================================
+    // RELASI WILAYAH
+    // ==============================================================
     public function provinsi(): BelongsTo
     {
-        return $this->belongsTo(Provinsi::class, 'provinsi_id', 'id');
+        return $this->belongsTo(Provinsi::class, 'provinsi_id');
     }
 
-    /**
-     * Mendapatkan data kabupaten/kota siswa.
-     */
     public function kabupaten(): BelongsTo
     {
-        return $this->belongsTo(Kabupaten::class, 'kabupaten_id', 'id');
+        return $this->belongsTo(Kabupaten::class, 'kabupaten_id');
     }
 
-    /**
-     * Mendapatkan data kecamatan siswa.
-     */
     public function kecamatan(): BelongsTo
     {
-        return $this->belongsTo(Kecamatan::class, 'kecamatan_id', 'id');
+        return $this->belongsTo(Kecamatan::class, 'kecamatan_id');
     }
 
-    /**
-     * Mendapatkan data desa/kelurahan siswa.
-     */
     public function desa(): BelongsTo
     {
-        return $this->belongsTo(Desa::class, 'desa_id', 'id');
+        return $this->belongsTo(Desa::class, 'desa_id');
     }
 }
-

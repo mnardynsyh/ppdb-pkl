@@ -23,33 +23,25 @@
                     <h1 class="text-3xl font-bold text-gray-900 mb-2">Masuk</h1>
                     <p class="text-gray-600">Akses sistem PPDB Online SMP</p>
                     
-                    <!-- Info untuk siswa -->
-                    <div class="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
-                        <p class="text-sm text-blue-700 flex items-center">
-                            <svg class="w-4 h-4 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                            </svg>
-                            Untuk siswa, login menggunakan NISN
-                        </p>
-                    </div>
                 </div>
 
                 <!-- Form -->
                 <form class="space-y-6" action="{{ route('login.submit') }}" method="POST">
                     @csrf
                     
-                    <!-- Username -->
+                    <!-- Email -->
                     <div>
-                        <label for="username" class="block text-sm font-medium text-gray-700 mb-3">
-                            Email atau NISN
+                        <label for="email" class="block text-sm font-medium text-gray-700 mb-3">
+                            Email
                         </label>
                         <input
-                            id="username"
-                            name="username"
-                            type="text"
+                            id="email"
+                            name="email"
+                            type="email"
                             required
                             class="w-full px-4 py-3.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-gray-900 focus:border-gray-900 transition-colors placeholder-gray-500 bg-white"
-                            placeholder="Masukkan email atau NISN Anda">
+                            placeholder="Masukkan email Anda"
+                            value="{{ old('email') }}">
                     </div>
 
                     <!-- Password -->
@@ -93,6 +85,7 @@
                         Masuk ke Akun
                     </button>
                 </form>
+
 
                 <!-- Back Link -->
                 <div class="text-center mt-8 pt-8 border-t border-gray-200">

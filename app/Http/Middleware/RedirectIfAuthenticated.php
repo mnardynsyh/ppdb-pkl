@@ -4,21 +4,29 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 
 class RedirectIfAuthenticated
 {
-    public function handle(Request $request, Closure $next, ...$guards)
-{
-    if (Auth::guard('web')->check()) {
-        return redirect()->route('admin.dashboard');
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     */
+    public function handle($request, Closure $next, ...$guards)
+    {
+    if ($request->is('login')) {
+        if (Auth::check()) {
+            return match(Auth::user()->role_id) {
+                1 => redirect()->route('admin.dashboard'),
+                2 => redirect()->route('siswa.dashboard'),
+            };
+        }
     }
 
-    if (Auth::guard('siswa')->check()) {
-        return redirect()->route('siswa.dashboard');
-    }
 
     return $next($request);
-}
+    }
 
 }

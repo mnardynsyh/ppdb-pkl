@@ -1,290 +1,338 @@
-<div x-show="step === 2" class="space-y-6 animate-fade-in"
-     x-data="{ 
-         showWali: {{ old('tinggal_dengan_wali', ($siswa->orangTuaWali && $siswa->orangTuaWali->nama_wali) ? 'true' : 'false') }},
-         pekerjaanAyah: '{{ old('pekerjaan_ayah', $siswa->orangTuaWali->pekerjaan_ayah ?? '') }}',
-         pekerjaanIbu: '{{ old('pekerjaan_ibu', $siswa->orangTuaWali->pekerjaan_ibu ?? '') }}',
-         pekerjaanWali: '{{ old('pekerjaan_wali', $siswa->orangTuaWali->pekerjaan_wali ?? '') }}'
+@php
+    $orangTuaAyah = $siswa->orangTua->where('hubungan', 'Ayah')->first();
+    $orangTuaIbu  = $siswa->orangTua->where('hubungan', 'Ibu')->first();
+    $orangTuaWali = $siswa->orangTua->where('hubungan', 'Wali')->first();
+@endphp
+
+<div x-show="step === 2"
+     class="space-y-8 animate-fade-in"
+     x-data="{
+        showWali: {{ old('tinggal_dengan_wali', $orangTuaWali ? 'true' : 'false') }},
+        pekerjaanAyah: '{{ old('pekerjaan_ayah', $orangTuaAyah->pekerjaan ?? '') }}',
+        pekerjaanIbu: '{{ old('pekerjaan_ibu', $orangTuaIbu->pekerjaan ?? '') }}',
+        pekerjaanWali: '{{ old('pekerjaan_wali', $orangTuaWali->pekerjaan ?? '') }}',
      }">
 
-    <!-- ==================== DATA AYAH ==================== -->
-    <div class="p-6 border rounded-lg shadow-sm">
-        <h3 class="text-xl font-semibold text-slate-800 border-b pb-3 mb-6">Langkah 2: Data Ayah Kandung</h3>
+    {{-- AYAH --}}
+    <div>
+        <h3 class="text-xl font-semibold text-slate-800 border-b pb-3 mb-6">
+            Langkah 2: Data Orang Tua — Ayah
+        </h3>
+
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+            {{-- Nama Ayah --}}
             <div>
-                <label for="nama_ayah" class="block mb-2 text-sm font-medium text-slate-900">Nama Lengkap Ayah</label>
-                <input type="text" id="nama_ayah" name="nama_ayah" value="{{ old('nama_ayah', $siswa->orangTuaWali->nama_ayah ?? '') }}" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg block w-full p-2.5 focus:ring-blue-500 focus:border-blue-500" placeholder="Sesuai KTP" required>
+                <label class="block mb-2 text-sm font-medium text-slate-900">Nama Lengkap Ayah</label>
+                <input type="text" name="nama_ayah"
+                       value="{{ old('nama_ayah', $orangTuaAyah->nama_lengkap ?? '') }}"
+                       class="bg-slate-50 border border-slate-300 rounded-lg p-2.5 w-full text-sm"
+                       placeholder="Nama lengkap ayah" required>
                 @error('nama_ayah') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
+
+            {{-- NIK Ayah (text supaya tidak hilang leading zero) --}}
             <div>
-                <label for="nik_ayah" class="block mb-2 text-sm font-medium text-slate-900">NIK Ayah</label>
-                <input type="text" id="nik_ayah" name="nik_ayah" value="{{ old('nik_ayah', $siswa->orangTuaWali->nik_ayah ?? '') }}" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg block w-full p-2.5 focus:ring-blue-500 focus:border-blue-500" placeholder="16 Digit NIK" required>
+                <label class="block mb-2 text-sm font-medium text-slate-900">NIK Ayah</label>
+                <input type="text" inputmode="numeric" name="nik_ayah"
+                       maxlength="16"
+                       value="{{ old('nik_ayah', $orangTuaAyah->nik ?? '') }}"
+                       class="bg-slate-50 border border-slate-300 rounded-lg p-2.5 w-full text-sm"
+                       placeholder="16 digit NIK ayah">
                 @error('nik_ayah') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
+
+            {{-- Tempat Lahir Ayah --}}
             <div>
-                <label for="tempat_lahir_ayah" class="block mb-2 text-sm font-medium text-slate-900">Tempat Lahir Ayah</label>
-                <input type="text" id="tempat_lahir_ayah" name="tempat_lahir_ayah" value="{{ old('tempat_lahir_ayah', $siswa->orangTuaWali->tempat_lahir_ayah ?? '') }}" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg block w-full p-2.5 focus:ring-blue-500 focus:border-blue-500" required>
+                <label class="block mb-2 text-sm font-medium text-slate-900">Tempat Lahir Ayah</label>
+                <input type="text" name="tempat_lahir_ayah"
+                       value="{{ old('tempat_lahir_ayah', $orangTuaAyah->tempat_lahir ?? '') }}"
+                       class="bg-slate-50 border border-slate-300 rounded-lg p-2.5 w-full text-sm"
+                       placeholder="Kota atau tempat lahir">
                 @error('tempat_lahir_ayah') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
+
+            {{-- Tanggal Lahir Ayah --}}
             <div>
-                <label for="tanggal_lahir_ayah" class="block mb-2 text-sm font-medium text-slate-900">Tanggal Lahir Ayah</label>
-                <input type="date" id="tanggal_lahir_ayah" name="tanggal_lahir_ayah" value="{{ old('tanggal_lahir_ayah', $siswa->orangTuaWali->tanggal_lahir_ayah ?? '') }}" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg block w-full p-2.5 focus:ring-blue-500 focus:border-blue-500" required>
+                <label class="block mb-2 text-sm font-medium text-slate-900">Tanggal Lahir Ayah</label>
+                <input type="date" name="tanggal_lahir_ayah"
+                       value="{{ old('tanggal_lahir_ayah', isset($orangTuaAyah->tanggal_lahir) ? $orangTuaAyah->tanggal_lahir->format('Y-m-d') : '') }}"
+                       class="bg-slate-50 border border-slate-300 rounded-lg p-2.5 w-full text-sm">
                 @error('tanggal_lahir_ayah') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
+
+            {{-- Pendidikan Ayah --}}
             <div>
-                <label for="pendidikan_ayah" class="block mb-2 text-sm font-medium text-slate-900">Pendidikan Terakhir Ayah</label>
-                <select id="pendidikan_ayah" name="pendidikan_ayah" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg block w-full p-2.5 focus:ring-blue-500 focus:border-blue-500" required>
-                    <option value="" disabled {{ old('pendidikan_ayah', $siswa->orangTuaWali->pendidikan_ayah ?? '') ? '' : 'selected' }}>-- Pilih Pendidikan --</option>
-                    @foreach($pendidikanOptions as $option)
-                        <option value="{{ $option }}" @selected(old('pendidikan_ayah', $siswa->orangTuaWali->pendidikan_ayah ?? '') == $option)>{{ $option }}</option>
+                <label class="block mb-2 text-sm font-medium text-slate-900">Pendidikan Terakhir Ayah</label>
+                <select name="pendidikan_ayah" class="bg-slate-50 border border-slate-300 rounded-lg p-2.5 w-full text-sm" required>
+                    <option value="">-- Pilih Pendidikan --</option>
+                    @foreach($pendidikanOptions as $opt)
+                        <option value="{{ $opt }}" {{ old('pendidikan_ayah', $orangTuaAyah->pendidikan_terakhir ?? '') == $opt ? 'selected' : '' }}>
+                            {{ $opt }}
+                        </option>
                     @endforeach
                 </select>
                 @error('pendidikan_ayah') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
-            
-            <!-- Pekerjaan Ayah (enum + lainnya) -->
+
+            {{-- Pekerjaan Ayah --}}
             <div>
-                <label for="pekerjaan_ayah" class="block mb-2 text-sm font-medium text-slate-900">Pekerjaan Ayah</label>
-                <select id="pekerjaan_ayah" name="pekerjaan_ayah" x-model="pekerjaanAyah"
-                    class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg block w-full p-2.5 focus:ring-blue-500 focus:border-blue-500" required>
-                    <option value="" disabled selected>-- Pilih Pekerjaan --</option>
-                    @foreach($pekerjaanOptions as $option)
-                        <option value="{{ $option }}" @selected(old('pekerjaan_ayah', $siswa->orangTuaWali->pekerjaan_ayah ?? '') == $option)>{{ $option }}</option>
+                <label class="block mb-2 text-sm font-medium text-slate-900">Pekerjaan Ayah</label>
+                <select name="pekerjaan_ayah" x-model="pekerjaanAyah"
+                        class="bg-slate-50 border border-slate-300 rounded-lg p-2.5 w-full text-sm" required>
+                    <option value="">-- Pilih Pekerjaan --</option>
+                    @foreach($pekerjaanOptions as $opt)
+                        <option value="{{ $opt }}" {{ old('pekerjaan_ayah', $orangTuaAyah->pekerjaan ?? '') == $opt ? 'selected' : '' }}>
+                            {{ $opt }}
+                        </option>
                     @endforeach
+                    <option value="Lainnya">Lainnya</option>
                 </select>
-                <div x-show="pekerjaanAyah === 'Lainnya'" x-transition>
-                    <input type="text" name="pekerjaan_ayah_lainnya" placeholder="Tuliskan pekerjaan ayah..." 
-                           value="{{ old('pekerjaan_ayah_lainnya', $siswa->orangTuaWali->pekerjaan_ayah_lainnya ?? '') }}"
-                           class="mt-2 bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg block w-full p-2.5 focus:ring-blue-500 focus:border-blue-500">
-                </div>
                 @error('pekerjaan_ayah') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
 
+            {{-- Jika Pekerjaan Ayah Lainnya --}}
+            <div x-show="pekerjaanAyah === 'Lainnya'">
+                <label class="block mb-2 text-sm font-medium text-slate-900">Pekerjaan Ayah (Lainnya)</label>
+                <input type="text" name="pekerjaan_ayah_lainnya"
+                       value="{{ old('pekerjaan_ayah_lainnya', $orangTuaAyah->pekerjaan_lainnya ?? '') }}"
+                       class="bg-slate-50 border border-slate-300 rounded-lg p-2.5 w-full text-sm"
+                       placeholder="Tuliskan pekerjaan ayah">
+            </div>
+
+            {{-- Penghasilan Ayah --}}
             <div>
-                <label for="penghasilan_ayah" class="block mb-2 text-sm font-medium text-slate-900">Penghasilan Ayah</label>
-                <select id="penghasilan_ayah" name="penghasilan_ayah" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg block w-full p-2.5 focus:ring-blue-500 focus:border-blue-500" required>
-                    <option value="" disabled {{ old('penghasilan_ayah', $siswa->orangTuaWali->penghasilan_ayah ?? '') ? '' : 'selected' }}>-- Pilih Penghasilan --</option>
-                    @foreach($penghasilanOptions as $option)
-                        <option value="{{ $option }}" @selected(old('penghasilan_ayah', $siswa->orangTuaWali->penghasilan_ayah ?? '') == $option)>{{ $option }}</option>
+                <label class="block mb-2 text-sm font-medium text-slate-900">Penghasilan Ayah</label>
+                <select name="penghasilan_ayah" class="bg-slate-50 border border-slate-300 rounded-lg p-2.5 w-full text-sm" required>
+                    <option value="">-- Pilih Penghasilan --</option>
+                    @foreach($penghasilanOptions as $opt)
+                        <option value="{{ $opt }}" {{ old('penghasilan_ayah', $orangTuaAyah->penghasilan_bulanan ?? '') == $opt ? 'selected' : '' }}>
+                            {{ $opt }}
+                        </option>
                     @endforeach
                 </select>
                 @error('penghasilan_ayah') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
 
+            {{-- No HP Ayah --}}
             <div>
-                <label for="agama_ayah" class="block mb-2 text-sm font-medium text-slate-900">Agama Ayah</label>
-                <select id="agama_ayah" name="agama_ayah" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg block w-full p-2.5 focus:ring-blue-500 focus:border-blue-500" required>
-                    <option value="" disabled {{ old('agama_ayah', $siswa->orangTuaWali->agama_ayah ?? '') ? '' : 'selected' }}>-- Pilih Agama --</option>
-                    @foreach($agamaOptions as $option)
-                        <option value="{{ $option }}" @selected(old('agama_ayah', $siswa->orangTuaWali->agama_ayah ?? '') == $option)>{{ $option }}</option>
-                    @endforeach
-                </select>
-                @error('agama_ayah') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
+                <label class="block mb-2 text-sm font-medium text-slate-900">No HP Ayah</label>
+                <input type="text" name="no_hp_ayah"
+                       value="{{ old('no_hp_ayah', $orangTuaAyah->no_hp ?? '') }}"
+                       class="bg-slate-50 border border-slate-300 rounded-lg p-2.5 w-full text-sm"
+                       placeholder="0812xxxx">
+                @error('no_hp_ayah') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
+
         </div>
     </div>
 
-    <!-- ==================== DATA IBU ==================== -->
-    <div class="p-6 border rounded-lg shadow-sm">
-        <h3 class="text-xl font-semibold text-slate-800 border-b pb-3 mb-6">Data Ibu Kandung</h3>
+    {{-- IBU (match field names controller) --}}
+    <div>
+        <h3 class="text-lg font-semibold text-slate-800 border-b pb-3 mb-6">Data Ibu</h3>
+
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- Nama, TTL, Pendidikan -->
+            {{-- Nama Ibu --}}
             <div>
-                <label for="nama_ibu" class="block mb-2 text-sm font-medium text-slate-900">Nama Lengkap Ibu</label>
-                <input type="text" id="nama_ibu" name="nama_ibu" value="{{ old('nama_ibu', $siswa->orangTuaWali->nama_ibu ?? '') }}" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg block w-full p-2.5 focus:ring-blue-500 focus:border-blue-500" required>
+                <label class="block mb-2 text-sm font-medium text-slate-900">Nama Lengkap Ibu</label>
+                <input type="text" name="nama_ibu"
+                       value="{{ old('nama_ibu', $orangTuaIbu->nama_lengkap ?? '') }}"
+                       class="bg-slate-50 border border-slate-300 rounded-lg p-2.5 w-full text-sm" required>
                 @error('nama_ibu') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
+
+            {{-- NIK Ibu --}}
             <div>
-                <label for="nik_ibu" class="block mb-2 text-sm font-medium text-slate-900">NIK Ibu</label>
-                <input type="text" id="nik_ibu" name="nik_ibu" value="{{ old('nik_ibu', $siswa->orangTuaWali->nik_ibu ?? '') }}" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg block w-full p-2.5 focus:ring-blue-500 focus:border-blue-500" required>
+                <label class="block mb-2 text-sm font-medium text-slate-900">NIK Ibu</label>
+                <input type="text" inputmode="numeric" name="nik_ibu"
+                       maxlength="16"
+                       value="{{ old('nik_ibu', $orangTuaIbu->nik ?? '') }}"
+                       class="bg-slate-50 border border-slate-300 rounded-lg p-2.5 w-full text-sm"
+                       placeholder="16 digit NIK ibu">
                 @error('nik_ibu') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
+
+            {{-- Tempat Lahir Ibu --}}
             <div>
-                <label for="tempat_lahir_ibu" class="block mb-2 text-sm font-medium text-slate-900">Tempat Lahir Ibu</label>
-                <input type="text" id="tempat_lahir_ibu" name="tempat_lahir_ibu" value="{{ old('tempat_lahir_ibu', $siswa->orangTuaWali->tempat_lahir_ibu ?? '') }}" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg block w-full p-2.5 focus:ring-blue-500 focus:border-blue-500" required>
+                <label class="block mb-2 text-sm font-medium text-slate-900">Tempat Lahir Ibu</label>
+                <input type="text" name="tempat_lahir_ibu"
+                       value="{{ old('tempat_lahir_ibu', $orangTuaIbu->tempat_lahir ?? '') }}"
+                       class="bg-slate-50 border border-slate-300 rounded-lg p-2.5 w-full text-sm">
                 @error('tempat_lahir_ibu') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
+
+            {{-- Tanggal Lahir Ibu --}}
             <div>
-                <label for="tanggal_lahir_ibu" class="block mb-2 text-sm font-medium text-slate-900">Tanggal Lahir Ibu</label>
-                <input type="date" id="tanggal_lahir_ibu" name="tanggal_lahir_ibu" value="{{ old('tanggal_lahir_ibu', $siswa->orangTuaWali->tanggal_lahir_ibu ?? '') }}" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg block w-full p-2.5 focus:ring-blue-500 focus:border-blue-500" required>
+                <label class="block mb-2 text-sm font-medium text-slate-900">Tanggal Lahir Ibu</label>
+                <input type="date" name="tanggal_lahir_ibu"
+                       value="{{ old('tanggal_lahir_ibu', isset($orangTuaIbu->tanggal_lahir) ? $orangTuaIbu->tanggal_lahir->format('Y-m-d') : '') }}"
+                       class="bg-slate-50 border border-slate-300 rounded-lg p-2.5 w-full text-sm">
                 @error('tanggal_lahir_ibu') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
 
-            <!-- Pendidikan & Pekerjaan -->
+            {{-- Pendidikan Ibu --}}
             <div>
-                <label for="pendidikan_ibu" class="block mb-2 text-sm font-medium text-slate-900">Pendidikan Terakhir Ibu</label>
-                <select id="pendidikan_ibu" name="pendidikan_ibu" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg block w-full p-2.5 focus:ring-blue-500 focus:border-blue-500" required>
-                    <option value="" disabled {{ old('pendidikan_ibu', $siswa->orangTuaWali->pendidikan_ibu ?? '') ? '' : 'selected' }}>-- Pilih Pendidikan --</option>
-                    @foreach($pendidikanOptions as $option)
-                        <option value="{{ $option }}" @selected(old('pendidikan_ibu', $siswa->orangTuaWali->pendidikan_ibu ?? '') == $option)>{{ $option }}</option>
+                <label class="block mb-2 text-sm font-medium text-slate-900">Pendidikan Terakhir Ibu</label>
+                <select name="pendidikan_ibu" class="bg-slate-50 border border-slate-300 rounded-lg p-2.5 w-full text-sm" required>
+                    <option value="">-- Pilih Pendidikan --</option>
+                    @foreach($pendidikanOptions as $opt)
+                        <option value="{{ $opt }}" {{ old('pendidikan_ibu', $orangTuaIbu->pendidikan_terakhir ?? '') == $opt ? 'selected' : '' }}>
+                            {{ $opt }}
+                        </option>
                     @endforeach
                 </select>
                 @error('pendidikan_ibu') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
 
-            <!-- Pekerjaan Ibu (enum + lainnya) -->
+            {{-- Pekerjaan Ibu --}}
             <div>
-                <label for="pekerjaan_ibu" class="block mb-2 text-sm font-medium text-slate-900">Pekerjaan Ibu</label>
-                <select id="pekerjaan_ibu" name="pekerjaan_ibu" x-model="pekerjaanIbu"
-                    class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg block w-full p-2.5 focus:ring-blue-500 focus:border-blue-500" required>
-                    <option value="" disabled selected>-- Pilih Pekerjaan --</option>
-                    @foreach($pekerjaanOptions as $option)
-                        <option value="{{ $option }}" @selected(old('pekerjaan_ibu', $siswa->orangTuaWali->pekerjaan_ibu ?? '') == $option)>{{ $option }}</option>
+                <label class="block mb-2 text-sm font-medium text-slate-900">Pekerjaan Ibu</label>
+                <select name="pekerjaan_ibu" x-model="pekerjaanIbu" class="bg-slate-50 border border-slate-300 rounded-lg p-2.5 w-full text-sm" required>
+                    <option value="">-- Pilih Pekerjaan --</option>
+                    @foreach($pekerjaanOptions as $opt)
+                        <option value="{{ $opt }}" {{ old('pekerjaan_ibu', $orangTuaIbu->pekerjaan ?? '') == $opt ? 'selected' : '' }}>
+                            {{ $opt }}
+                        </option>
                     @endforeach
-                </select>
-                <div x-show="pekerjaanIbu === 'Lainnya'" x-transition>
-                    <input type="text" name="pekerjaan_ibu_lainnya" placeholder="Tuliskan pekerjaan ibu..."
-                           value="{{ old('pekerjaan_ibu_lainnya', $siswa->orangTuaWali->pekerjaan_ibu_lainnya ?? '') }}"
-                           class="mt-2 bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg block w-full p-2.5 focus:ring-blue-500 focus:border-blue-500">
-                </div>
-            </div>
-
-            <!-- Penghasilan & Agama -->
-            <div>
-                <label for="penghasilan_ibu" class="block mb-2 text-sm font-medium text-slate-900">Penghasilan Ibu</label>
-                <select id="penghasilan_ibu" name="penghasilan_ibu" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg block w-full p-2.5 focus:ring-blue-500 focus:border-blue-500" required>
-                    <option value="" disabled {{ old('penghasilan_ibu', $siswa->orangTuaWali->penghasilan_ibu ?? '') ? '' : 'selected' }}>-- Pilih Penghasilan --</option>
-                    @foreach($penghasilanOptions as $option)
-                        <option value="{{ $option }}" @selected(old('penghasilan_ibu', $siswa->orangTuaWali->penghasilan_ibu ?? '') == $option)>{{ $option }}</option>
-                    @endforeach
+                    <option value="Lainnya">Lainnya</option>
                 </select>
             </div>
 
+            {{-- Jika Pekerjaan Ibu Lainnya --}}
+            <div x-show="pekerjaanIbu === 'Lainnya'">
+                <label class="block mb-2 text-sm font-medium text-slate-900">Pekerjaan Ibu (Lainnya)</label>
+                <input type="text" name="pekerjaan_ibu_lainnya"
+                       value="{{ old('pekerjaan_ibu_lainnya', $orangTuaIbu->pekerjaan_lainnya ?? '') }}"
+                       class="bg-slate-50 border border-slate-300 rounded-lg p-2.5 w-full text-sm"
+                       placeholder="Tuliskan pekerjaan ibu">
+            </div>
+
+            {{-- Penghasilan Ibu --}}
             <div>
-                <label for="agama_ibu" class="block mb-2 text-sm font-medium text-slate-900">Agama Ibu</label>
-                <select id="agama_ibu" name="agama_ibu" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg block w-full p-2.5 focus:ring-blue-500 focus:border-blue-500" required>
-                    <option value="" disabled {{ old('agama_ibu', $siswa->orangTuaWali->agama_ibu ?? '') ? '' : 'selected' }}>-- Pilih Agama --</option>
-                    @foreach($agamaOptions as $option)
-                        <option value="{{ $option }}" @selected(old('agama_ibu', $siswa->orangTuaWali->agama_ibu ?? '') == $option)>{{ $option }}</option>
+                <label class="block mb-2 text-sm font-medium text-slate-900">Penghasilan Ibu</label>
+                <select name="penghasilan_ibu" class="bg-slate-50 border border-slate-300 rounded-lg p-2.5 w-full text-sm" required>
+                    <option value="">-- Pilih Penghasilan --</option>
+                    @foreach($penghasilanOptions as $opt)
+                        <option value="{{ $opt }}" {{ old('penghasilan_ibu', $orangTuaIbu->penghasilan_bulanan ?? '') == $opt ? 'selected' : '' }}>
+                            {{ $opt }}
+                        </option>
                     @endforeach
                 </select>
+                @error('penghasilan_ibu') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
+            </div>
+
+            {{-- No HP Ibu --}}
+            <div>
+                <label class="block mb-2 text-sm font-medium text-slate-900">No HP Ibu</label>
+                <input type="text" name="no_hp_ibu"
+                       value="{{ old('no_hp_ibu', $orangTuaIbu->no_hp ?? '') }}"
+                       class="bg-slate-50 border border-slate-300 rounded-lg p-2.5 w-full text-sm"
+                       placeholder="0812xxxx">
+                @error('no_hp_ibu') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
         </div>
     </div>
 
-    <!-- ==================== DATA WALI (Opsional) ==================== -->
-    <div class="p-6 border rounded-lg shadow-sm">
-        <div class="flex items-center">
-            <input id="showWali" name="tinggal_dengan_wali" type="checkbox" x-model="showWali" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
-            <label for="showWali" class="ml-2 text-sm font-medium text-gray-900">Saya tinggal dengan Wali (centang jika perlu mengisi data wali).</label>
+    {{-- WALI --}}
+    <div>
+        <h3 class="text-lg font-semibold text-slate-800 border-b pb-3 mb-6">Data Wali (Opsional)</h3>
+
+        <div class="flex items-center mb-4">
+            <input id="waliCheck" type="checkbox" x-model="showWali" name="tinggal_dengan_wali" value="on"
+                   class="w-5 h-5 text-blue-600 border-slate-300 rounded">
+            <label for="waliCheck" class="ml-3 text-sm text-slate-900">Centang bila tinggal dengan wali</label>
         </div>
 
-        <div x-show="showWali" x-transition class="mt-6">
-                        <h3 class="text-xl font-semibold text-slate-800 border-b pb-3 mb-6">Data Wali</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                    <label for="nama_wali" class="block mb-2 text-sm font-medium text-slate-900">Nama Lengkap Wali</label>
-                    <input type="text" id="nama_wali" name="nama_wali"
-                        value="{{ old('nama_wali', $siswa->orangTuaWali->nama_wali ?? '') }}"
-                        class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg block w-full p-2.5 
-                        focus:ring-blue-500 focus:border-blue-500" placeholder="Sesuai KTP">
-                    @error('nama_wali') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
-                </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6" x-show="showWali">
+            {{-- Nama Wali --}}
+            <div>
+                <label class="block mb-2 text-sm font-medium text-slate-900">Nama Wali</label>
+                <input type="text" name="nama_wali"
+                       value="{{ old('nama_wali', $orangTuaWali->nama_lengkap ?? '') }}"
+                       class="bg-slate-50 border border-slate-300 rounded-lg p-2.5 w-full text-sm">
+            </div>
 
-                <div>
-                    <label for="nik_wali" class="block mb-2 text-sm font-medium text-slate-900">NIK Wali</label>
-                    <input type="text" id="nik_wali" name="nik_wali"
-                        value="{{ old('nik_wali', $siswa->orangTuaWali->nik_wali ?? '') }}"
-                        class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg block w-full p-2.5 
-                        focus:ring-blue-500 focus:border-blue-500" placeholder="16 Digit NIK">
-                    @error('nik_wali') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
-                </div>
+            {{-- NIK Wali --}}
+            <div>
+                <label class="block mb-2 text-sm font-medium text-slate-900">NIK Wali</label>
+                <input type="text" inputmode="numeric" name="nik_wali" maxlength="16"
+                       value="{{ old('nik_wali', $orangTuaWali->nik ?? '') }}"
+                       class="bg-slate-50 border border-slate-300 rounded-lg p-2.5 w-full text-sm"
+                       placeholder="16 digit NIK wali">
+            </div>
 
-                <div>
-                    <label for="tempat_lahir_wali" class="block mb-2 text-sm font-medium text-slate-900">Tempat Lahir Wali</label>
-                    <input type="text" id="tempat_lahir_wali" name="tempat_lahir_wali"
-                        value="{{ old('tempat_lahir_wali', $siswa->orangTuaWali->tempat_lahir_wali ?? '') }}"
-                        class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg block w-full p-2.5 
-                        focus:ring-blue-500 focus:border-blue-500">
-                    @error('tempat_lahir_wali') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
-                </div>
+            {{-- Tempat Lahir Wali --}}
+            <div>
+                <label class="block mb-2 text-sm font-medium text-slate-900">Tempat Lahir Wali</label>
+                <input type="text" name="tempat_lahir_wali"
+                       value="{{ old('tempat_lahir_wali', $orangTuaWali->tempat_lahir ?? '') }}"
+                       class="bg-slate-50 border border-slate-300 rounded-lg p-2.5 w-full text-sm">
+            </div>
 
-                <div>
-                    <label for="tanggal_lahir_wali" class="block mb-2 text-sm font-medium text-slate-900">Tanggal Lahir Wali</label>
-                    <input type="date" id="tanggal_lahir_wali" name="tanggal_lahir_wali"
-                        value="{{ old('tanggal_lahir_wali', $siswa->orangTuaWali->tanggal_lahir_wali ?? '') }}"
-                        class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg block w-full p-2.5 
-                        focus:ring-blue-500 focus:border-blue-500">
-                    @error('tanggal_lahir_wali') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
-                </div>
+            {{-- Tanggal Lahir Wali --}}
+            <div>
+                <label class="block mb-2 text-sm font-medium text-slate-900">Tanggal Lahir Wali</label>
+                <input type="date" name="tanggal_lahir_wali"
+                       value="{{ old('tanggal_lahir_wali', isset($orangTuaWali->tanggal_lahir) ? $orangTuaWali->tanggal_lahir->format('Y-m-d') : '') }}"
+                       class="bg-slate-50 border border-slate-300 rounded-lg p-2.5 w-full text-sm">
+            </div>
 
-                <div>
-                    <label for="pendidikan_wali" class="block mb-2 text-sm font-medium text-slate-900">Pendidikan Terakhir Wali</label>
-                    <select id="pendidikan_wali" name="pendidikan_wali"
-                        class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg block w-full p-2.5 
-                        focus:ring-blue-500 focus:border-blue-500">
-                        <option value="" disabled {{ old('pendidikan_wali', $siswa->orangTuaWali->pendidikan_wali ?? '') ? '' : 'selected' }}>
-                            -- Pilih Pendidikan --
+            {{-- Pendidikan Wali --}}
+            <div>
+                <label class="block mb-2 text-sm font-medium text-slate-900">Pendidikan Wali</label>
+                <select name="pendidikan_wali" class="bg-slate-50 border border-slate-300 rounded-lg p-2.5 w-full text-sm">
+                    <option value="">-- Pilih Pendidikan --</option>
+                    @foreach($pendidikanOptions as $opt)
+                        <option value="{{ $opt }}" {{ old('pendidikan_wali', $orangTuaWali->pendidikan_terakhir ?? '') == $opt ? 'selected' : '' }}>
+                            {{ $opt }}
                         </option>
-                        @foreach($pendidikanOptions as $option)
-                            <option value="{{ $option }}" 
-                                @selected(old('pendidikan_wali', $siswa->orangTuaWali->pendidikan_wali ?? '') == $option)>
-                                {{ $option }}
-                            </option>
-                        @endforeach
-                    </select>
-                    @error('pendidikan_wali') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
-                </div>
+                    @endforeach
+                </select>
+            </div>
 
-                <!-- Pekerjaan Wali (enum + Lainnya) -->
-                <div>
-                    <label for="pekerjaan_wali" class="block mb-2 text-sm font-medium text-slate-900">Pekerjaan Wali</label>
-                    <select id="pekerjaan_wali" name="pekerjaan_wali" x-model="pekerjaanWali"
-                        class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg block w-full p-2.5 
-                        focus:ring-blue-500 focus:border-blue-500">
-                        <option value="" disabled selected>-- Pilih Pekerjaan --</option>
-                        @foreach($pekerjaanOptions as $option)
-                            <option value="{{ $option }}" 
-                                @selected(old('pekerjaan_wali', $siswa->orangTuaWali->pekerjaan_wali ?? '') == $option)>
-                                {{ $option }}
-                            </option>
-                        @endforeach
-                    </select>
-                    <div x-show="pekerjaanWali === 'Lainnya'" x-transition>
-                        <input type="text" name="pekerjaan_wali_lainnya" placeholder="Tuliskan pekerjaan wali..."
-                               value="{{ old('pekerjaan_wali_lainnya', $siswa->orangTuaWali->pekerjaan_wali_lainnya ?? '') }}"
-                               class="mt-2 bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg block w-full p-2.5 
-                               focus:ring-blue-500 focus:border-blue-500">
-                    </div>
-                    @error('pekerjaan_wali') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
-                </div>
-
-                <div>
-                    <label for="penghasilan_wali" class="block mb-2 text-sm font-medium text-slate-900">Penghasilan Wali</label>
-                    <select id="penghasilan_wali" name="penghasilan_wali"
-                        class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg block w-full p-2.5 
-                        focus:ring-blue-500 focus:border-blue-500">
-                        <option value="" disabled {{ old('penghasilan_wali', $siswa->orangTuaWali->penghasilan_wali ?? '') ? '' : 'selected' }}>
-                            -- Pilih Penghasilan --
+            {{-- Pekerjaan Wali --}}
+            <div>
+                <label class="block mb-2 text-sm font-medium text-slate-900">Pekerjaan Wali</label>
+                <select name="pekerjaan_wali" x-model="pekerjaanWali" class="bg-slate-50 border border-slate-300 rounded-lg p-2.5 w-full text-sm">
+                    <option value="">-- Pilih Pekerjaan --</option>
+                    @foreach($pekerjaanOptions as $opt)
+                        <option value="{{ $opt }}" {{ old('pekerjaan_wali', $orangTuaWali->pekerjaan ?? '') == $opt ? 'selected' : '' }}>
+                            {{ $opt }}
                         </option>
-                        @foreach($penghasilanOptions as $option)
-                            <option value="{{ $option }}" 
-                                @selected(old('penghasilan_wali', $siswa->orangTuaWali->penghasilan_wali ?? '') == $option)>
-                                {{ $option }}
-                            </option>
-                        @endforeach
-                    </select>
-                    @error('penghasilan_wali') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
-                </div>
+                    @endforeach
+                    <option value="Lainnya">Lainnya</option>
+                </select>
+            </div>
 
-                <div>
-                    <label for="agama_wali" class="block mb-2 text-sm font-medium text-slate-900">Agama Wali</label>
-                    <select id="agama_wali" name="agama_wali"
-                        class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg block w-full p-2.5 
-                        focus:ring-blue-500 focus:border-blue-500">
-                        <option value="" disabled {{ old('agama_wali', $siswa->orangTuaWali->agama_wali ?? '') ? '' : 'selected' }}>
-                            -- Pilih Agama --
+            {{-- Jika Pekerjaan Wali Lainnya --}}
+            <div x-show="pekerjaanWali === 'Lainnya'">
+                <label class="block mb-2 text-sm font-medium text-slate-900">Pekerjaan Wali (Lainnya)</label>
+                <input type="text" name="pekerjaan_wali_lainnya"
+                       value="{{ old('pekerjaan_wali_lainnya', $orangTuaWali->pekerjaan_lainnya ?? '') }}"
+                       class="bg-slate-50 border border-slate-300 rounded-lg p-2.5 w-full text-sm">
+            </div>
+
+            {{-- Penghasilan Wali --}}
+            <div>
+                <label class="block mb-2 text-sm font-medium text-slate-900">Penghasilan Wali</label>
+                <select name="penghasilan_wali" class="bg-slate-50 border border-slate-300 rounded-lg p-2.5 w-full text-sm">
+                    <option value="">-- Pilih Penghasilan --</option>
+                    @foreach($penghasilanOptions as $opt)
+                        <option value="{{ $opt }}" {{ old('penghasilan_wali', $orangTuaWali->penghasilan_bulanan ?? '') == $opt ? 'selected' : '' }}>
+                            {{ $opt }}
                         </option>
-                        @foreach($agamaOptions as $option)
-                            <option value="{{ $option }}" 
-                                @selected(old('agama_wali', $siswa->orangTuaWali->agama_wali ?? '') == $option)>
-                                {{ $option }}
-                            </option>
-                        @endforeach
-                    </select>
-                    @error('agama_wali') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
-                </div>
+                    @endforeach
+                </select>
+            </div>
+
+            {{-- No HP Wali --}}
+            <div>
+                <label class="block mb-2 text-sm font-medium text-slate-900">No HP Wali</label>
+                <input type="text" name="no_hp_wali"
+                       value="{{ old('no_hp_wali', $orangTuaWali->no_hp ?? '') }}"
+                       class="bg-slate-50 border border-slate-300 rounded-lg p-2.5 w-full text-sm">
             </div>
         </div>
     </div>
+
 </div>
-
