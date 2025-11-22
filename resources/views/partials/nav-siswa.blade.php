@@ -21,7 +21,7 @@
     <div class="flex items-center md:order-2 space-x-3">
         <button type="button" class="flex items-center text-sm rounded-full focus:ring-4 focus:ring-gray-300" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
             <span class="sr-only">Open user menu</span>
-            <span class="hidden sm:inline text-sm text-gray-600 mr-3">Halo, {{ strtok(Auth::user()->nama_lengkap, ' ') }}</span>
+            <span class="hidden sm:inline text-sm text-gray-600 mr-3">Halo, {{ strtok($siswa->nama_lengkap ?? 'Siswa', '') }}</span>
             <img class="w-8 h-8 rounded-full object-cover" 
                  src="{{ Auth::user()->pas_foto ? Storage::url(Auth::user()->pas_foto) : 'https://ui-avatars.com/api/?name='.urlencode(Auth::user()->nama_lengkap) }}" 
                  alt="Foto Profil">
@@ -29,7 +29,7 @@
         <!-- Dropdown menu -->
         <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow" id="user-dropdown">
             <div class="px-4 py-3">
-              <span class="block text-sm text-gray-900">{{ Auth::user()->nama_lengkap }}</span>
+              <span class="block text-sm text-gray-900">{{ strtok($siswa->nama_lengkap ?? 'Siswa', '') }}</span>
               <span class="block text-sm text-gray-500 truncate">{{ Auth::user()->email }}</span>
             </div>
             <ul class="py-2" aria-labelledby="user-menu-button">

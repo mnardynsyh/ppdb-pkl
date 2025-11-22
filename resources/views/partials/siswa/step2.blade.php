@@ -31,7 +31,7 @@
                 @error('nama_ayah') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
 
-            {{-- NIK Ayah (text supaya tidak hilang leading zero) --}}
+            {{-- NIK Ayah --}}
             <div>
                 <label class="block mb-2 text-sm font-medium text-slate-900">NIK Ayah</label>
                 <input type="text" inputmode="numeric" name="nik_ayah"
@@ -50,6 +50,22 @@
                        class="bg-slate-50 border border-slate-300 rounded-lg p-2.5 w-full text-sm"
                        placeholder="Kota atau tempat lahir">
                 @error('tempat_lahir_ayah') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
+            </div>
+
+            {{-- Agama Ayah --}}
+            <div>
+                <label class="block mb-2 text-sm font-medium text-slate-900">Agama Ayah</label>
+                <select name="agama_ayah"
+                        class="bg-slate-50 border border-slate-300 rounded-lg p-2.5 w-full text-sm" required>
+                    <option value="">-- Pilih Agama --</option>
+                    @foreach (['Islam','Kristen','Katolik','Hindu','Buddha','Konghucu','Lainnya'] as $agama)
+                        <option value="{{ $agama }}"
+                            {{ old('agama_ayah', $orangTuaAyah->agama ?? '') == $agama ? 'selected' : '' }}>
+                            {{ $agama }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('agama_ayah') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
 
             {{-- Tanggal Lahir Ayah --}}
@@ -86,18 +102,8 @@
                             {{ $opt }}
                         </option>
                     @endforeach
-                    <option value="Lainnya">Lainnya</option>
                 </select>
                 @error('pekerjaan_ayah') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
-            </div>
-
-            {{-- Jika Pekerjaan Ayah Lainnya --}}
-            <div x-show="pekerjaanAyah === 'Lainnya'">
-                <label class="block mb-2 text-sm font-medium text-slate-900">Pekerjaan Ayah (Lainnya)</label>
-                <input type="text" name="pekerjaan_ayah_lainnya"
-                       value="{{ old('pekerjaan_ayah_lainnya', $orangTuaAyah->pekerjaan_lainnya ?? '') }}"
-                       class="bg-slate-50 border border-slate-300 rounded-lg p-2.5 w-full text-sm"
-                       placeholder="Tuliskan pekerjaan ayah">
             </div>
 
             {{-- Penghasilan Ayah --}}
@@ -127,7 +133,7 @@
         </div>
     </div>
 
-    {{-- IBU (match field names controller) --}}
+    {{-- IBU --}}
     <div>
         <h3 class="text-lg font-semibold text-slate-800 border-b pb-3 mb-6">Data Ibu</h3>
 
@@ -159,6 +165,22 @@
                        value="{{ old('tempat_lahir_ibu', $orangTuaIbu->tempat_lahir ?? '') }}"
                        class="bg-slate-50 border border-slate-300 rounded-lg p-2.5 w-full text-sm">
                 @error('tempat_lahir_ibu') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
+            </div>
+
+            {{-- Agama Ibu --}}
+            <div>
+                <label class="block mb-2 text-sm font-medium text-slate-900">Agama Ibu</label>
+                <select name="agama_ibu"
+                        class="bg-slate-50 border border-slate-300 rounded-lg p-2.5 w-full text-sm" required>
+                    <option value="">-- Pilih Agama --</option>
+                    @foreach (['Islam','Kristen','Katolik','Hindu','Buddha','Konghucu','Lainnya'] as $agama)
+                        <option value="{{ $agama }}"
+                            {{ old('agama_ibu', $orangTuaIbu->agama ?? '') == $agama ? 'selected' : '' }}>
+                            {{ $agama }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('agama_ibu') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
 
             {{-- Tanggal Lahir Ibu --}}
@@ -194,17 +216,7 @@
                             {{ $opt }}
                         </option>
                     @endforeach
-                    <option value="Lainnya">Lainnya</option>
                 </select>
-            </div>
-
-            {{-- Jika Pekerjaan Ibu Lainnya --}}
-            <div x-show="pekerjaanIbu === 'Lainnya'">
-                <label class="block mb-2 text-sm font-medium text-slate-900">Pekerjaan Ibu (Lainnya)</label>
-                <input type="text" name="pekerjaan_ibu_lainnya"
-                       value="{{ old('pekerjaan_ibu_lainnya', $orangTuaIbu->pekerjaan_lainnya ?? '') }}"
-                       class="bg-slate-50 border border-slate-300 rounded-lg p-2.5 w-full text-sm"
-                       placeholder="Tuliskan pekerjaan ibu">
             </div>
 
             {{-- Penghasilan Ibu --}}
@@ -277,6 +289,22 @@
                        class="bg-slate-50 border border-slate-300 rounded-lg p-2.5 w-full text-sm">
             </div>
 
+            {{-- Agama Wali --}}
+            <div x-show="showWali">
+                <label class="block mb-2 text-sm font-medium text-slate-900">Agama Wali</label>
+                <select name="agama_wali"
+                        class="bg-slate-50 border border-slate-300 rounded-lg p-2.5 w-full text-sm">
+                    <option value="">-- Pilih Agama --</option>
+                    @foreach (['Islam','Kristen','Katolik','Hindu','Buddha','Konghucu','Lainnya'] as $agama)
+                        <option value="{{ $agama }}"
+                            {{ old('agama_wali', $orangTuaWali->agama ?? '') == $agama ? 'selected' : '' }}>
+                            {{ $agama }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('agama_wali') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
+            </div>
+
             {{-- Pendidikan Wali --}}
             <div>
                 <label class="block mb-2 text-sm font-medium text-slate-900">Pendidikan Wali</label>
@@ -300,16 +328,7 @@
                             {{ $opt }}
                         </option>
                     @endforeach
-                    <option value="Lainnya">Lainnya</option>
                 </select>
-            </div>
-
-            {{-- Jika Pekerjaan Wali Lainnya --}}
-            <div x-show="pekerjaanWali === 'Lainnya'">
-                <label class="block mb-2 text-sm font-medium text-slate-900">Pekerjaan Wali (Lainnya)</label>
-                <input type="text" name="pekerjaan_wali_lainnya"
-                       value="{{ old('pekerjaan_wali_lainnya', $orangTuaWali->pekerjaan_lainnya ?? '') }}"
-                       class="bg-slate-50 border border-slate-300 rounded-lg p-2.5 w-full text-sm">
             </div>
 
             {{-- Penghasilan Wali --}}
