@@ -1,4 +1,6 @@
 @php
+    // Mengambil data orang tua dari relasi
+    // Menggunakan optional() agar tidak error jika relasi belum ada
     $orangTuaAyah = $siswa->orangTua->where('hubungan', 'Ayah')->first();
     $orangTuaIbu  = $siswa->orangTua->where('hubungan', 'Ibu')->first();
     $orangTuaWali = $siswa->orangTua->where('hubungan', 'Wali')->first();
@@ -68,11 +70,11 @@
                 @error('agama_ayah') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
 
-            {{-- Tanggal Lahir Ayah --}}
+            {{-- Tanggal Lahir Ayah (PERBAIKAN DISINI) --}}
             <div>
                 <label class="block mb-2 text-sm font-medium text-slate-900">Tanggal Lahir Ayah</label>
                 <input type="date" name="tanggal_lahir_ayah"
-                       value="{{ old('tanggal_lahir_ayah', isset($orangTuaAyah->tanggal_lahir) ? $orangTuaAyah->tanggal_lahir->format('Y-m-d') : '') }}"
+                       value="{{ old('tanggal_lahir_ayah', !empty($orangTuaAyah->tanggal_lahir) ? \Carbon\Carbon::parse($orangTuaAyah->tanggal_lahir)->format('Y-m-d') : '') }}"
                        class="bg-slate-50 border border-slate-300 rounded-lg p-2.5 w-full text-sm">
                 @error('tanggal_lahir_ayah') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
@@ -82,7 +84,7 @@
                 <label class="block mb-2 text-sm font-medium text-slate-900">Pendidikan Terakhir Ayah</label>
                 <select name="pendidikan_ayah" class="bg-slate-50 border border-slate-300 rounded-lg p-2.5 w-full text-sm" required>
                     <option value="">-- Pilih Pendidikan --</option>
-                    @foreach($pendidikanOptions as $opt)
+                    @foreach($pendidikanOptions ?? ['SD','SMP','SMA','D3','S1','S2','S3','Tidak Sekolah'] as $opt)
                         <option value="{{ $opt }}" {{ old('pendidikan_ayah', $orangTuaAyah->pendidikan_terakhir ?? '') == $opt ? 'selected' : '' }}>
                             {{ $opt }}
                         </option>
@@ -97,7 +99,7 @@
                 <select name="pekerjaan_ayah" x-model="pekerjaanAyah"
                         class="bg-slate-50 border border-slate-300 rounded-lg p-2.5 w-full text-sm" required>
                     <option value="">-- Pilih Pekerjaan --</option>
-                    @foreach($pekerjaanOptions as $opt)
+                    @foreach($pekerjaanOptions ?? ['PNS','TNI/Polri','Wiraswasta','Swasta','Petani','Nelayan','Buruh','Lainnya'] as $opt)
                         <option value="{{ $opt }}" {{ old('pekerjaan_ayah', $orangTuaAyah->pekerjaan ?? '') == $opt ? 'selected' : '' }}>
                             {{ $opt }}
                         </option>
@@ -111,7 +113,7 @@
                 <label class="block mb-2 text-sm font-medium text-slate-900">Penghasilan Ayah</label>
                 <select name="penghasilan_ayah" class="bg-slate-50 border border-slate-300 rounded-lg p-2.5 w-full text-sm" required>
                     <option value="">-- Pilih Penghasilan --</option>
-                    @foreach($penghasilanOptions as $opt)
+                    @foreach($penghasilanOptions ?? ['< 500.000','500.000 - 1.000.000','1.000.000 - 2.000.000','2.000.000 - 5.000.000','> 5.000.000'] as $opt)
                         <option value="{{ $opt }}" {{ old('penghasilan_ayah', $orangTuaAyah->penghasilan_bulanan ?? '') == $opt ? 'selected' : '' }}>
                             {{ $opt }}
                         </option>
@@ -183,11 +185,11 @@
                 @error('agama_ibu') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
 
-            {{-- Tanggal Lahir Ibu --}}
+            {{-- Tanggal Lahir Ibu (PERBAIKAN DISINI) --}}
             <div>
                 <label class="block mb-2 text-sm font-medium text-slate-900">Tanggal Lahir Ibu</label>
                 <input type="date" name="tanggal_lahir_ibu"
-                       value="{{ old('tanggal_lahir_ibu', isset($orangTuaIbu->tanggal_lahir) ? $orangTuaIbu->tanggal_lahir->format('Y-m-d') : '') }}"
+                       value="{{ old('tanggal_lahir_ibu', !empty($orangTuaIbu->tanggal_lahir) ? \Carbon\Carbon::parse($orangTuaIbu->tanggal_lahir)->format('Y-m-d') : '') }}"
                        class="bg-slate-50 border border-slate-300 rounded-lg p-2.5 w-full text-sm">
                 @error('tanggal_lahir_ibu') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
@@ -197,7 +199,7 @@
                 <label class="block mb-2 text-sm font-medium text-slate-900">Pendidikan Terakhir Ibu</label>
                 <select name="pendidikan_ibu" class="bg-slate-50 border border-slate-300 rounded-lg p-2.5 w-full text-sm" required>
                     <option value="">-- Pilih Pendidikan --</option>
-                    @foreach($pendidikanOptions as $opt)
+                    @foreach($pendidikanOptions ?? ['SD','SMP','SMA','D3','S1','S2','S3','Tidak Sekolah'] as $opt)
                         <option value="{{ $opt }}" {{ old('pendidikan_ibu', $orangTuaIbu->pendidikan_terakhir ?? '') == $opt ? 'selected' : '' }}>
                             {{ $opt }}
                         </option>
@@ -211,7 +213,7 @@
                 <label class="block mb-2 text-sm font-medium text-slate-900">Pekerjaan Ibu</label>
                 <select name="pekerjaan_ibu" x-model="pekerjaanIbu" class="bg-slate-50 border border-slate-300 rounded-lg p-2.5 w-full text-sm" required>
                     <option value="">-- Pilih Pekerjaan --</option>
-                    @foreach($pekerjaanOptions as $opt)
+                    @foreach($pekerjaanOptions ?? ['PNS','TNI/Polri','Wiraswasta','Swasta','Petani','Nelayan','Buruh','Lainnya'] as $opt)
                         <option value="{{ $opt }}" {{ old('pekerjaan_ibu', $orangTuaIbu->pekerjaan ?? '') == $opt ? 'selected' : '' }}>
                             {{ $opt }}
                         </option>
@@ -224,7 +226,7 @@
                 <label class="block mb-2 text-sm font-medium text-slate-900">Penghasilan Ibu</label>
                 <select name="penghasilan_ibu" class="bg-slate-50 border border-slate-300 rounded-lg p-2.5 w-full text-sm" required>
                     <option value="">-- Pilih Penghasilan --</option>
-                    @foreach($penghasilanOptions as $opt)
+                    @foreach($penghasilanOptions ?? ['< 500.000','500.000 - 1.000.000','1.000.000 - 2.000.000','2.000.000 - 5.000.000','> 5.000.000'] as $opt)
                         <option value="{{ $opt }}" {{ old('penghasilan_ibu', $orangTuaIbu->penghasilan_bulanan ?? '') == $opt ? 'selected' : '' }}>
                             {{ $opt }}
                         </option>
@@ -281,11 +283,11 @@
                        class="bg-slate-50 border border-slate-300 rounded-lg p-2.5 w-full text-sm">
             </div>
 
-            {{-- Tanggal Lahir Wali --}}
+            {{-- Tanggal Lahir Wali (PERBAIKAN DISINI) --}}
             <div>
                 <label class="block mb-2 text-sm font-medium text-slate-900">Tanggal Lahir Wali</label>
                 <input type="date" name="tanggal_lahir_wali"
-                       value="{{ old('tanggal_lahir_wali', isset($orangTuaWali->tanggal_lahir) ? $orangTuaWali->tanggal_lahir->format('Y-m-d') : '') }}"
+                       value="{{ old('tanggal_lahir_wali', !empty($orangTuaWali->tanggal_lahir) ? \Carbon\Carbon::parse($orangTuaWali->tanggal_lahir)->format('Y-m-d') : '') }}"
                        class="bg-slate-50 border border-slate-300 rounded-lg p-2.5 w-full text-sm">
             </div>
 
@@ -310,7 +312,7 @@
                 <label class="block mb-2 text-sm font-medium text-slate-900">Pendidikan Wali</label>
                 <select name="pendidikan_wali" class="bg-slate-50 border border-slate-300 rounded-lg p-2.5 w-full text-sm">
                     <option value="">-- Pilih Pendidikan --</option>
-                    @foreach($pendidikanOptions as $opt)
+                    @foreach($pendidikanOptions ?? ['SD','SMP','SMA','D3','S1','S2','S3','Tidak Sekolah'] as $opt)
                         <option value="{{ $opt }}" {{ old('pendidikan_wali', $orangTuaWali->pendidikan_terakhir ?? '') == $opt ? 'selected' : '' }}>
                             {{ $opt }}
                         </option>
@@ -323,7 +325,7 @@
                 <label class="block mb-2 text-sm font-medium text-slate-900">Pekerjaan Wali</label>
                 <select name="pekerjaan_wali" x-model="pekerjaanWali" class="bg-slate-50 border border-slate-300 rounded-lg p-2.5 w-full text-sm">
                     <option value="">-- Pilih Pekerjaan --</option>
-                    @foreach($pekerjaanOptions as $opt)
+                    @foreach($pekerjaanOptions ?? ['PNS','TNI/Polri','Wiraswasta','Swasta','Petani','Nelayan','Buruh','Lainnya'] as $opt)
                         <option value="{{ $opt }}" {{ old('pekerjaan_wali', $orangTuaWali->pekerjaan ?? '') == $opt ? 'selected' : '' }}>
                             {{ $opt }}
                         </option>
@@ -336,7 +338,7 @@
                 <label class="block mb-2 text-sm font-medium text-slate-900">Penghasilan Wali</label>
                 <select name="penghasilan_wali" class="bg-slate-50 border border-slate-300 rounded-lg p-2.5 w-full text-sm">
                     <option value="">-- Pilih Penghasilan --</option>
-                    @foreach($penghasilanOptions as $opt)
+                    @foreach($penghasilanOptions ?? ['< 500.000','500.000 - 1.000.000','1.000.000 - 2.000.000','2.000.000 - 5.000.000','> 5.000.000'] as $opt)
                         <option value="{{ $opt }}" {{ old('penghasilan_wali', $orangTuaWali->penghasilan_bulanan ?? '') == $opt ? 'selected' : '' }}>
                             {{ $opt }}
                         </option>
