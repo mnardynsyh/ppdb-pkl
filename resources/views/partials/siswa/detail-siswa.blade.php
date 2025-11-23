@@ -1,6 +1,6 @@
 {{-- ====================== DATA SISWA ====================== --}}
-<div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-5">
-    <h2 class="text-xl font-semibold text-gray-800 dark:text-white border-b pb-3 mb-4">
+<div class="bg-white rounded-xl shadow-md p-5">
+    <h2 class="text-xl font-semibold text-gray-800 border-b pb-3 mb-4">
         Data Siswa
     </h2>
 
@@ -44,8 +44,8 @@
 
 
 {{-- ====================== DATA SEKOLAH ASAL ====================== --}}
-<div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-5 mt-6">
-    <h2 class="text-xl font-semibold text-gray-800 dark:text-white border-b pb-3 mb-4">
+<div class="bg-white rounded-xl shadow-md p-5 mt-6">
+    <h2 class="text-xl font-semibold text-gray-800 border-b pb-3 mb-4">
         Data Sekolah Asal
     </h2>
 
@@ -83,13 +83,13 @@
     $wali = $siswa->orangTua->firstWhere('hubungan', 'Wali');
 @endphp
 
-<div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-5 mt-6">
-    <h2 class="text-xl font-semibold text-gray-800 dark:text-white border-b pb-3 mb-4">
+<div class="bg-white rounded-xl shadow-md p-5 mt-6">
+    <h2 class="text-xl font-semibold text-gray-800 border-b pb-3 mb-4">
         Data Orang Tua / Wali
     </h2>
 
     {{-- AYAH --}}
-    <h3 class="text-lg font-bold mb-2">Ayah</h3>
+    <h3 class="text-lg font-bold mb-2 text-gray-800">Ayah</h3>
     @if ($ayah)
         @include('partials.siswa.orang-tua-items', ['data' => $ayah])
     @else
@@ -97,7 +97,7 @@
     @endif
 
     {{-- IBU --}}
-    <h3 class="text-lg font-bold mb-2">Ibu</h3>
+    <h3 class="text-lg font-bold mb-2 text-gray-800">Ibu</h3>
     @if ($ibu)
         @include('partials.siswa.orang-tua-items', ['data' => $ibu])
     @else
@@ -105,7 +105,7 @@
     @endif
 
     {{-- WALI --}}
-    <h3 class="text-lg font-bold mb-2">Wali</h3>
+    <h3 class="text-lg font-bold mb-2 text-gray-800">Wali</h3>
     @if ($wali)
         @include('partials.siswa.orang-tua-items', ['data' => $wali])
     @else
@@ -115,8 +115,8 @@
 
 
 {{-- ====================== LAMPIRAN ====================== --}}
-<div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-5 mt-6">
-    <h2 class="text-xl font-semibold text-gray-800 dark:text-white border-b pb-3 mb-4">
+<div class="bg-white rounded-xl shadow-md p-5 mt-6">
+    <h2 class="text-xl font-semibold text-gray-800 border-b pb-3 mb-4">
         Lampiran
     </h2>
 
