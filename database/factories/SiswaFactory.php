@@ -2,33 +2,33 @@
 
 namespace Database\Factories;
 
-use App\Models\Siswa;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\Hash;
 
 class SiswaFactory extends Factory
 {
-    protected $model = Siswa::class;
-
-    public function definition()
+    public function definition(): array
     {
         return [
-            'email' => $this->faker->unique()->safeEmail(),
-            'password' => bcrypt('password'),
-            'nama_lengkap' => $this->faker->name(),
-            'nik' => $this->faker->numerify('###############'),
-            'nisn' => $this->faker->numerify('##########'),
-            'tanggal_lahir' => $this->faker->date(),
-            'tempat_lahir' => $this->faker->city(),
-            'jenis_kelamin' => $this->faker->randomElement(['L', 'P']),
-            'alamat' => $this->faker->address(),
-            'asal_sekolah' => $this->faker->company(),
-            'anak_ke' => $this->faker->numberBetween(1, 5),
-            'agama_id' => 1, // contoh default
-            'tahun_lulus' => $this->faker->year(),
-            'pas_foto' => null,
-            'status_pendaftaran' => 'pending',
-            'role_id' => 2, // pastikan role untuk siswa diisi di sini
+            // Otomatis buat User baru saat Siswa dibuat
+            'user_id' => User::factory()->state(['role_id' => 2]), 
+            'nama_lengkap' => fake()->name(),
+            'nik' => fake()->unique()->numerify('################'), // 16 digit
+            'nisn' => fake()->unique()->numerify('##########'),      // 10 digit
+            'tanggal_lahir' => fake()->date('Y-m-d', '-15 years'),   // Usia sekitar 15 tahun
+            'agama' => fake()->randomElement(['Islam','Kristen','Katolik','Hindu','Buddha']),
+            'tempat_lahir' => fake()->city(),
+            'jenis_kelamin' => fake()->randomElement(['L', 'P']),
+            'alamat' => fake()->address(),
+            
+            // Mocking ID Wilayah (Karena char, kita pakai angka string)
+            'provinsi_id' => '11',
+            'kabupaten_id' => '1101',
+            'kecamatan_id' => '1101010',
+            'desa_id' => '1101010001',
+            
+            'anak_ke' => fake()->numberBetween(1, 5),
+            'status_pendaftaran' => 'Pending',
         ];
     }
 }

@@ -2,27 +2,31 @@
 
 namespace Database\Seeders;
 
-use App\Models\Pengaturan;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Support\Facades\DB;
 
 class PengaturanSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
-        // Membuat satu baris data pengaturan default jika belum ada.
-        Pengaturan::firstOrCreate(
-            ['id' => 1], // Kunci untuk memastikan hanya ada satu baris
-            [
-                'status' => 'Ditutup',
-                'tanggal_buka' => now()->addDays(7)->toDateString(),
-                'tanggal_tutup' => now()->addDays(14)->toDateString(),
-            ]
-        );
+        // Hapus data lama agar hanya ada 1 baris pengaturan
+        DB::table('pengaturan')->truncate();
+
+        // Insert data pengaturan awal
+        DB::table('pengaturan')->insert([
+            'id' => 1, // Kita paksa ID 1
+            'tahun_ajaran' => '2025/2026',
+            'status' => 'Dibuka', // Default langsung BUKA agar bisa dites
+            'tanggal_buka' => '2025-03-01',
+            'tanggal_tutup' => '2025-07-15',
+            'alamat_sekolah' => 'Jl. Raya P.Diponegoro 09, Bumiayu, Brebes, Jawa Tengah', // Sesuaikan dengan data real
+            'telepon' => '0812-3456-7890',
+            'email' => 'info@smp.sch.id',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
     }
 }
