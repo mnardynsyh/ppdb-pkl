@@ -192,7 +192,7 @@
                             <li class="relative">
                                 <div class="flex flex-col items-center group cursor-default">
                                     <div class="w-8 h-8 flex items-center justify-center rounded-full text-xs font-bold z-10 transition-all duration-300
-                                        {{ $statusData['progress'] >= 3 ? ($statusData['warna'] == 'red' ? 'bg-red-500 text-white' : 'bg-emerald-600 text-white shadow-lg shadow-emerald-200 scale-110') : 'bg-white border-2 border-gray-200 text-gray-400' }}">
+                                        {{ $statusData['progress'] >= 3 ? ($statusData['icon'] == 'red' ? 'bg-red-500 text-white' : 'bg-emerald-600 text-white shadow-lg shadow-emerald-200 scale-110') : 'bg-white border-2 border-gray-200 text-gray-400' }}">
                                         3
                                     </div>
                                     <span class="absolute top-10 text-[10px] md:text-xs font-semibold text-center w-24 transition-colors {{ $statusData['progress'] >= 3 ? 'text-gray-900' : 'text-gray-400' }}">

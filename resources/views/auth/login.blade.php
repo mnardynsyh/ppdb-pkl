@@ -22,6 +22,15 @@
                 <div class="mb-10">
                     <h1 class="text-3xl font-bold text-gray-900 mb-2">Masuk</h1>
                     <p class="text-gray-600">Akses sistem PPDB Online SMP</p>
+                    <!-- Info untuk siswa -->
+                    <div class="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
+                        <p class="text-sm text-blue-700 flex items-center">
+                            <svg class="w-4 h-4 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            Login menggunakan akun yang telah didaftarkan saat registrasi siswa baru.
+                        </p>
+                    </div>
                     
                 </div>
 

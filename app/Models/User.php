@@ -34,6 +34,12 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    protected $casts = [
+    'tanggal_buka' => 'date',
+    'tanggal_tutup' => 'date',
+    ];
+
+
     /**
      * Get the attributes that should be cast.
      *
