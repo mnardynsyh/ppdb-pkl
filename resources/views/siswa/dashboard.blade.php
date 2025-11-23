@@ -5,9 +5,9 @@
 @section('content')
 {{-- Logic Penentuan Status & Warna --}}
 @php
-    // Default: Draft / Belum Lengkap
+
     $statusData = [
-        'bg_card' => 'bg-gradient-to-br from-white to-blue-50 border-blue-100', // Gradient halus
+        'bg_card' => 'bg-gradient-to-br from-white to-blue-50 border-blue-100',
         'text_accent' => 'text-blue-600',
         'badge_class' => 'bg-blue-100 text-blue-700 border-blue-200',
         'icon' => '<svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>',
@@ -75,9 +75,6 @@
         {{-- Section 1: Header Welcome --}}
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-2">
             <div>
-                <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">
-                    {{ \Carbon\Carbon::now()->isoFormat('dddd, D MMMM Y') }}
-                </p>
                 <h1 class="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight">
                     Selamat Datang, <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">{{ strtok($siswa->nama_lengkap ?? 'Calon Siswa', ' ') }}</span>
                 </h1>

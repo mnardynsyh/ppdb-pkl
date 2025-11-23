@@ -3,23 +3,10 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 
-                {{-- Logo & Desktop Nav --}}
                 <div class="flex">
-                    {{-- Logo --}}
                     <div class="shrink-0 flex items-center">
                         <a href="{{ route('siswa.dashboard') }}" class="flex items-center gap-2.5 group">
                             <span class="font-bold text-xl tracking-tight text-gray-900">PPDB <span class="text-blue-600">Online</span></span>
-                        </a>
-                    </div>
-
-                    {{-- Desktop Menu Links --}}
-                    <div class="hidden sm:ml-8 sm:flex sm:space-x-8">
-                        <a href="{{ route('siswa.dashboard') }}" 
-                           class="inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-all duration-200 h-full
-                           {{ request()->routeIs('siswa.dashboard*') 
-                                ? 'border-blue-600 text-blue-600' 
-                                : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700' }}">
-                            Dashboard
                         </a>
                     </div>
                 </div>
@@ -96,13 +83,6 @@
              x-transition:enter-start="opacity-0 -translate-y-2"
              x-transition:enter-end="opacity-100 translate-y-0"
              class="sm:hidden border-t border-gray-200 bg-white absolute w-full shadow-lg" id="mobile-menu" style="display: none;">
-            <div class="pt-2 pb-3 space-y-1">
-                <a href="{{ route('siswa.dashboard') }}" 
-                   class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium 
-                   {{ request()->routeIs('siswa.dashboard*') ? 'bg-blue-50 border-blue-500 text-blue-700' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800' }}">
-                    Dashboard
-                </a>
-            </div>
             <div class="pt-4 pb-4 border-t border-gray-200 bg-gray-50">
                 <div class="flex items-center px-4">
                     <div class="shrink-0">

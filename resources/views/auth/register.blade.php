@@ -6,11 +6,45 @@
     <title>Registrasi - PPDB Online</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
         }
+
+        @keyframes fadeInUpSmall {
+            0% {
+                opacity: 0;
+                transform: translateY(20px) scale(0.97); /* naik sedikit + scale halus */
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes fadeOutDownSmall {
+            0% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(15px) scale(0.97); /* turun sedikit + mengecil halus */
+            }
+        }
+
+        .animate__fadeInUpSmall {
+            animation: fadeInUpSmall 0.35s cubic-bezier(0.25, 0.18, 0.15, 1) both;
+        }
+
+        .animate__fadeOutDownSmall {
+            animation: fadeOutDownSmall 0.30s cubic-bezier(0.55, 0.06, 0.41, 0.95) both;
+        }
+
     </style>
 </head>
 <body class="bg-white">
@@ -238,21 +272,54 @@
         </div>
     </section>
 
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-    const nisn = document.getElementById('nisn');
-    const nik = document.getElementById('nik'); // TAMBAHKAN INI
-    
-    // Validasi NISN hanya angka
-    nisn.addEventListener('input', function() {
-        this.value = this.value.replace(/\D/g, '');
-    });
-    
-    // Validasi NIK hanya angka
-    nik.addEventListener('input', function() {
-        this.value = this.value.replace(/\D/g, '');
+
+</section>
+
+
+@if (session('register_success'))
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    Swal.fire({
+        title: 'Berhasil!',
+        text: 'Akun berhasil dibuat. Silakan login.',
+        icon: 'success',
+
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#111827',
+
+        // ANIMASI HALUS (SLIDE + FADE + SCALE)
+        showClass: {
+            popup: 'animate__fadeInUpSmall'
+        },
+        hideClass: {
+            popup: 'animate__fadeOutDownSmall'
+        },
+
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+    }).then(() => {
+        window.location.href = "{{ route('login') }}";
     });
 });
-    </script>
+</script>
+@endif
+
+
+
+
+<script>
+// Validasi angka input
+document.addEventListener('DOMContentLoaded', function() {
+    const nisn = document.getElementById('nisn');
+    const nik = document.getElementById('nik');
+
+    nisn.addEventListener('input', () => nisn.value = nisn.value.replace(/\D/g, ''));
+    nik.addEventListener('input', () => nik.value = nik.value.replace(/\D/g, ''));
+});
+</script>
+
+</body>
+</html>
+
 </body>
 </html>

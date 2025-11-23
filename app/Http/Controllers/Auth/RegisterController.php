@@ -71,7 +71,9 @@ class RegisterController extends Controller
 
             DB::commit();
 
-            return redirect()->route('login')->with('success', 'Akun berhasil dibuat. Silakan login.');
+            return redirect()->route('register.siswa')
+            ->with('register_success', true);
+
 
         } catch (\Exception $e) {
             DB::rollBack();
