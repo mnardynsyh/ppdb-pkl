@@ -3,18 +3,17 @@
 @section('title', 'Pendaftar Ditolak')
 
 @section('content')
-<div class="w-full min-h-screen lg:h-screen bg-[#F0F2F5] px-4 pt-16 pb-10 lg:px-8 lg:pt-16 lg:pb-10 flex flex-col font-sans text-slate-800">
+<div class="w-full min-h-screen bg-[#F0F2F5] px-4 pt-16 pb-10 lg:px-8 lg:pt-16 lg:pb-10 flex flex-col font-sans text-slate-800">
 
-    <div class="max-w-7xl mx-auto w-full flex-1 flex flex-col lg:overflow-hidden">
+    <div class="max-w-7xl mx-auto w-full flex-1 flex flex-col">
 
-        {{-- 1. HEADER & STATS --}}
-        <div class="shrink-0 mb-6">
+        {{-- 1. HEADER --}}
+        <div class="shrink-0 mb-8">
             <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
                 <div>
                     <h1 class="text-3xl font-bold tracking-tight text-slate-900">Data Pendaftar Ditolak</h1>
-                    <p class="text-sm text-slate-500 mt-1 font-medium">Daftar calon siswa yang tidak lolos seleksi.</p>
+                    <p class="text-sm text-slate-500 mt-1 font-medium">Daftar calon siswa yang tidak lolos seleksi verifikasi.</p>
                 </div>
-                
             </div>
         </div>
 
@@ -31,71 +30,69 @@
                 </div>
             @endif
 
-            {{-- Search Bar (Red Accent) --}}
-            <form action="{{ route('admin.pendaftaran.ditolak') }}" method="GET" 
-                  class="bg-white p-2 rounded-xl border border-slate-200 shadow-sm flex items-center gap-2 transition-all focus-within:border-rose-400 focus-within:ring-2 focus-within:ring-rose-100">
+            {{-- Search Bar --}}
+            <form action="{{ route('admin.pendaftaran.diterima') }}" method="GET" 
+                  class="bg-white p-2 rounded-xl border border-slate-200 shadow-sm flex items-center gap-2 transition-all focus-within:border-red-400 focus-within:ring-2 focus-within:ring-red-100">
                 
-                <button type="submit" class="pl-3 text-slate-400 hover:text-rose-600 transition-colors">
+                <button type="submit" class="pl-3 text-slate-400 hover:text-red-600 transition-colors">
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </button>
                 
                 <input type="text" name="search" value="{{ request('search') }}" 
                        class="flex-1 border-none text-sm focus:ring-0 text-slate-700 placeholder-slate-400 bg-transparent" 
-                       placeholder="Cari nama siswa ditolak...">
+                       placeholder="Cari Nama, NISN, atau Asal Sekolah...">
             </form>
         </div>
 
-        {{-- 3. CONTENT TABLE (FIT SCREEN) --}}
-        <div class="flex-1 lg:overflow-y-auto lg:pr-2 scrollbar-hide pb-4 relative">
+        {{-- 4. CONTENT TABLE --}}
+        <div class="flex-1 flex flex-col">
             
-            {{-- TABLE CONTAINER --}}
-            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-                
-                {{-- DESKTOP TABLE --}}
-                <table class="w-full text-left border-collapse hidden lg:table">
-                    <thead class="bg-slate-50 border-b border-slate-200 sticky top-0 z-10">
+            {{-- TABLE CONTAINER (DESKTOP) --}}
+            <div class="hidden lg:block bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden mb-6">
+                <table class="w-full text-left border-collapse">
+                    <thead class="bg-slate-50 border-b border-slate-200">
                         <tr>
                             <th class="px-6 py-4 text-xs font-extrabold text-slate-600 uppercase tracking-wider border-r border-slate-100 w-16 text-center">No</th>
                             <th class="px-6 py-4 text-xs font-extrabold text-slate-600 uppercase tracking-wider border-r border-slate-100">Data Siswa</th>
                             <th class="px-6 py-4 text-xs font-extrabold text-slate-600 uppercase tracking-wider border-r border-slate-100">Asal Sekolah</th>
-                            <th class="px-6 py-4 text-xs font-extrabold text-slate-600 uppercase tracking-wider border-r border-slate-100">NISN</th>
-                            <th class="px-6 py-4 text-xs font-extrabold text-slate-600 uppercase tracking-wider text-center">Aksi Verifikasi</th>
+                            <th class="px-6 py-4 text-xs font-extrabold text-slate-600 uppercase tracking-wider border-r border-slate-100">Tanggal Daftar</th>
+                            <th class="px-6 py-4 text-xs font-extrabold text-slate-600 uppercase tracking-wider text-center">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-100">
+                    <tbody class="divide-y divide-slate-200">
                         @forelse($siswas as $i => $siswa)
-                            <tr class="hover:bg-rose-50/30 transition-colors group">
+                            <tr class="hover:bg-rose-50/40 transition-colors group">
                                 {{-- No --}}
-                                <td class="px-6 py-4 text-center border-r border-slate-50">
+                                <td class="px-6 py-4 text-center border-r border-slate-100">
                                     <span class="text-xs font-bold text-slate-500">{{ $siswas->firstItem() + $i }}</span>
                                 </td>
 
                                 {{-- Data Siswa --}}
-                                <td class="px-6 py-4 border-r border-slate-50">
+                                <td class="px-6 py-4 border-r border-slate-100">
                                     <div class="flex items-center gap-3">
-                                        {{-- Avatar Merah --}}
-                                        <div class="w-9 h-9 rounded-full bg-rose-100 text-rose-700 flex items-center justify-center text-xs font-bold shrink-0 border border-rose-200">
+                                        <div class="w-10 h-10 rounded-full bg-rose-100 text-rose-700 flex items-center justify-center text-sm font-bold shrink-0 border border-rose-200">
                                             {{ substr($siswa->nama_lengkap, 0, 2) }}
                                         </div>
                                         <div>
                                             <p class="text-sm font-bold text-slate-800">{{ $siswa->nama_lengkap }}</p>
-                                            <p class="text-[10px] text-rose-600 font-bold bg-rose-50 px-1.5 py-0.5 rounded inline-block mt-0.5">DITOLAK</p>
+                                            <p class="text-xs text-slate-500 mt-0.5 font-mono">NISN: {{ $siswa->nisn }}</p>
                                         </div>
                                     </div>
                                 </td>
 
                                 {{-- Sekolah --}}
-                                <td class="px-6 py-4 border-r border-slate-50">
+                                <td class="px-6 py-4 border-r border-slate-100">
                                     <div class="flex items-center gap-2">
                                         <i class="fa-solid fa-school text-slate-400 text-xs"></i>
-                                        <span class="text-sm font-medium text-slate-700">{{ $siswa->asal_sekolah }}</span>
+                                        <span class="text-sm font-medium text-slate-700">{{ $siswa->sekolahAsal->nama_sekolah ?? '-' }}</span>
                                     </div>
                                 </td>
 
-                                {{-- NISN --}}
-                                <td class="px-6 py-4 border-r border-slate-50">
-                                    <span class="font-mono text-xs font-bold text-slate-600 bg-slate-100 px-2 py-1 rounded border border-slate-200">
-                                        {{ $siswa->nisn }}
+                                {{-- Tanggal --}}
+                                <td class="px-6 py-4 border-r border-slate-100">
+                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-600">
+                                        <i class="fa-regular fa-calendar text-slate-400"></i>
+                                        {{ $siswa->created_at->isoFormat('D MMM Y') }}
                                     </span>
                                 </td>
 
@@ -104,18 +101,18 @@
                                     <div class="flex items-center justify-center gap-2">
                                         {{-- Detail --}}
                                         <a href="{{ route('admin.pendaftaran.detail', $siswa) }}" 
-                                           class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-600 hover:text-blue-600 hover:border-blue-200 hover:bg-blue-50 transition-all shadow-sm" 
+                                           class="w-8 h-8 flex items-center justify-center rounded-lg bg-white border border-slate-300 text-slate-500 hover:text-blue-600 hover:border-blue-300 hover:bg-blue-50 transition-all shadow-sm" 
                                            title="Lihat Detail">
-                                            <i class="fa-solid fa-eye"></i> Detail
+                                            <i class="fa-solid fa-eye text-xs"></i>
                                         </a>
 
                                         {{-- Batalkan (Reset) --}}
                                         <form action="{{ route('admin.pendaftaran.batalkan', $siswa) }}" method="POST" onsubmit="return confirm('Batalkan status DITOLAK dan kembalikan ke Pending?')">
                                             @csrf @method('PATCH')
                                             <button type="submit" 
-                                                    class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-500 hover:text-amber-600 hover:bg-amber-50 hover:border-amber-200 transition-all shadow-sm" 
-                                                    title="Kembalikan ke Pending">
-                                                <i class="fa-solid fa-rotate-left"></i> Batalkan
+                                                    class="w-8 h-8 flex items-center justify-center rounded-lg bg-white border border-slate-300 text-slate-400 hover:text-amber-600 hover:border-amber-300 hover:bg-amber-50 transition-all shadow-sm" 
+                                                    title="Batalkan (Kembali ke Pending)">
+                                                <i class="fa-solid fa-rotate-left text-xs"></i>
                                             </button>
                                         </form>
                                     </div>
@@ -135,59 +132,119 @@
                         @endforelse
                     </tbody>
                 </table>
+            </div>
 
-                {{-- MOBILE CARD VIEW --}}
-                <div class="lg:hidden p-4 space-y-4 bg-slate-50">
-                    @forelse($siswas as $siswa)
-                        <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-sm relative overflow-hidden">
-                            {{-- Red Stripe --}}
-                            <div class="absolute top-0 left-0 w-1.5 h-full bg-rose-500"></div>
-                            
-                            <div class="pl-3">
-                                <div class="flex justify-between items-start mb-3">
-                                    <div>
-                                        <h3 class="text-sm font-bold text-slate-900">{{ $siswa->nama_lengkap }}</h3>
-                                        <span class="text-[10px] font-bold px-2 py-0.5 bg-rose-50 text-rose-700 rounded border border-rose-100 mt-1 inline-block">
-                                            DITOLAK
-                                        </span>
+            {{-- MOBILE CARD VIEW --}}
+            <div class="lg:hidden space-y-4 mb-6">
+                @forelse($siswas as $siswa)
+                    <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-sm relative overflow-hidden">
+                        {{-- Stripe Merah (Ditolak) --}}
+                        <div class="absolute top-0 left-0 w-1.5 h-full bg-rose-500"></div>
+                        
+                        <div class="pl-3">
+                            <div class="flex justify-between items-start mb-3">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-full bg-rose-100 text-rose-700 flex items-center justify-center text-sm font-bold border border-rose-200">
+                                        {{ substr($siswa->nama_lengkap, 0, 2) }}
                                     </div>
-                                    <span class="font-mono text-xs text-slate-500 bg-slate-100 px-2 py-1 rounded">
-                                        {{ $siswa->nisn }}
-                                    </span>
+                                    <div>
+                                        <h3 class="text-sm font-bold text-slate-900 line-clamp-1">{{ $siswa->nama_lengkap }}</h3>
+                                        <p class="text-xs text-slate-500 mt-0.5 font-mono">{{ $siswa->nisn }}</p>
+                                    </div>
                                 </div>
+                                <span class="text-[10px] font-bold px-2 py-1 bg-rose-50 text-rose-700 rounded border border-rose-200">
+                                    Ditolak
+                                </span>
+                            </div>
 
-                                <div class="text-xs text-slate-600 mb-4 flex items-center gap-2">
-                                    <i class="fa-solid fa-school text-slate-400"></i> {{ $siswa->asal_sekolah }}
-                                </div>
+                            <div class="text-xs text-slate-600 mb-4 flex items-center gap-2 bg-slate-50 p-2 rounded-lg border border-slate-100">
+                                <i class="fa-solid fa-school text-slate-400"></i> 
+                                <span class="font-medium">{{ $siswa->sekolahAsal->nama_sekolah ?? '-' }}</span>
+                            </div>
 
-                                <div class="grid grid-cols-2 gap-2 pt-3 border-t border-slate-100">
-                                    <a href="{{ route('admin.pendaftaran.detail', $siswa) }}" class="flex items-center justify-center gap-2 py-2 bg-white border border-slate-200 text-slate-600 rounded-lg text-xs font-bold hover:bg-slate-50 transition-colors">
-                                        <i class="fa-solid fa-eye text-blue-500"></i> Detail
-                                    </a>
-                                    
-                                    <form action="{{ route('admin.pendaftaran.batalkan', $siswa) }}" method="POST" class="w-full" onsubmit="return confirm('Batalkan status?')">
-                                        @csrf @method('PATCH')
-                                        <button type="submit" class="w-full py-2 bg-amber-50 border border-amber-200 text-amber-700 rounded-lg text-xs font-bold hover:bg-amber-100 transition-colors flex items-center justify-center gap-2">
-                                            <i class="fa-solid fa-rotate-left"></i> Batalkan
-                                        </button>
-                                    </form>
-                                </div>
+                            <div class="grid grid-cols-2 gap-2 pt-3 border-t border-slate-100">
+                                {{-- Detail --}}
+                                <a href="{{ route('admin.pendaftaran.detail', $siswa) }}" class="flex items-center justify-center py-2 bg-white border border-slate-200 text-slate-600 rounded-lg text-xs font-bold hover:bg-slate-50 hover:text-blue-600 transition-colors">
+                                    Detail
+                                </a>
+                                
+                                {{-- Batalkan --}}
+                                <form action="{{ route('admin.pendaftaran.batalkan', $siswa) }}" method="POST" class="w-full" onsubmit="return confirm('Batalkan status?')">
+                                    @csrf @method('PATCH')
+                                    <button type="submit" class="w-full py-2 bg-amber-50 border border-amber-200 text-amber-700 rounded-lg text-xs font-bold hover:bg-amber-100 transition-colors flex items-center justify-center gap-2">
+                                        <i class="fa-solid fa-rotate-left"></i> Batalkan
+                                    </button>
+                                </form>
                             </div>
                         </div>
-                    @empty
-                        <div class="text-center py-10">
-                            <p class="text-slate-500 text-sm">Belum ada data siswa ditolak.</p>
-                        </div>
-                    @endforelse
-                </div>
-
+                    </div>
+                @empty
+                    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-8 text-center">
+                        <p class="text-sm font-medium text-slate-500">Belum ada siswa yang ditolak.</p>
+                    </div>
+                @endforelse
             </div>
             
-            {{-- PAGINATION --}}
+            {{-- PAGINATION CUSTOM (FULL WIDTH TOOLBAR) --}}
             @if($siswas->hasPages())
-                <div class="mt-6 flex justify-center">
-                    <div class="bg-white rounded-xl border border-slate-200 shadow-sm px-4 py-2">
-                        {{ $siswas->withQueryString()->links('pagination::tailwind') }}
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm px-4 py-3 flex items-center justify-between sm:px-6 mt-auto">
+                    {{-- Desktop Pagination --}}
+                    <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                        <div>
+                            <p class="text-sm text-slate-600">
+                                Menampilkan
+                                <span class="font-bold text-slate-800">{{ $siswas->firstItem() }}</span>
+                                sampai
+                                <span class="font-bold text-slate-800">{{ $siswas->lastItem() }}</span>
+                                dari
+                                <span class="font-bold text-slate-800">{{ $siswas->total() }}</span>
+                                data
+                            </p>
+                        </div>
+                        <div>
+                            <span class="relative z-0 inline-flex shadow-sm rounded-md">
+                                {{-- Prev --}}
+                                @if ($siswas->onFirstPage())
+                                    <span class="relative inline-flex items-center px-3 py-2 rounded-l-lg border border-slate-200 bg-slate-50 text-sm font-medium text-slate-400 cursor-not-allowed">
+                                        Prev
+                                    </span>
+                                @else
+                                    <a href="{{ $siswas->previousPageUrl() }}" class="relative inline-flex items-center px-3 py-2 rounded-l-lg border border-slate-200 bg-white text-sm font-bold text-slate-600 hover:bg-slate-50 hover:text-blue-600 transition-colors">
+                                        Prev
+                                    </a>
+                                @endif
+
+                                {{-- Next --}}
+                                @if ($siswas->hasMorePages())
+                                    <a href="{{ $siswas->nextPageUrl() }}" class="relative inline-flex items-center px-3 py-2 rounded-r-lg border-l-0 border border-slate-200 bg-white text-sm font-bold text-slate-600 hover:bg-slate-50 hover:text-blue-600 transition-colors">
+                                        Next
+                                    </a>
+                                @else
+                                    <span class="relative inline-flex items-center px-3 py-2 rounded-r-lg border-l-0 border border-slate-200 bg-slate-50 text-sm font-medium text-slate-400 cursor-not-allowed">
+                                        Next
+                                    </span>
+                                @endif
+                            </span>
+                        </div>
+                    </div>
+
+                    {{-- Mobile Pagination --}}
+                    <div class="flex items-center justify-between w-full sm:hidden">
+                        @if ($siswas->onFirstPage())
+                             <span class="px-4 py-2 border border-slate-200 text-sm font-medium rounded-lg text-slate-400 bg-slate-50">Prev</span>
+                        @else
+                             <a href="{{ $siswas->previousPageUrl() }}" class="px-4 py-2 border border-slate-200 text-sm font-bold rounded-lg text-slate-600 bg-white hover:bg-slate-50 hover:text-blue-600">Prev</a>
+                        @endif
+
+                        <span class="text-xs font-bold text-slate-500">
+                            Hal. {{ $siswas->currentPage() }}
+                        </span>
+
+                        @if ($siswas->hasMorePages())
+                            <a href="{{ $siswas->nextPageUrl() }}" class="px-4 py-2 border border-slate-200 text-sm font-bold rounded-lg text-slate-600 bg-white hover:bg-slate-50 hover:text-blue-600">Next</a>
+                        @else
+                            <span class="px-4 py-2 border border-slate-200 text-sm font-medium rounded-lg text-slate-400 bg-slate-50">Next</span>
+                        @endif
                     </div>
                 </div>
             @endif

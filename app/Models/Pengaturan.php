@@ -29,6 +29,7 @@ class Pengaturan extends Model
         'tanggal_buka' => 'date',
         'tanggal_tutup' => 'date',
     ];
+    public $timestamps = false;
 
     /**
      * Metode ini berisi semua logika untuk menentukan status pendaftaran.

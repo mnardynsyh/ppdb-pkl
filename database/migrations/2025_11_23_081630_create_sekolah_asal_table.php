@@ -22,7 +22,7 @@ return new class extends Migration
         $table->text('alamat_sekolah')->nullable();
         $table->year('tahun_lulus')->nullable();
 
-        // $table->timestamps();
+        $table->timestamps();
     });
 }
 

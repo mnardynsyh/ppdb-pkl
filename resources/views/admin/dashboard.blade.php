@@ -124,17 +124,15 @@
     </div>
 </div>
 
-{{-- Chart JS Library --}}
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const ctx = document.getElementById('pendaftaranChart');
-        
+
         if (ctx) {
             const chartData = @json($chartData);
             const chartLabels = @json($chartLabels);
-            
 
             let gradient = ctx.getContext('2d').createLinearGradient(0, 0, 0, 400);
             gradient.addColorStop(0, '#3b82f6');
@@ -153,30 +151,35 @@
                         data: chartData,
                         backgroundColor: gradient,
                         borderRadius: 4,
-                        
-                        barPercentage: 0.85, 
+                        barPercentage: 0.85,
                         categoryPercentage: 0.85
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    
-                   
-                    animation: {
-                        duration: 1500, 
-                        easing: 'easeOutQuart',
+
+                    // ==================================================
+                    //  PENGATURAN ANIMASI (BAWAH KE ATAS)
+                    // ==================================================
+                    animations: {
+                        y: {
+                            from: 100, // KUNCI: Mulai animasi dari nilai 0 (Bawah)
+                            duration: 1500, // Durasi 1 detik
+                            easing: 'easeOutQuart' // Gerakan cepat di awal, melambat di akhir (halus)
+                        }
                     },
-                    
+                    // ==================================================
+
                     plugins: {
                         legend: { display: false },
                         tooltip: {
                             backgroundColor: '#111827',
                             padding: 12,
-                            titleFont: { size: 13, family: "'Inter', sans-serif" },
-                            bodyFont: { size: 13, family: "'Inter', sans-serif" },
                             displayColors: false,
                             cornerRadius: 8,
+                            titleFont: { size: 13, family: "'Poppins', sans-serif" },
+                            bodyFont: { size: 13, family: "'Poppins', sans-serif" },
                             callbacks: {
                                 label: function(context) {
                                     return context.parsed.y + ' Siswa';
@@ -184,11 +187,11 @@
                             }
                         }
                     },
-                    
                     scales: {
                         y: {
                             beginAtZero: true,
-                            suggestedMax: 3,
+                            // Tambah ruang +2 di atas agar tidak mentok
+                            suggestedMax: Math.max(...chartData) + 1,
                             border: { display: false },
                             grid: {
                                 borderDash: [8, 4],
@@ -197,7 +200,7 @@
                             },
                             ticks: {
                                 stepSize: 1,
-                                font: { size: 11, family: "'Inter', sans-serif" },
+                                font: { size: 11, family: "'Poppins', sans-serif" },
                                 color: '#9ca3af',
                                 padding: 10
                             }
@@ -206,10 +209,7 @@
                             border: { display: false },
                             grid: { display: false },
                             ticks: {
-                                maxTicksLimit: 7, 
-                                maxRotation: 0,
-                                autoSkip: true,
-                                font: { size: 11, family: "'Inter', sans-serif" },
+                                font: { size: 11, family: "'Poppins', sans-serif" },
                                 color: '#9ca3af',
                                 padding: 10
                             }

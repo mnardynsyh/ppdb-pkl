@@ -29,7 +29,7 @@ return new class extends Migration
         // Nama asli file saat diupload user (agar saat download namanya user-friendly)
         $table->string('nama_file_asli')->nullable();
 
-        // $table->timestamps();
+        $table->timestamps();
     });
 }
 

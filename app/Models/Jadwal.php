@@ -27,4 +27,6 @@ class Jadwal extends Model
         'description',
         'order',
     ];
+
+    public $timestamps = false;
 }

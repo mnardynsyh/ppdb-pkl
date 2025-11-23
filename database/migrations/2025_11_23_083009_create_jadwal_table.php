@@ -28,7 +28,7 @@ return new class extends Migration
         // unsignedInteger sama dengan int UNSIGNED
         $table->unsignedInteger('order')->default(0);
 
-        // $table->timestamps();
+        $table->timestamps();
     });
 }
 

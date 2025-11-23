@@ -12,6 +12,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
 class DashboardController extends Controller
@@ -44,7 +45,6 @@ class DashboardController extends Controller
     public function index()
     {
         $siswa = $this->getSiswa();
-
         return view('siswa.dashboard', compact('siswa'));
     }
 
@@ -139,26 +139,26 @@ class DashboardController extends Controller
             'agama_wali'          => ['nullable', Rule::in($this->agama)],
 
             // Sekolah asal
-            'asal_sekolah'        => 'required|string|max:255',
-            'alamat_sekolah_asal' => 'nullable|string',
+            'nama_sekolah'        => 'required|string|max:255',
+            'alamat_sekolah'      => 'nullable|string',
             'tahun_lulus'         => 'required|digits:4',
 
-            // Berkas
+            // Berkas (Validasi File)
             'berkas'              => 'required|array',
             'berkas.*'            => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ]);
 
         DB::transaction(function () use ($request, $validated) {
 
-            // Siswa
+            // 1. Simpan Data Siswa
             $siswa = Siswa::updateOrCreate(
                 ['user_id' => Auth::id()],
                 array_merge($validated, [
-                    'status_pendaftaran' => 'pending',
+                    'status_pendaftaran' => 'Pending', // Konsisten Title Case
                 ])
             );
 
-            // Ayah
+            // 2. Simpan Ayah
             OrangTua::updateOrCreate(
                 ['siswa_id' => $siswa->id, 'hubungan' => 'Ayah'],
                 [
@@ -175,7 +175,7 @@ class DashboardController extends Controller
                 ]
             );
 
-            // Ibu
+            // 3. Simpan Ibu
             OrangTua::updateOrCreate(
                 ['siswa_id' => $siswa->id, 'hubungan' => 'Ibu'],
                 [
@@ -192,7 +192,7 @@ class DashboardController extends Controller
                 ]
             );
 
-            // Wali
+            // 4. Simpan/Hapus Wali
             if ($request->filled('nama_wali')) {
                 OrangTua::updateOrCreate(
                     ['siswa_id' => $siswa->id, 'hubungan' => 'Wali'],
@@ -215,25 +215,40 @@ class DashboardController extends Controller
                     ->delete();
             }
 
-            // Sekolah Asal
+            // 5. Simpan Sekolah Asal
             SekolahAsal::updateOrCreate(
                 ['siswa_id' => $siswa->id],
                 [
-                    'nama_sekolah'    => $validated['asal_sekolah'],
-                    'alamat_sekolah'  => $validated['alamat_sekolah_asal'],
+                    'nama_sekolah'    => $validated['nama_sekolah'],
+                    'alamat_sekolah'  => $validated['alamat_sekolah'],
                     'tahun_lulus'     => $validated['tahun_lulus'],
                 ]
             );
 
-            // Berkas upload
+            // 6. Simpan Berkas (DENGAN LOGIKA HAPUS FILE LAMA)
             if ($request->hasFile('berkas')) {
                 foreach ($request->file('berkas') as $jenis => $file) {
+                    
+                    // A. Cek file lama
+                    $lampiranLama = Lampiran::where('siswa_id', $siswa->id)
+                                            ->where('jenis_berkas', $jenis)
+                                            ->first();
+
+                    // B. Hapus file fisik lama jika ada
+                    if ($lampiranLama && $lampiranLama->path_file) {
+                        if (Storage::disk('public')->exists($lampiranLama->path_file)) {
+                            Storage::disk('public')->delete($lampiranLama->path_file);
+                        }
+                    }
+
+                    // C. Simpan file baru
                     $path = $file->storeAs(
                         "lampiran/{$siswa->id}",
                         $jenis.'.'.$file->getClientOriginalExtension(),
                         'public'
                     );
 
+                    // D. Update Database
                     Lampiran::updateOrCreate(
                         ['siswa_id' => $siswa->id, 'jenis_berkas' => $jenis],
                         [
@@ -254,7 +269,7 @@ class DashboardController extends Controller
     {
         $siswa = $this->getSiswa();
 
-        if ($siswa->status_pendaftaran !== 'diterima') {
+        if ($siswa->status_pendaftaran !== 'Diterima') {
             return redirect()->route('siswa.dashboard')
                 ->with('error', 'Belum dapat mencetak bukti. Status harus diterima.');
         }

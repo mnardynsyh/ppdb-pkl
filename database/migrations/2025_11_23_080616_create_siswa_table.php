@@ -41,7 +41,7 @@ return new class extends Migration
         $table->enum('status_pendaftaran', ['Pending', 'Diterima', 'Ditolak'])
               ->default('Pending');
 
-        // $table->timestamps();
+        $table->timestamps();
     });
 }
 

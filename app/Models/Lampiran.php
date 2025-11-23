@@ -27,4 +27,6 @@ class Lampiran extends Model
     {
         return $this->belongsTo(Siswa::class);
     }
+
+    public $timestamps = false;
 }
