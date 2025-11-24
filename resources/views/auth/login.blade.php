@@ -37,7 +37,48 @@
 
                     <form class="space-y-5" action="{{ route('login.submit') }}" method="POST">
                         @csrf
-                        
+
+                        {{-- ERROR MESSAGE --}}
+                        @if ($errors->any())
+                            <div 
+                                x-data="{ show: true }" 
+                                x-show="show" 
+                                x-transition.opacity.duration.300ms 
+                                class="w-full p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm font-semibold flex items-start gap-3 shadow-sm"
+                            >
+                                <i class="fa-solid fa-circle-exclamation mt-0.5"></i>
+                                <div class="flex-1">
+                                    <p class="font-bold mb-1">Login gagal!</p>
+                                    <ul class="list-disc list-inside space-y-0.5 text-red-600">
+                                        @foreach ($errors->all() as $err)
+                                            <li>{{ $err }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                                <button @click="show = false" class="text-red-500 hover:text-red-700">
+                                    <i class="fa-solid fa-xmark text-base"></i>
+                                </button>
+                            </div>
+                        @endif
+
+                        @if(session('error'))
+                            <div 
+                                x-data="{ show: true }" 
+                                x-show="show" 
+                                x-transition.opacity.duration.300ms 
+                                class="w-full p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm font-semibold flex items-start gap-3 shadow-sm"
+                            >
+                                <i class="fa-solid fa-circle-exclamation mt-0.5"></i>
+                                <div class="flex-1">
+                                    {{ session('error') }}
+                                </div>
+                                <button @click="show = false" class="text-red-500 hover:text-red-700">
+                                    <i class="fa-solid fa-xmark text-base"></i>
+                                </button>
+                            </div>
+                        @endif
+
+                        {{-- EMAIL --}}
                         <div>
                             <label for="email" class="block text-sm font-bold text-gray-700 mb-2">Email</label>
                             <input
@@ -50,6 +91,7 @@
                                 value="{{ old('email') }}">
                         </div>
 
+                        {{-- PASSWORD --}}
                         <div x-data="{ show: false }">
                             <div class="flex items-center justify-between mb-2">
                                 <label for="password" class="block text-sm font-bold text-gray-700">Password</label>
@@ -71,12 +113,14 @@
                             </div>
                         </div>
 
+                        {{-- SUBMIT BUTTON --}}
                         <button
                             type="submit"
                             class="w-full bg-gray-900 text-white py-4 px-6 rounded-xl font-semibold text-lg hover:bg-black focus:ring-4 focus:ring-gray-200 transition-all transform active:scale-[0.99] shadow-lg">
                             Masuk
                         </button>
                     </form>
+
 
                     <div class="mt-4 text-center pt-4 border-t border-gray-600">
                         <p class="text-sm text-gray-600">

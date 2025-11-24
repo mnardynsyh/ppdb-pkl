@@ -1,9 +1,25 @@
 @extends('layouts.admin')
-
 @section('title', 'Pendaftar Diterima')
 
 @section('content')
-<div class="w-full min-h-screen bg-[#F0F2F5] px-4 pt-16 pb-10 lg:px-8 lg:pt-16 lg:pb-10 flex flex-col font-sans text-slate-800">
+<div x-data="{ 
+    activeModal: null, 
+    selectedId: null, 
+    selectedName: null,
+    
+    openModal(action, id, name) {
+        this.activeModal = action;
+        this.selectedId = id;
+        this.selectedName = name;
+    },
+    closeModal() {
+        this.activeModal = null;
+        setTimeout(() => {
+            this.selectedId = null;
+            this.selectedName = null;
+        }, 300);
+    }
+}" class="w-full min-h-screen bg-[#F0F2F5] px-4 pt-16 pb-10 lg:px-8 lg:pt-16 lg:pb-10 flex flex-col font-sans text-slate-800">
 
     <div class="max-w-7xl mx-auto w-full flex-1 flex flex-col">
 
@@ -12,7 +28,7 @@
             <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
                 <div>
                     <h1 class="text-3xl font-bold tracking-tight text-slate-900">Data Pendaftar Diterima</h1>
-                    <p class="text-sm text-slate-500 mt-1 font-medium">Daftar calon siswa yang telah lolos verifikasi dan diterima.</p>
+                    <p class="text-sm text-slate-500 mt-1 font-medium">Daftar calon siswa yang lolos seleksi verifikasi.</p>
                 </div>
             </div>
         </div>
@@ -61,7 +77,7 @@
                     </thead>
                     <tbody class="divide-y divide-slate-200">
                         @forelse($siswas as $i => $siswa)
-                            <tr class="hover:bg-slate-50 transition-colors group">
+                            <tr class="hover:bg-emerald-50/40 transition-colors group">
                                 {{-- No --}}
                                 <td class="px-6 py-4 text-center border-r border-slate-100">
                                     <span class="text-xs font-bold text-slate-500">{{ $siswas->firstItem() + $i }}</span>
@@ -106,15 +122,12 @@
                                             <i class="fa-solid fa-eye text-xs"></i>
                                         </a>
 
-                                        {{-- Batalkan (Reset) --}}
-                                        <form action="{{ route('admin.pendaftaran.batalkan', $siswa) }}" method="POST" onsubmit="return confirm('Batalkan status DITERIMA dan kembalikan ke Pending?')">
-                                            @csrf @method('PATCH')
-                                            <button type="submit" 
-                                                    class="w-8 h-8 flex items-center justify-center rounded-lg bg-white border border-slate-300 text-slate-400 hover:text-amber-600 hover:border-amber-300 hover:bg-amber-50 transition-all shadow-sm" 
-                                                    title="Batalkan (Kembali ke Pending)">
-                                                <i class="fa-solid fa-rotate-left text-xs"></i>
-                                            </button>
-                                        </form>
+                                        {{-- Batalkan (Modal) --}}
+                                        <button @click="openModal('batalkan', {{ $siswa->id }}, '{{ $siswa->nama_lengkap }}')"
+                                                class="w-8 h-8 flex items-center justify-center rounded-lg bg-white border border-slate-300 text-slate-400 hover:text-amber-600 hover:border-amber-300 hover:bg-amber-50 transition-all shadow-sm" 
+                                                title="Batalkan (Kembali ke Pending)">
+                                            <i class="fa-solid fa-rotate-left text-xs"></i>
+                                        </button>
                                     </div>
                                 </td>
                             </tr>
@@ -123,7 +136,7 @@
                                 <td colspan="5" class="px-6 py-16 text-center">
                                     <div class="flex flex-col items-center justify-center">
                                         <div class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mb-4 border border-slate-200 shadow-inner">
-                                            <i class="fa-solid fa-graduation-cap text-3xl text-slate-400"></i>
+                                            <i class="fa-solid fa-user-check text-3xl text-slate-400"></i>
                                         </div>
                                         <p class="text-slate-500 text-sm font-medium">Belum ada siswa yang diterima.</p>
                                     </div>
@@ -138,7 +151,7 @@
             <div class="lg:hidden space-y-4 mb-6">
                 @forelse($siswas as $siswa)
                     <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-sm relative overflow-hidden">
-                        {{-- Stripe Hijau (Diterima) --}}
+                        {{-- Stripe Hijau --}}
                         <div class="absolute top-0 left-0 w-1.5 h-full bg-emerald-500"></div>
                         
                         <div class="pl-3">
@@ -169,12 +182,9 @@
                                 </a>
                                 
                                 {{-- Batalkan --}}
-                                <form action="{{ route('admin.pendaftaran.batalkan', $siswa) }}" method="POST" class="w-full" onsubmit="return confirm('Batalkan status?')">
-                                    @csrf @method('PATCH')
-                                    <button type="submit" class="w-full py-2 bg-amber-50 border border-amber-200 text-amber-700 rounded-lg text-xs font-bold hover:bg-amber-100 transition-colors flex items-center justify-center gap-2">
-                                        <i class="fa-solid fa-rotate-left"></i> Batalkan
-                                    </button>
-                                </form>
+                                <button @click="openModal('batalkan', {{ $siswa->id }}, '{{ $siswa->nama_lengkap }}')" class="w-full py-2 bg-amber-50 border border-amber-200 text-amber-700 rounded-lg text-xs font-bold hover:bg-amber-100 transition-colors flex items-center justify-center gap-2">
+                                    <i class="fa-solid fa-rotate-left"></i> Batalkan
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -184,7 +194,7 @@
                     </div>
                 @endforelse
             </div>
-            
+
             {{-- PAGINATION CUSTOM (FULL WIDTH TOOLBAR) --}}
             @if($siswas->hasPages())
                 <div class="bg-white rounded-2xl border border-slate-200 shadow-sm px-4 py-3 flex items-center justify-between sm:px-6 mt-auto">
@@ -248,7 +258,62 @@
                     </div>
                 </div>
             @endif
+        </div>
+    </div>
 
+    {{-- ================= MODAL BATALKAN (HALAMAN DITERIMA) ================= --}}
+<div x-show="activeModal === 'batalkan'" style="display: none;" 
+     class="fixed inset-0 z-50 flex items-center justify-center px-4"
+     x-transition:enter="transition ease-out duration-300"
+     x-transition:enter-start="opacity-0"
+     x-transition:enter-end="opacity-100"
+     x-transition:leave="transition ease-in duration-200"
+     x-transition:leave-start="opacity-100"
+     x-transition:leave-end="opacity-0">
+
+    {{-- Overlay --}}
+    <div @click="closeModal()" class="absolute inset-0 bg-slate-900/70"></div>
+
+    {{-- Modal Box --}}
+    <div class="relative w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl transform transition-all"
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0 scale-95 translate-y-4"
+         x-transition:enter-end="opacity-100 scale-100 translate-y-0">
+
+        <div class="text-center">
+            <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-amber-100 text-amber-600">
+                <i class="fa-solid fa-rotate-left text-3xl"></i>
+            </div>
+
+            <h3 class="text-lg font-bold text-slate-900">Batalkan Penerimaan?</h3>
+
+            <p class="mt-2 text-sm text-slate-500 leading-relaxed">
+                Data siswa <b x-text="selectedName"></b> akan 
+                <span class="font-bold text-amber-600">dikembalikan ke status Pending</span>.  
+                Proses penerimaan sebelumnya akan dibatalkan.
+            </p>
+        </div>
+
+        <div class="mt-6 flex gap-3">
+            {{-- Cancel --}}
+            <button @click="closeModal()" 
+                class="w-full rounded-xl border border-slate-200 bg-white py-2.5 text-sm font-bold text-slate-600 
+                       hover:bg-slate-50 transition-colors">
+                Batal
+            </button>
+
+            {{-- Submit --}}
+            <form :action="'{{ url('admin/pendaftaran') }}/' + selectedId + '/batalkan'" 
+                  method="POST" class="w-full">
+                @csrf
+                @method('PATCH')
+
+                <button type="submit" 
+                    class="w-full rounded-xl bg-amber-600 py-2.5 text-sm font-bold text-white 
+                           hover:bg-amber-700 transition-colors shadow-lg shadow-amber-200">
+                    Ya, Batalkan
+                </button>
+            </form>
         </div>
     </div>
 </div>

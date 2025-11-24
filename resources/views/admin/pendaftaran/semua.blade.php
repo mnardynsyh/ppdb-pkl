@@ -3,6 +3,20 @@
 @section('title', 'Semua Pendaftar')
 
 @section('content')
+<div x-data="{
+    activeModal: null,
+    selectedId: null,
+    selectedName: null,
+    openModal(type, id, name) {
+        this.activeModal = type;
+        this.selectedId = id;
+        this.selectedName = name;
+    },
+    closeModal() {
+        this.activeModal = null;
+    }
+}">
+
 <div class="w-full min-h-screen bg-[#F0F2F5] px-4 pt-16 pb-10 lg:px-8 lg:pt-16 lg:pb-10 flex flex-col font-sans text-slate-800">
 
     <div class="max-w-7xl mx-auto w-full flex-1 flex flex-col">
@@ -102,7 +116,7 @@
                     </thead>
                     <tbody class="divide-y divide-slate-200">
                         @forelse($siswas as $siswa)
-                            <tr class="hover:bg-yellow-50 transition-colors group">
+                            <tr class="hover:bg-slate-50 transition-colors group">
                                 {{-- Nama & Email --}}
                                 <td class="px-6 py-4 border-r border-slate-100">
                                     <div class="flex items-center gap-4">
@@ -162,22 +176,32 @@
                                         @if($siswa->status_pendaftaran == 'Pending')
                                             <form action="{{ route('admin.pendaftaran.terima', $siswa) }}" method="POST" onsubmit="return confirm('Terima {{ $siswa->nama_lengkap }}?')">
                                                 @csrf @method('PATCH')
-                                                <button type="submit" class="w-8 h-8 rounded-lg flex items-center justify-center bg-white border border-slate-300 text-slate-600 hover:bg-emerald-50 hover:text-emerald-600 hover:border-emerald-300 transition-colors" title="Terima">
+                                                <button type="button"
+                                                        @click="openModal('terima', {{ $siswa->id }}, '{{ $siswa->nama_lengkap }}')"
+                                                        class="w-8 h-8 rounded-lg flex items-center justify-center bg-white border border-slate-300 text-slate-600 hover:bg-emerald-50 hover:text-emerald-600 hover:border-emerald-300 transition-colors"
+                                                        title="Terima">
                                                     <i class="fa-solid fa-check text-xs"></i>
                                                 </button>
                                             </form>
                                             <form action="{{ route('admin.pendaftaran.tolak', $siswa) }}" method="POST" onsubmit="return confirm('Tolak {{ $siswa->nama_lengkap }}?')">
                                                 @csrf @method('PATCH')
-                                                <button type="submit" class="w-8 h-8 rounded-lg flex items-center justify-center bg-white border border-slate-300 text-slate-600 hover:bg-rose-50 hover:text-rose-600 hover:border-rose-300 transition-colors" title="Tolak">
+                                                <button type="button"
+                                                        @click="openModal('tolak', {{ $siswa->id }}, '{{ $siswa->nama_lengkap }}')"
+                                                        class="w-8 h-8 rounded-lg flex items-center justify-center bg-white border border-slate-300 text-slate-600 hover:bg-rose-50 hover:text-rose-600 hover:border-rose-300 transition-colors"
+                                                        title="Tolak">
                                                     <i class="fa-solid fa-xmark text-xs"></i>
                                                 </button>
                                             </form>
                                         @else
                                             <form action="{{ route('admin.pendaftaran.batalkan', $siswa) }}" method="POST" onsubmit="return confirm('Reset status?')">
                                                 @csrf @method('PATCH')
-                                                <button type="submit" class="w-8 h-8 rounded-lg flex items-center justify-center bg-white border border-slate-300 text-slate-600 hover:bg-amber-50 hover:text-amber-600 hover:border-amber-300 transition-colors" title="Reset Status">
+                                                <button type="button"
+                                                        @click="openModal('batalkan', {{ $siswa->id }}, '{{ $siswa->nama_lengkap }}')"
+                                                        class="w-8 h-8 rounded-lg flex items-center justify-center bg-white border border-slate-300 text-slate-600 hover:bg-amber-50 hover:text-amber-600 hover:border-amber-300 transition-colors"
+                                                        title="Batalkan">
                                                     <i class="fa-solid fa-rotate-left text-xs"></i>
                                                 </button>
+
                                             </form>
                                         @endif
                                     </div>
@@ -318,4 +342,115 @@
         </div>
     </div>
 </div>
+
+{{-- modal terima --}}
+<div x-show="activeModal === 'terima'" style="display:none"
+     class="fixed inset-0 z-50 flex items-center justify-center px-4">
+    
+    <div class="absolute inset-0 bg-slate-900/70" @click="closeModal()"></div>
+
+    <div class="relative w-full max-w-md bg-white rounded-2xl p-6 shadow-2xl"
+         x-transition>
+        
+        <div class="text-center">
+            <div class="mx-auto mb-4 w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center">
+                <i class="fa-solid fa-circle-check text-3xl"></i>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900">Terima Siswa?</h3>
+            <p class="text-sm text-slate-600 mt-2">
+                Terima siswa <b x-text="selectedName"></b>?
+            </p>
+        </div>
+
+        <div class="mt-6 flex gap-3">
+            <button @click="closeModal()" 
+                class="w-full bg-white border border-slate-200 rounded-xl py-2.5 font-bold text-slate-600 hover:bg-slate-50">
+                Batal
+            </button>
+
+            <form :action="'/admin/pendaftaran/' + selectedId + '/terima'" method="POST" class="w-full">
+                @csrf @method('PATCH')
+                <button type="submit"
+                    class="w-full bg-emerald-600 text-white rounded-xl py-2.5 font-bold hover:bg-emerald-700 shadow-lg shadow-emerald-200">
+                    Ya, Terima
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{{-- modal tolak --}}
+<div x-show="activeModal === 'tolak'" style="display:none"
+     class="fixed inset-0 z-50 flex items-center justify-center px-4">
+    
+    <div class="absolute inset-0 bg-slate-900/70" @click="closeModal()"></div>
+
+    <div class="relative w-full max-w-md bg-white rounded-2xl p-6 shadow-2xl"
+         x-transition>
+
+        <div class="text-center">
+            <div class="mx-auto mb-4 w-16 h-16 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center">
+                <i class="fa-solid fa-circle-xmark text-3xl"></i>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900">Tolak Siswa?</h3>
+            <p class="text-sm text-slate-600 mt-2">
+                Tolak siswa <b x-text="selectedName"></b>?
+            </p>
+        </div>
+
+        <div class="mt-6 flex gap-3">
+            <button @click="closeModal()" 
+                class="w-full bg-white border border-slate-200 rounded-xl py-2.5 font-bold text-slate-600 hover:bg-slate-50">
+                Batal
+            </button>
+
+            <form :action="'/admin/pendaftaran/' + selectedId + '/tolak'" method="POST" class="w-full">
+                @csrf @method('PATCH')
+                <button type="submit"
+                    class="w-full bg-rose-600 text-white rounded-xl py-2.5 font-bold hover:bg-rose-700 shadow-lg shadow-rose-200">
+                    Ya, Tolak
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{{-- modal reset --}}
+<div x-show="activeModal === 'batalkan'" style="display:none"
+     class="fixed inset-0 z-50 flex items-center justify-center px-4">
+    
+    <div class="absolute inset-0 bg-slate-900/70" @click="closeModal()"></div>
+
+    <div class="relative w-full max-w-md bg-white rounded-2xl p-6 shadow-2xl"
+         x-transition>
+
+        <div class="text-center">
+            <div class="mx-auto mb-4 w-16 h-16 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center">
+                <i class="fa-solid fa-rotate-left text-3xl"></i>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900">Reset Status?</h3>
+            <p class="text-sm text-slate-600 mt-2">
+                Status <b x-text="selectedName"></b> akan dikembalikan ke pending.
+            </p>
+        </div>
+
+        <div class="mt-6 flex gap-3">
+            <button @click="closeModal()" 
+                class="w-full bg-white border border-slate-200 rounded-xl py-2.5 font-bold text-slate-600 hover:bg-slate-50">
+                Batal
+            </button>
+
+            <form :action="'/admin/pendaftaran/' + selectedId + '/batalkan'" method="POST" class="w-full">
+                @csrf @method('PATCH')
+                <button type="submit"
+                    class="w-full bg-amber-600 text-white rounded-xl py-2.5 font-bold hover:bg-amber-700 shadow-lg shadow-amber-200">
+                    Ya, Reset
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+
+
 @endsection

@@ -20,7 +20,7 @@
             </div>
         </div>
 
-        {{-- 2. CONTROL PANEL (TOMBOL AKSI - TRIGGER MODAL) --}}
+        {{-- 2. CONTROL PANEL --}}
         <div class="mb-8 rounded-2xl bg-white p-6 shadow-sm border border-slate-200 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
             
             {{-- Status Display --}}
