@@ -6,16 +6,17 @@ use App\Http\Controllers\WilayahController;
 
 // AUTH
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Admin\KontakController;
 
 // Admin
+use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Admin\PengaturanController;
 use App\Http\Controllers\Admin\PendaftaranController;
-use App\Http\Controllers\Admin\ProfileController as AdminProfile;
-use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
+use App\Http\Controllers\Siswa\ProfilController as SiswaProfile;
 
 // Siswa
-use App\Http\Controllers\Siswa\ProfilController as SiswaProfile;
+use App\Http\Controllers\Admin\ProfileController as AdminProfile;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
 use App\Http\Controllers\Siswa\DashboardController as SiswaDashboard;
 
 
@@ -65,7 +66,7 @@ Route::prefix('siswa')
         Route::post('/formulir-pendaftaran', [SiswaDashboard::class, 'store'])->name('formulir.store');
 
         // Status & cetak
-        Route::get('/status-pendaftaran', [SiswaDashboard::class, 'showStatus'])->name('status');
+        Route::get('/detail', [SiswaDashboard::class, 'showDetail'])->name('detail');
         Route::get('/cetak-bukti', [SiswaDashboard::class, 'cetakBukti'])->name('cetak-bukti');
     });
 

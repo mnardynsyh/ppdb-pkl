@@ -3,71 +3,91 @@
 @section('title', 'Dashboard Siswa')
 
 @section('content')
-{{-- Logic Penentuan Status & Warna --}}
 @php
+    $status = $siswa->status_pendaftaran;
 
-    $statusData = [
-        'bg_card' => 'bg-gradient-to-br from-white to-blue-50 border-blue-100',
-        'text_accent' => 'text-blue-600',
-        'badge_class' => 'bg-blue-100 text-blue-700 border-blue-200',
-        'icon' => '<svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>',
-        'judul' => 'Lengkapi Formulir',
-        'pesan' => 'Pendaftaran Anda belum lengkap. Silakan isi biodata, data orang tua, dan sekolah asal untuk mendapatkan Nomor Pendaftaran.',
-        'tombol_teks' => 'Lanjutkan Pengisian',
-        'tombol_link' => route('siswa.formulir'),
-        'tombol_class' => 'bg-blue-600 hover:bg-blue-700 text-white shadow-blue-200',
-        'progress' => 1
-    ];
+    // CASE 1: DRAFT / BELUM LENGKAP
+    if ($status === null || $status === '') {
+        $statusData = [
+            'bg_card' => 'bg-gradient-to-br from-white to-blue-50 border-blue-100',
+            'text_accent' => 'text-blue-600',
+            'badge_class' => 'bg-blue-100 text-blue-700 border-blue-200',
+            'icon' => '<svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor"
+                viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round"
+                stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414
+                a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>',
+            'judul' => 'Lengkapi Formulir',
+            'pesan' => 'Lengkapi biodata Anda untuk mendapatkan nomor pendaftaran.',
+            'tombol_teks' => 'Lanjutkan Pengisian',
+            'tombol_link' => route('siswa.formulir'),
+            'tombol_class' => 'bg-blue-600 hover:bg-blue-700 text-white shadow-blue-200',
+            'progress' => 1,
+            'step3_color' => 'emerald'
+        ];
+    }
 
-    if (!empty($siswa->status_pendaftaran)) {
-        switch ($siswa->status_pendaftaran) {
-            case 'Pending':
-                $statusData = [
-                    'bg_card' => 'bg-gradient-to-br from-white to-amber-50 border-amber-100',
-                    'text_accent' => 'text-amber-600',
-                    'badge_class' => 'bg-amber-100 text-amber-700 border-amber-200',
-                    'icon' => '<svg class="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>',
-                    'judul' => 'Menunggu Verifikasi',
-                    'pesan' => 'Data Anda sedang dalam proses verifikasi oleh panitia. Mohon cek secara berkala, notifikasi akan muncul di sini.',
-                    'tombol_teks' => 'Cek Kelengkapan',
-                    'tombol_link' => route('siswa.formulir'),
-                    'tombol_class' => 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50',
-                    'progress' => 2
-                ];
-                break;
+    // CASE 2: PENDING (Masih bisa edit)
+    if ($status === 'Pending') {
+        $statusData = [
+            'bg_card' => 'bg-gradient-to-br from-white to-amber-50 border-amber-100',
+            'text_accent' => 'text-amber-600',
+            'badge_class' => 'bg-amber-100 text-amber-700 border-amber-200',
+            'icon' => '<svg class="w-6 h-6 text-amber-600" fill="none" stroke="currentColor"
+                viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round"
+                stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>',
+            'judul' => 'Menunggu Verifikasi',
+            'pesan' => 'Data Anda sedang diperiksa. Anda masih boleh memperbaiki formulir.',
+            'tombol_teks' => 'Perbaiki Formulir',
+            'tombol_link' => route('siswa.formulir'),
+            'tombol_class' => 'bg-amber-600 hover:bg-amber-700 text-white shadow-amber-200',
+            'progress' => 2,
+            'step3_color' => 'emerald'
+        ];
+    }
 
-            case 'Diterima':
-                $statusData = [
-                    'bg_card' => 'bg-gradient-to-br from-white to-emerald-50 border-emerald-100',
-                    'text_accent' => 'text-emerald-600',
-                    'badge_class' => 'bg-emerald-100 text-emerald-700 border-emerald-200',
-                    'icon' => '<svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>',
-                    'judul' => 'Selamat! Anda Diterima',
-                    'pesan' => 'Selamat bergabung! Anda dinyatakan LULUS seleksi. Silakan unduh bukti penerimaan untuk keperluan daftar ulang.',
-                    'tombol_teks' => 'Cetak Bukti Lulus',
-                    'tombol_link' => route('siswa.cetak-bukti'),
-                    'tombol_class' => 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-emerald-200',
-                    'progress' => 3
-                ];
-                break;
+    // CASE 3: DITERIMA → Ada 2 tombol
+    if ($status === 'Diterima') {
+        $statusData = [
+            'bg_card' => 'bg-gradient-to-br from-white to-emerald-50 border-emerald-100',
+            'text_accent' => 'text-emerald-600',
+            'badge_class' => 'bg-emerald-100 text-emerald-700 border-emerald-200',
+            'icon' => '<svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor"
+                viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round"
+                stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>',
+            'judul' => 'Selamat! Anda Diterima',
+            'pesan' => 'Anda dinyatakan lulus. Silakan cetak bukti pendaftaran.',
+            'tombol_teks' => 'Cetak Bukti Pendaftaran',
+            'tombol_link' => route('siswa.cetak-bukti'),
+            'tombol_class' => 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-emerald-200',
+            'tombol_secondary' => [
+                'text' => 'Lihat Detail Data',
+                'link' => route('siswa.detail'),
+            ],
+            'progress' => 3,
+            'step3_color' => 'emerald'
+        ];
+    }
 
-            case 'Ditolak':
-                $statusData = [
-                    'bg_card' => 'bg-gradient-to-br from-white to-red-50 border-red-100',
-                    'text_accent' => 'text-red-600',
-                    'badge_class' => 'bg-red-100 text-red-700 border-red-200',
-                    'icon' => '<svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>',
-                    'judul' => 'Mohon Maaf',
-                    'pesan' => 'Berdasarkan hasil seleksi, Anda dinyatakan TIDAK LULUS. Tetap semangat dan jangan menyerah.',
-                    'tombol_teks' => 'Lihat Detail',
-                    'tombol_link' => route('siswa.status'),
-                    'tombol_class' => 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50',
-                    'progress' => 3
-                ];
-                break;
-        }
+    // CASE 4: DITOLAK → 1 tombol "Lihat Detail"
+    if ($status === 'Ditolak') {
+        $statusData = [
+            'bg_card' => 'bg-gradient-to-br from-white to-red-50 border-red-100',
+            'text_accent' => 'text-red-600',
+            'badge_class' => 'bg-red-100 text-red-700 border-red-200',
+            'icon' => '<svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor"
+                viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round"
+                stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>',
+            'judul' => 'Tidak Lulus Seleksi',
+            'pesan' => 'Anda dinyatakan tidak lulus. Anda masih dapat melihat detail data.',
+            'tombol_teks' => 'Lihat Detail Data',
+            'tombol_link' => route('siswa.detail'),
+            'tombol_class' => 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50',
+            'progress' => 3,
+            'step3_color' => 'red'
+        ];
     }
 @endphp
+
 
 <div class="min-h-screen pb-12">
     <div class="max-w-6xl mx-auto space-y-8">
@@ -79,21 +99,32 @@
                     Selamat Datang, <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">{{ strtok($siswa->nama_lengkap ?? 'Calon Siswa', ' ') }}</span>
                 </h1>
             </div>
-            
-            {{-- Quick Badge --}}
-            @if($siswa->no_pendaftaran)
-                <div class="bg-white px-4 py-2 rounded-xl border border-gray-200 shadow-sm flex items-center gap-3">
-                    <div class="text-right">
-                        <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">No. Pendaftaran</p>
-                        <p class="text-sm font-mono font-bold text-gray-800">{{ $siswa->no_pendaftaran }}</p>
+        </div>
+
+        {{-- Jika Pendaftaran Ditutup --}}
+        @if(isset($pengaturan) && $pengaturan->status === 'Ditutup')
+            <div class="rounded-2xl bg-gradient-to-br from-gray-50 to-gray-100 border border-gray-200 p-6 md:p-8 shadow-sm mb-6">
+                <div class="flex items-start gap-4">
+                    <div class="shrink-0">
+                        <div class="w-12 h-12 rounded-xl bg-white border border-gray-200 flex items-center justify-center">
+                            <svg class="w-7 h-7 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 8v4m0 4h.01M5.07 19h13.86A2.07 2.07 0 0021 16.93V7.07A2.07 2.07 0 0018.93 5.07H5.07A2.07 2.07 0 003 7.07v9.86A2.07 2.07 0 005.07 19z"/>
+                            </svg>
+                        </div>
                     </div>
-                    <div class="h-8 w-px bg-gray-100"></div>
-                    <div class="bg-gray-100 p-1.5 rounded-lg">
-                        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2"/></svg>
+
+                    <div class="flex-1">
+                        <h2 class="text-lg font-bold text-gray-800 mb-1">Pendaftaran Sedang Ditutup</h2>
+                        <p class="text-gray-600 text-sm leading-relaxed">
+                            Saat ini proses pendaftaran belum dibuka atau sedang dalam tahap finalisasi oleh panitia.
+                            Silakan cek kembali secara berkala. Informasi terbaru akan ditampilkan di dashboard ini.
+                        </p>
                     </div>
                 </div>
-            @endif
-        </div>
+            </div>
+        @endif
+
 
         {{-- Flash Message --}}
         @if(session('success'))
@@ -143,6 +174,12 @@
                                     {{ $statusData['tombol_teks'] }}
                                     <svg class="ml-2 w-4 h-4 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                                 </a>
+                                @if(isset($statusData['tombol_secondary']))
+                                    <a href="{{ $statusData['tombol_secondary']['link'] }}"
+                                    class="ml-3 inline-flex items-center px-5 py-2.5 text-sm font-semibold rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50">
+                                        {{ $statusData['tombol_secondary']['text'] }}
+                                    </a>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -191,8 +228,18 @@
                             {{-- Step 3 --}}
                             <li class="relative">
                                 <div class="flex flex-col items-center group cursor-default">
-                                    <div class="w-8 h-8 flex items-center justify-center rounded-full text-xs font-bold z-10 transition-all duration-300
-                                        {{ $statusData['progress'] >= 3 ? ($statusData['icon'] == 'red' ? 'bg-red-500 text-white' : 'bg-emerald-600 text-white shadow-lg shadow-emerald-200 scale-110') : 'bg-white border-2 border-gray-200 text-gray-400' }}">
+                                    <div class="
+                                        w-8 h-8 flex items-center justify-center rounded-full text-xs font-bold z-10
+                                        transition-all duration-300
+                                        @if($statusData['progress'] >= 3)
+                                            {{ $statusData['step3_color'] === 'red'
+                                                ? 'bg-red-600 text-white shadow-lg shadow-red-200 scale-110'
+                                                : 'bg-emerald-600 text-white shadow-lg shadow-emerald-200 scale-110'
+                                            }}
+                                        @else
+                                            bg-white border-2 border-gray-200 text-gray-400
+                                        @endif
+                                    ">
                                         3
                                     </div>
                                     <span class="absolute top-10 text-[10px] md:text-xs font-semibold text-center w-24 transition-colors {{ $statusData['progress'] >= 3 ? 'text-gray-900' : 'text-gray-400' }}">

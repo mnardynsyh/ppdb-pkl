@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers\Siswa;
 
-use App\Http\Controllers\Controller;
+use App\Models\Siswa;
 use App\Models\Lampiran;
 use App\Models\OrangTua;
 use App\Models\Provinsi;
+use App\Models\Pengaturan;
 use App\Models\SekolahAsal;
-use App\Models\Siswa;
-use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class DashboardController extends Controller
 {
@@ -44,12 +45,29 @@ class DashboardController extends Controller
     /** Dashboard */
     public function index()
     {
+
         $siswa = $this->getSiswa();
-        return view('siswa.dashboard', compact('siswa'));
+        $pengaturan = Pengaturan::first();
+        $statusPendaftaran = $pengaturan ? $pengaturan->getStatusDetails() : null;
+        if ($statusPendaftaran && $statusPendaftaran['status'] === 'Ditutup') {
+
+            if (!in_array($siswa->status_pendaftaran, ['Diterima'])) {
+
+                return view('siswa.pendaftaran-ditutup', [
+                    'pengaturan' => $pengaturan,
+                    'status' => $statusPendaftaran,
+                ]);
+            }
+
+            return view('siswa.dashboard', [
+            'siswa' => $siswa,
+            'pengaturan' => $pengaturan,
+        ]);
+        }
     }
 
     /** STATUS PENDAFTARAN */
-    public function showStatus()
+    public function showDetail()
     {
         $siswa = $this->getSiswa();
 
@@ -57,7 +75,7 @@ class DashboardController extends Controller
             return redirect()->route('siswa.formulir');
         }
 
-        return view('siswa.status', compact('siswa'));
+        return view('partials.siswa.detail-siswa', compact('siswa'));
     }
 
     /** Form Pendaftaran */
