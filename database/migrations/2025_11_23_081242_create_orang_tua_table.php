@@ -18,9 +18,9 @@ return new class extends Migration
               ->constrained('siswa')
               ->onDelete('cascade');
 
-        $table->enum('hubungan', ['Ayah', 'Ibu', 'Wali']);
+        $table->enum('hubungan', ['Ayah', 'Ibu', 'Wali'])->nullable();
         
-        $table->string('nama_lengkap');
+        $table->string('nama_lengkap')->nullable();
         
         // NIK biasanya 16 digit
         $table->string('nik', 16)->nullable();

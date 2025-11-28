@@ -31,10 +31,10 @@ return new class extends Migration
         $table->text('alamat')->nullable();
 
         // Wilayah
-        $table->char('provinsi_id', 2);
-        $table->char('kabupaten_id', 4);
-        $table->char('kecamatan_id', 7);
-        $table->char('desa_id', 10);
+        $table->char('provinsi_id', 2)->nullable();
+        $table->char('kabupaten_id', 4)->nullable();
+        $table->char('kecamatan_id', 7)->nullable();
+        $table->char('desa_id', 10)->nullable();
 
         $table->integer('anak_ke')->nullable();
 

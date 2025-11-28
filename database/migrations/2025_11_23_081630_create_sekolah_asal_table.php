@@ -17,7 +17,7 @@ return new class extends Migration
               ->constrained('siswa')
               ->onDelete('cascade');
 
-        $table->string('nama_sekolah');
+        $table->string('nama_sekolah')->nullable();
 
         $table->text('alamat_sekolah')->nullable();
         $table->year('tahun_lulus')->nullable();

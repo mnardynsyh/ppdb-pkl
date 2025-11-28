@@ -12,7 +12,7 @@ use App\Http\Controllers\Admin\KontakController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Admin\PengaturanController;
 use App\Http\Controllers\Admin\PendaftaranController;
-use App\Http\Controllers\Siswa\ProfilController as SiswaProfile;
+
 
 // Siswa
 use App\Http\Controllers\Admin\ProfileController as AdminProfile;
