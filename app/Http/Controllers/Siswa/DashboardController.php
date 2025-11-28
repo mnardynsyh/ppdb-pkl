@@ -49,14 +49,23 @@ class DashboardController extends Controller
         $siswa = $this->getSiswa();
         $pengaturan = Pengaturan::first();
         $statusPendaftaran = $pengaturan ? $pengaturan->getStatusDetails() : null;
+
+
         if ($statusPendaftaran && $statusPendaftaran['status'] === 'Ditutup') {
 
             if (!in_array($siswa->status_pendaftaran, ['Diterima'])) {
 
+                if (!$siswa) {
+                    return redirect()->route('siswa.formulir');
+                }
                 return view('siswa.pendaftaran-ditutup', [
                     'pengaturan' => $pengaturan,
                     'status' => $statusPendaftaran,
                 ]);
+            }
+
+            if (!$siswa || $siswa->status_pendaftaran === 'Pending') {
+                return redirect()->route('siswa.formulir');
             }
 
             return view('siswa.dashboard', [
@@ -64,6 +73,16 @@ class DashboardController extends Controller
             'pengaturan' => $pengaturan,
         ]);
         }
+
+        if (!$siswa || $siswa->status_pendaftaran === 'Pending') {
+        return redirect()->route('siswa.formulir');
+        }
+
+        return view('siswa.dashboard', [
+            'siswa' => $siswa,
+            'pengaturan' => $pengaturan,
+        ]);
+
     }
 
     /** STATUS PENDAFTARAN */

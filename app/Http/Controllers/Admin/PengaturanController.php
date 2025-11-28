@@ -16,14 +16,12 @@ class PengaturanController extends Controller
      */
     public function index(): View
     {
-        // 1. Ambil atau Buat Data Pengaturan Default
         $pengaturan = Pengaturan::first() ?? Pengaturan::create([
             'status' => 'Ditutup',
             'tanggal_buka' => null,
             'tanggal_tutup' => null,
         ]);
 
-        // 2. Ambil Data Jadwal diurutkan berdasarkan 'order'
         $jadwals = Jadwal::orderBy('order', 'asc')->get();
 
         return view('admin.pengaturan', compact('pengaturan', 'jadwals'));
@@ -34,19 +32,37 @@ class PengaturanController extends Controller
      */
     public function update(Request $request): RedirectResponse
     {
-        $validatedData = $request->validate([
+        $rules = [
             'status'       => 'required|in:Dibuka,Ditutup',
             'tahun_ajaran' => 'required|string|max:20',
-            'tanggal_buka' => 'required|date',
-            'tanggal_tutup'=> 'required|date|after_or_equal:tanggal_buka',
-        ]);
+        ];
+
+        if ($request->status === 'Dibuka') {
+            $rules['tanggal_buka']  = 'required|date|before_or_equal:tanggal_tutup';
+            $rules['tanggal_tutup'] = 'required|date|after_or_equal:tanggal_buka';
+        }
+
+        if ($request->status === 'Ditutup') {
+            $rules['tanggal_buka']  = 'nullable|date';
+            $rules['tanggal_tutup'] = 'nullable|date';
+        }
+
+        $validated = $request->validate($rules);
+
+        // LOGIKA SAFETY
+        if ($request->status === 'Dibuka' && $request->tanggal_tutup < now()->toDateString()) {
+            return back()->withErrors([
+                'tanggal_tutup' => 'Tanggal tutup sudah lewat. Harap set ulang tanggal sesuai periode pendaftaran.'
+            ])->withInput();
+        }
 
         $pengaturan = Pengaturan::first();
-        $pengaturan->update($validatedData);
+        $pengaturan->update($validated);
 
         return redirect()->route('admin.pengaturan.index')
-                         ->with('success', 'Konfigurasi sistem berhasil diperbarui.');
+                        ->with('success', 'Konfigurasi sistem berhasil diperbarui.');
     }
+
 
     /**
      * JADWAL: Menyimpan jadwal baru.
