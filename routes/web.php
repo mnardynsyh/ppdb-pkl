@@ -62,10 +62,6 @@ Route::prefix('siswa')
 
         Route::get('/dashboard', [SiswaDashboard::class, 'index'])->name('dashboard');
 
-        // Formulir
-        Route::get('/formulir-pendaftaran', [SiswaDashboard::class, 'showForm'])->name('formulir');
-        Route::post('/formulir-pendaftaran', [SiswaDashboard::class, 'store'])->name('formulir.store');
-
         Route::controller(FormulirController::class)->group(function() {
             Route::get('/formulir-pendaftaran', 'showForm')->name('formulir');
             Route::post('/formulir-pendaftaran', 'store')->name('formulir.store');
