@@ -37,11 +37,11 @@ class DashboardController extends Controller
             }
         }
 
-        // LOGIKA UTAMA
-        if (!$siswa) {
-            return redirect()->route('siswa.formulir')
-                ->with('info', 'Silakan lengkapi data pendaftaran Anda terlebih dahulu.');
-        }
+        // // LOGIKA UTAMA
+        // if (!$siswa) {
+        //     return redirect()->route('siswa.formulir')
+        //         ->with('info', 'Silakan lengkapi data pendaftaran Anda terlebih dahulu.');
+        // }
 
         return view('siswa.dashboard', [
             'siswa' => $siswa,
