@@ -24,23 +24,23 @@ class DashboardController extends Controller
         $pengaturan = Pengaturan::first();
         $statusPendaftaran = $pengaturan ? $pengaturan->getStatusDetails() : null;
 
-        // Cek jika Pendaftaran DITUTUP
+        // 1. Cek jika Pendaftaran DITUTUP
         if ($statusPendaftaran && $statusPendaftaran['status'] === 'Ditutup') {
-            
             $statusSiswa = $siswa ? $siswa->status_pendaftaran : null;
 
+            // Hanya siswa 'Diterima' yang boleh akses dashboard saat tutup.
             if ($statusSiswa !== 'Diterima') {
                 return view('siswa.pendaftaran-ditutup', [
                     'pengaturan' => $pengaturan,
                     'status' => $statusPendaftaran,
                 ]);
             }
-            
         }
 
-        // Jika belum mengisi form atau masih status Pending, arahkan ke Formulir
-        if (!$siswa || $siswa->status_pendaftaran === 'Pending') {
-            return redirect()->route('siswa.formulir');
+        // LOGIKA UTAMA
+        if (!$siswa) {
+            return redirect()->route('siswa.formulir')
+                ->with('info', 'Silakan lengkapi data pendaftaran Anda terlebih dahulu.');
         }
 
         return view('siswa.dashboard', [
@@ -58,7 +58,6 @@ class DashboardController extends Controller
         if (!$siswa) {
             return redirect()->route('siswa.formulir');
         }
-
         return view('partials.siswa.detail-siswa', compact('siswa'));
     }
 
@@ -70,7 +69,7 @@ class DashboardController extends Controller
 
         if (!$siswa || $siswa->status_pendaftaran !== 'Diterima') {
             return redirect()->route('siswa.dashboard')
-                ->with('error', 'Belum dapat mencetak bukti. Status harus diterima.');
+                ->with('error', 'Belum dapat mencetak bukti. Status harus Diterima.');
         }
 
         $pdf = Pdf::loadView('siswa.cetak-bukti', compact('siswa'));
