@@ -137,12 +137,11 @@
                                     </span>
                                 </td>
 
-                                {{-- Asal Sekolah (DIPERBAIKI) --}}
+                                {{-- Asal Sekolah --}}
                                 <td class="px-6 py-4 border-r border-slate-100">
                                     <p class="text-sm font-medium text-slate-700 flex items-center gap-2">
                                         <i class="fa-solid fa-school text-slate-400 text-xs"></i>
-                                        {{-- Panggil dari Relasi --}}
-                                        {{ $siswa->sekolahAsal->nama_sekolah ?? '-' }}
+                                        {{ $siswa->sekolahAsal?->nama_sekolah ?? '-' }}
                                     </p>
                                 </td>
 
@@ -257,7 +256,7 @@
                             <div class="space-y-1.5 mb-4 text-slate-600 bg-slate-50 p-3 rounded-lg border border-slate-100">
                                 <div class="flex items-center gap-2 text-xs">
                                     <i class="fa-solid fa-school w-4 text-center text-slate-400"></i>
-                                    <span class="font-medium">{{ $siswa->sekolahAsal->nama_sekolah ?? '-' }}</span>
+                                    <span class="font-medium">{{ $siswa->sekolahAsal?->nama_sekolah ?? '-' }}</span>
                                 </div>
                             </div>
 

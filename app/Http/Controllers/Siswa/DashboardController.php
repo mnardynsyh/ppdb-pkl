@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Storage;
 
 class DashboardController extends Controller
 {
-    private array $agama = ['Islam','Kristen Protestan','Kristen Katolik','Hindu','Buddha','Konghucu'];
+    private array $agama = ['Islam','Kristen','Katolik','Hindu','Buddha','Konghucu'];
     
     private array $pendidikan = [
         'Tidak Sekolah','SD/Sederajat','SMP/Sederajat','SMA/Sederajat',

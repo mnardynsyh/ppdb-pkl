@@ -19,17 +19,21 @@ class PendaftaranController extends Controller
             $search = $request->search;
             
             $query->where(function ($q) use ($search) {
+                // pencarian Nama & NISN
                 $q->where('nama_lengkap', 'like', "%{$search}%")
-                  ->orWhere('nisn', 'like', "%{$search}%")
-                  ->orWhere('nik', 'like', "%{$search}%")
-                  // Cari berdasarkan Nama Sekolah (Tabel sekolah_asal)
-                  ->orWhereHas('sekolahAsal', function ($subQuery) use ($search) {
-                      $subQuery->where('nama_sekolah', 'like', "%{$search}%");
-                  })
-                  // Cari berdasarkan Email (Tabel users)
-                  ->orWhereHas('user', function ($subQuery) use ($search) {
-                      $subQuery->where('email', 'like', "%{$search}%");
-                  });
+                ->orWhere('nisn', 'like', "%{$search}%");
+
+                // Opsi Tambahan
+                // ->orWhere('nik', 'like', "%{$search}%");
+
+                /*
+                ->orWhereHas('sekolahAsal', function ($subQuery) use ($search) {
+                    $subQuery->where('nama_sekolah', 'like', "%{$search}%");
+                })
+                ->orWhereHas('user', function ($subQuery) use ($search) {
+                    $subQuery->where('email', 'like', "%{$search}%");
+                });
+                */
             });
         }
     }

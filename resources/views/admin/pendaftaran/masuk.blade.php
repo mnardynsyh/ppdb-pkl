@@ -42,7 +42,7 @@
             @endif
 
             {{-- Search Bar --}}
-            <form action="{{ route('admin.pendaftaran.diterima') }}" method="GET" 
+            <form action="{{ route('admin.pendaftaran.masuk') }}" method="GET" 
                   class="bg-white p-2 rounded-xl border border-slate-200 shadow-sm flex items-center gap-2 transition-all focus-within:border-yellow-400 focus-within:ring-2 focus-within:ring-yellow-100">
                 
                 <button type="submit" class="pl-3 text-slate-400 hover:text-yellow-600 transition-colors">
@@ -91,7 +91,7 @@
                                 <td class="px-6 py-4 border-r border-slate-100">
                                     <div class="flex items-center gap-2">
                                         <i class="fa-solid fa-school text-slate-400 text-xs"></i>
-                                        <span class="text-sm font-medium text-slate-700">{{ $siswa->sekolahAsal->nama_sekolah ?? '-' }}</span>
+                                        <span class="text-sm font-medium text-slate-700">{{ $siswa->sekolahAsal?->nama_sekolah ?? '-' }}</span>
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 border-r border-slate-100">

@@ -53,11 +53,11 @@ return new class extends Migration
             'Tidak Bekerja', 
         ])->nullable();
 
-        // Enum Agama (Sesuai SQL Anda ada 'Kristen Protestan')
+        // Enum Agama
         $table->enum('agama', [
             'Islam', 
-            'Kristen Protestan', 
-            'Katholik', 
+            'Kristen', 
+            'Katolik', 
             'Hindu', 
             'Buddha', 
             'Konghucu'
