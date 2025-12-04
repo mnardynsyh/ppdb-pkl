@@ -10,10 +10,10 @@ class StorePendaftaranRequest extends FormRequest
 {
     // Kita pindahkan opsi dropdown ke sini atau ke Enum terpisah (disarankan).
     // Untuk saat ini, kita simpan di sini agar rapi.
-    private const AGAMA = ['Islam','Kristen Protestan','Kristen Katolik','Hindu','Buddha','Konghucu'];
+    private const AGAMA = ['Islam','Kristen','Katolik','Hindu','Buddha','Konghucu'];
     private const PENDIDIKAN = ['Tidak Sekolah','SD/Sederajat','SMP/Sederajat','SMA/Sederajat','Diploma (D1/D2/D3)','Sarjana (S1)','Magister (S2)','Doktor (S3)'];
     private const PENGHASILAN = ['< Rp 1 juta','Rp 1–3 juta','Rp 3–5 juta','> Rp 5 juta','Tidak Berpenghasilan'];
-    private const PEKERJAAN = ['PNS','TNI/POLRI','Karyawan Swasta','Wiraswasta','Petani','Buruh','Guru/Dosen','Nelayan','Tidak Bekerja','Lainnya'];
+    private const PEKERJAAN = ['PNS','TNI/POLRI','Karyawan Swasta','Wiraswasta','Petani','Buruh','Guru/Dosen','Nelayan','Tidak Bekerja'];
 
     public function authorize(): bool
     {
