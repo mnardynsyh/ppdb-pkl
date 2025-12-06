@@ -3,192 +3,224 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registrasi Siswa - PPDB Online</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Daftar Akun - PPDB Online</title>
+    
+    {{-- Vite --}}
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    {{-- Fonts & Icons --}}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    {{-- Alpine.js & SweetAlert --}}
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        body { font-family: 'Inter', sans-serif; }
 
-        /* Custom Animation untuk SweetAlert */
-        @keyframes fadeInUpSmall {
-            0% { opacity: 0; transform: translateY(20px) scale(0.97); }
-            100% { opacity: 1; transform: translateY(0) scale(1); }
-        }
-        @keyframes fadeOutDownSmall {
-            0% { opacity: 1; transform: translateY(0) scale(1); }
-            100% { opacity: 0; transform: translateY(15px) scale(0.97); }
-        }
-        .animate__fadeInUpSmall { animation: fadeInUpSmall 0.35s cubic-bezier(0.25, 0.18, 0.15, 1) both; }
-        .animate__fadeOutDownSmall { animation: fadeOutDownSmall 0.30s cubic-bezier(0.55, 0.06, 0.41, 0.95) both; }
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        [x-cloak] { display: none !important; }
+        
+        /* Custom Scrollbar untuk Form Area */
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 20px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background-color: #94a3b8; }
     </style>
 </head>
-<body class="bg-white">
+<body class="bg-white h-screen w-full overflow-hidden flex text-neutral-800">
 
-    <section class="h-screen flex overflow-hidden">
+    <div class="hidden lg:flex w-1/2 relative bg-gradient-to-br from-primary-900 via-primary-800 to-primary-950 items-center justify-center overflow-hidden order-2 lg:order-1">
         
-        <div class="hidden lg:flex lg:w-1/2 bg-gray-900 items-center justify-center p-12 relative overflow-hidden">
-            <div class="absolute inset-0 opacity-20 bg-[radial-gradient(#ffffff33_1px,transparent_1px)] [background-size:20px_20px]"></div>
-            
-            <div class="max-w-lg text-center relative z-10">
-                <div class="flex justify-center mb-2">
-                    <img 
-                        src="/img/register.png" 
-                        alt="Ilustrasi Register" 
-                        class="w-80 h-auto object-contain drop-shadow-2xl animate-fade-in-up"
-                        onerror="this.style.display='none'">
+        {{-- Decorative Elements --}}
+        <div class="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-primary-400 opacity-10 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 bg-primary-500 opacity-10 rounded-full blur-3xl"></div>
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary-500/10 via-transparent to-transparent"></div>
+        
+        <div class="relative z-10 p-16 w-full h-full flex flex-col justify-between">
+            {{-- Logo --}}
+            <div class="flex items-center gap-2 text-white/90">
+                <div class="w-8 h-8 border border-white/20 rounded flex items-center justify-center backdrop-blur-sm bg-white/5">
+                     <i class="fa-solid fa-graduation-cap text-xs text-primary-50"></i>
                 </div>
-
-                <h2 class="text-3xl font-bold text-white mb-4 tracking-tight">
-                    Mulai Perjalanan Anda
+                <span class="font-medium tracking-widest text-xs uppercase text-primary-50">PPDB Online</span>
+            </div>
+            
+            <div>
+                <h2 class="text-5xl font-light text-white leading-[1.1] tracking-tight mb-6">
+                    Bergabung <br> <span class="font-semibold text-primary-100">Bersama Kami</span> <br> Wujudkan Mimpi.
                 </h2>
-                <p class="text-gray-400 text-lg leading-relaxed">
-                    Bergabunglah dengan ribuan siswa berprestasi lainnya. Daftarkan diri Anda sekarang untuk masa depan yang lebih cerah.
+                <p class="text-primary-100/80 font-light text-base max-w-md leading-relaxed">
+                    Daftarkan diri Anda sekarang untuk menjadi bagian dari komunitas pendidikan yang unggul dan berprestasi.
                 </p>
             </div>
+
+            <div class="flex gap-6 text-[10px] font-bold text-primary-200/60 uppercase tracking-widest">
+                <span>&copy; {{ date('Y') }} PPDB Online. All rights reserved.</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="w-full lg:w-1/2 flex flex-col items-center bg-white relative order-1 lg:order-2 h-full">
+        
+        <div class="w-full px-4 sm:px-12 lg:px-8 pt-8 shrink-0">
+            <a href="{{ route('home') }}" class="inline-flex items-center gap-2 px-4 py-2 text-xs font-bold text-neutral-500 bg-white border border-neutral-200 rounded-full hover:text-primary-700 hover:border-primary-200 hover:bg-primary-50 transition-all group z-20 shadow-sm">
+                <i class="fa-solid fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                <span>Beranda</span>
+            </a>
         </div>
 
-        <div class="w-full lg:w-1/2 flex flex-col h-full bg-white relative z-10 overflow-y-auto">
-            
-            <div class="px-6 pt-8 pb-4 sm:px-10 sm:pt-10 w-full shrink-0">
-                <a href="{{ route('home') }}" class="group inline-flex items-center text-base font-semibold text-gray-500 hover:text-gray-900 transition-colors py-2">
-                    <svg class="w-5 h-5 mr-2.5 transition-transform duration-200 group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
-                    </svg>
-                    Kembali ke Beranda
-                </a>
-            </div>
+        <div class="w-full flex-1 overflow-y-auto custom-scrollbar px-8 sm:px-12 lg:px-24 py-8">
+            <div class="w-full max-w-md mx-auto pb-8">
+                
+                <div class="lg:hidden flex justify-center mb-8">
+                    <div class="w-12 h-12 bg-primary-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-primary-200">
+                         <i class="fa-solid fa-graduation-cap text-xl"></i>
+                    </div>
+                </div>
 
-            @if ($errors->any())
-            <div class="mx-6 sm:mx-10 p-4 mb-4 text-sm text-red-700 bg-red-50 border border-red-200 rounded-xl">
-                <div class="font-bold mb-1">Terjadi Kesalahan:</div>
-                <ul class="list-disc pl-5 space-y-1">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-            @endif
+                <div class="mb-8 text-center lg:text-left">
+                    <h1 class="text-2xl font-bold text-neutral-900 tracking-tight">Buat Akun Siswa</h1>
+                    <p class="text-neutral-500 mt-2 text-sm">Lengkapi data diri Anda dengan benar.</p>
+                </div>
 
-            <div class="flex-1 flex flex-col justify-center px-6 sm:px-10 pb-10">
-                <div class="w-full max-w-lg mx-auto space-y-8">
-                    
+                <div class="p-4 bg-primary-50 rounded-xl border border-primary-100 flex items-start gap-3 mb-8">
+                    <i class="fa-solid fa-circle-info text-primary-600 mt-0.5"></i>
+                    <p class="text-sm text-primary-800 leading-relaxed">
+                        Pastikan <strong>NIK</strong> dan <strong>NISN</strong> sesuai dengan Kartu Keluarga (KK) atau Ijazah sekolah asal.
+                    </p>
+                </div>
+
+                {{-- FORM REGISTER --}}
+                <form class="space-y-5" action="{{ route('register.siswa.submit') }}" method="POST">
+                    @csrf
+
+                    {{-- NAMA LENGKAP --}}
                     <div>
-                        <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-2 tracking-tight">Buat Akun Siswa</h1>
-                        <p class="text-lg text-gray-600">Isi data diri Anda dengan benar dan valid.</p>
+                        <label for="nama_lengkap" class="block text-xs font-bold text-neutral-900 uppercase tracking-wider mb-2">Nama Lengkap</label>
+                        <input id="nama_lengkap" name="nama_lengkap" type="text" required
+                            class="w-full px-5 py-3.5 border border-neutral-300 rounded-xl focus:ring-2 focus:ring-primary-600 focus:border-primary-600 transition-all outline-none placeholder-neutral-400 bg-neutral-50 focus:bg-white text-sm font-medium"
+                            placeholder="Sesuai Ijazah" value="{{ old('nama_lengkap') }}">
+                        @error('nama_lengkap')
+                            <p class="mt-1 text-xs text-rose-600 font-medium">{{ $message }}</p>
+                        @enderror
                     </div>
 
-                    <div class="p-4 bg-amber-50 rounded-xl border border-amber-100 flex items-start gap-3">
-                        <i class="fa-solid fa-circle-info text-amber-500 mt-1"></i>
-                        <p class="text-sm text-amber-800 leading-relaxed">
-                            Pastikan <strong>NIK</strong> dan <strong>NISN</strong> sesuai dengan Kartu Keluarga (KK) atau Ijazah/Rapor sekolah asal.
-                        </p>
-                    </div>
-
-                    <form class="space-y-5" action="{{ route('register.siswa.submit') }}" method="POST">
-                        @csrf
-                        
+                    {{-- GRID: NIK & NISN --}}
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                         <div>
-                            <label for="nama_lengkap" class="block text-sm font-bold text-gray-700 mb-2">Nama Lengkap</label>
-                            <input id="nama_lengkap" name="nama_lengkap" type="text" required
-                                class="w-full px-5 py-3.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-gray-900 focus:border-gray-900 transition-all outline-none placeholder-gray-400 bg-gray-50 focus:bg-white"
-                                placeholder="Sesuai Ijazah" value="{{ old('nama_lengkap') }}">
+                            <label for="nik" class="block text-xs font-bold text-neutral-900 uppercase tracking-wider mb-2">NIK</label>
+                            <input id="nik" name="nik" type="text" required maxlength="16"
+                                class="w-full px-5 py-3.5 border border-neutral-300 rounded-xl focus:ring-2 focus:ring-primary-600 focus:border-primary-600 transition-all outline-none placeholder-neutral-400 bg-neutral-50 focus:bg-white text-sm font-medium"
+                                placeholder="16 Digit Angka" value="{{ old('nik') }}">
+                            @error('nik')
+                                <p class="mt-1 text-xs text-rose-600 font-medium">{{ $message }}</p>
+                            @enderror
                         </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                            <div>
-                                <label for="nik" class="block text-sm font-bold text-gray-700 mb-2">NIK</label>
-                                <input id="nik" name="nik" type="text" required maxlength="16"
-                                    class="w-full px-5 py-3.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-gray-900 focus:border-gray-900 transition-all outline-none placeholder-gray-400 bg-gray-50 focus:bg-white"
-                                    placeholder="16 Digit Angka" value="{{ old('nik') }}">
-                            </div>
-                            <div>
-                                <label for="nisn" class="block text-sm font-bold text-gray-700 mb-2">NISN</label>
-                                <input id="nisn" name="nisn" type="text" required maxlength="10"
-                                    class="w-full px-5 py-3.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-gray-900 focus:border-gray-900 transition-all outline-none placeholder-gray-400 bg-gray-50 focus:bg-white"
-                                    placeholder="10 Digit Angka" value="{{ old('nisn') }}">
-                            </div>
+                        <div>
+                            <label for="nisn" class="block text-xs font-bold text-neutral-900 uppercase tracking-wider mb-2">NISN</label>
+                            <input id="nisn" name="nisn" type="text" required maxlength="10"
+                                class="w-full px-5 py-3.5 border border-neutral-300 rounded-xl focus:ring-2 focus:ring-primary-600 focus:border-primary-600 transition-all outline-none placeholder-neutral-400 bg-neutral-50 focus:bg-white text-sm font-medium"
+                                placeholder="10 Digit Angka" value="{{ old('nisn') }}">
+                            @error('nisn')
+                                <p class="mt-1 text-xs text-rose-600 font-medium">{{ $message }}</p>
+                            @enderror
                         </div>
+                    </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                            <div>
-                                <label for="tanggal_lahir" class="block text-sm font-bold text-gray-700 mb-2">Tanggal Lahir</label>
-                                <input id="tanggal_lahir" name="tanggal_lahir" type="date" required
-                                    class="w-full px-5 py-3.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-gray-900 focus:border-gray-900 transition-all outline-none bg-gray-50 focus:bg-white"
-                                    value="{{ old('tanggal_lahir') }}">
-                            </div>
-                            <div>
-                                <label for="jenis_kelamin" class="block text-sm font-bold text-gray-700 mb-2">Jenis Kelamin</label>
-                                <div class="relative">
-                                    <select id="jenis_kelamin" name="jenis_kelamin" required
-                                        class="w-full px-5 py-3.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-gray-900 focus:border-gray-900 transition-all outline-none bg-gray-50 focus:bg-white appearance-none cursor-pointer">
-                                        <option value="">Pilih Gender</option>
-                                        <option value="L" @selected(old('jenis_kelamin')=='L')>Laki-Laki</option>
-                                        <option value="P" @selected(old('jenis_kelamin')=='P')>Perempuan</option>
-                                    </select>
-                                    <div class="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none">
-                                        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                                    </div>
+                    {{-- GRID: TGL LAHIR & GENDER --}}
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div>
+                            <label for="tanggal_lahir" class="block text-xs font-bold text-neutral-900 uppercase tracking-wider mb-2">Tanggal Lahir</label>
+                            <input id="tanggal_lahir" name="tanggal_lahir" type="date" required
+                                class="w-full px-5 py-3.5 border border-neutral-300 rounded-xl focus:ring-2 focus:ring-primary-600 focus:border-primary-600 transition-all outline-none bg-neutral-50 focus:bg-white text-sm font-medium text-neutral-600"
+                                value="{{ old('tanggal_lahir') }}">
+                            @error('tanggal_lahir')
+                                <p class="mt-1 text-xs text-rose-600 font-medium">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <div>
+                            <label for="jenis_kelamin" class="block text-xs font-bold text-neutral-900 uppercase tracking-wider mb-2">Jenis Kelamin</label>
+                            <div class="relative">
+                                <select id="jenis_kelamin" name="jenis_kelamin" required
+                                    class="w-full px-5 py-3.5 border border-neutral-300 rounded-xl focus:ring-2 focus:ring-primary-600 focus:border-primary-600 transition-all outline-none bg-neutral-50 focus:bg-white appearance-none cursor-pointer text-sm font-medium text-neutral-600">
+                                    <option value="">Pilih Gender</option>
+                                    <option value="L" @selected(old('jenis_kelamin')=='L')>Laki-Laki</option>
+                                    <option value="P" @selected(old('jenis_kelamin')=='P')>Perempuan</option>
+                                </select>
+                                <div class="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none">
+                                    <i class="fa-solid fa-chevron-down text-xs text-neutral-500"></i>
                                 </div>
                             </div>
+                            @error('jenis_kelamin')
+                                <p class="mt-1 text-xs text-rose-600 font-medium">{{ $message }}</p>
+                            @enderror
                         </div>
-
-                        <div>
-                            <label for="email" class="block text-sm font-bold text-gray-700 mb-2">Email Aktif</label>
-                            <input id="email" name="email" type="email" required
-                                class="w-full px-5 py-3.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-gray-900 focus:border-gray-900 transition-all outline-none placeholder-gray-400 bg-gray-50 focus:bg-white"
-                                placeholder="nama@email.com" value="{{ old('email') }}">
-                        </div>
-
-                        <div x-data="{ show: false }">
-                            <label for="password" class="block text-sm font-bold text-gray-700 mb-2">Buat Password</label>
-                            <div class="relative">
-                                <input :type="show ? 'text' : 'password'" id="password" name="password" required
-                                    class="w-full px-5 py-3.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-gray-900 focus:border-gray-900 transition-all outline-none placeholder-gray-400 bg-gray-50 focus:bg-white pr-24"
-                                    placeholder="Minimal 6 karakter">
-                                <button type="button" @click="show = !show"
-                                    class="absolute right-5 top-1/2 transform -translate-y-1/2 text-sm font-semibold text-gray-500 hover:text-gray-900 transition-colors">
-                                    <span x-text="show ? 'Sembunyikan' : 'Lihat'"></span>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div x-data="{ show: false }">
-                            <label for="password_confirmation" class="block text-sm font-bold text-gray-700 mb-2">Ulangi Password</label>
-                            <div class="relative">
-                                <input :type="show ? 'text' : 'password'" id="password_confirmation" name="password_confirmation" required
-                                    class="w-full px-5 py-3.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-gray-900 focus:border-gray-900 transition-all outline-none placeholder-gray-400 bg-gray-50 focus:bg-white pr-24"
-                                    placeholder="Ketik ulang password">
-                                <button type="button" @click="show = !show"
-                                    class="absolute right-5 top-1/2 transform -translate-y-1/2 text-sm font-semibold text-gray-500 hover:text-gray-900 transition-colors">
-                                    <span x-text="show ? 'Sembunyikan' : 'Lihat'"></span>
-                                </button>
-                            </div>
-                        </div>
-
-                        <button type="submit"
-                            class="w-full bg-gray-900 text-white py-4 px-6 rounded-xl font-bold text-lg hover:bg-black focus:ring-4 focus:ring-gray-200 transition-all transform active:scale-[0.99] shadow-lg mt-4">
-                            Daftar Sekarang
-                        </button>
-                    </form>
-
-                    <div class="mt-6 text-center pt-6 border-t border-gray-100">
-                        <p class="text-sm text-gray-600">
-                            Sudah memiliki akun? 
-                            <a href="{{ route('login') }}" class="font-bold text-blue-700 hover:text-blue-900 hover:underline transition-colors ml-1">
-                                Login di sini
-                            </a>
-                        </p>
                     </div>
 
+                    {{-- EMAIL --}}
+                    <div>
+                        <label for="email" class="block text-xs font-bold text-neutral-900 uppercase tracking-wider mb-2">Email Aktif</label>
+                        <input id="email" name="email" type="email" required
+                            class="w-full px-5 py-3.5 border border-neutral-300 rounded-xl focus:ring-2 focus:ring-primary-600 focus:border-primary-600 transition-all outline-none placeholder-neutral-400 bg-neutral-50 focus:bg-white text-sm font-medium"
+                            placeholder="nama@email.com"
+                            value="{{ old('email') }}">
+                        @error('email')
+                            <p class="mt-1 text-xs text-rose-600 font-medium">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    {{-- PASSWORD --}}
+                    <div x-data="{ show: false }">
+                        <label for="password" class="block text-xs font-bold text-neutral-900 uppercase tracking-wider mb-2">Password</label>
+                        <div class="relative">
+                            <input :type="show ? 'text' : 'password'" id="password" name="password" required
+                                class="w-full px-5 py-3.5 border border-neutral-300 rounded-xl focus:ring-2 focus:ring-primary-600 focus:border-primary-600 transition-all outline-none placeholder-neutral-400 bg-neutral-50 focus:bg-white pr-24 text-sm font-medium"
+                                placeholder="Minimal 8 karakter">
+                            <button type="button" @click="show = !show"
+                                class="absolute right-5 top-1/2 transform -translate-y-1/2 text-xs font-bold text-neutral-500 hover:text-neutral-900 transition-colors uppercase tracking-wider">
+                                <span x-text="show ? 'Sembunyikan' : 'Lihat'"></span>
+                            </button>
+                        </div>
+                        @error('password')
+                            <p class="mt-1 text-xs text-rose-600 font-medium">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    {{-- KONFIRMASI PASSWORD --}}
+                    <div x-data="{ show: false }">
+                        <label for="password_confirmation" class="block text-xs font-bold text-neutral-900 uppercase tracking-wider mb-2">Ulangi Password</label>
+                        <div class="relative">
+                            <input :type="show ? 'text' : 'password'" id="password_confirmation" name="password_confirmation" required
+                                class="w-full px-5 py-3.5 border border-neutral-300 rounded-xl focus:ring-2 focus:ring-primary-600 focus:border-primary-600 transition-all outline-none placeholder-neutral-400 bg-neutral-50 focus:bg-white pr-24 text-sm font-medium"
+                                placeholder="Ketik ulang password">
+                            <button type="button" @click="show = !show"
+                                class="absolute right-5 top-1/2 transform -translate-y-1/2 text-xs font-bold text-neutral-500 hover:text-neutral-900 transition-colors uppercase tracking-wider">
+                                <span x-text="show ? 'Sembunyikan' : 'Lihat'"></span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit"
+                        class="w-full bg-primary-600 hover:bg-primary-700 text-white py-4 px-6 rounded-xl font-bold text-sm uppercase tracking-widest transition-all shadow-lg shadow-primary-200 hover:shadow-xl hover:shadow-primary-200 transform hover:-translate-y-0.5 active:translate-y-0 mt-6">
+                        Daftar Sekarang
+                    </button>
+                </form>
+
+                <div class="mt-8 text-center border-t border-neutral-200 pt-6">
+                    <p class="text-sm text-neutral-500">
+                        Sudah punya akun? 
+                        <a href="{{ route('login') }}" class="font-bold text-primary-700 hover:text-primary-900 hover:underline transition-all ml-1">
+                            Login di sini
+                        </a>
+                    </p>
                 </div>
             </div>
         </div>
+    </div>
 
-    </section>
-
+    {{-- Script untuk Alert Sukses --}}
     @if (session('register_success'))
     <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -197,14 +229,10 @@
             text: 'Akun Anda telah dibuat. Silakan login untuk melanjutkan.',
             icon: 'success',
             confirmButtonText: 'Lanjut Login',
-            confirmButtonColor: '#111827',
-            showClass: { popup: 'animate__fadeInUpSmall' },
-            hideClass: { popup: 'animate__fadeOutDownSmall' },
-            allowOutsideClick: false,
-            allowEscapeKey: false,
+            confirmButtonColor: '#0d9488', // primary-600
             padding: '2em',
             customClass: {
-                popup: 'rounded-2xl shadow-xl'
+                popup: 'rounded-2xl shadow-xl font-sans'
             }
         }).then(() => {
             window.location.href = "{{ route('login') }}";
@@ -213,18 +241,17 @@
     </script>
     @endif
 
+    {{-- Script Input Hanya Angka --}}
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const nisn = document.getElementById('nisn');
-        const nik = document.getElementById('nik');
-
-        // Fungsi hanya angka
         const enforceNumber = (e) => {
             e.target.value = e.target.value.replace(/\D/g, '');
         };
-
-        if(nisn) nisn.addEventListener('input', enforceNumber);
-        if(nik) nik.addEventListener('input', enforceNumber);
+        const inputs = ['nisn', 'nik', 'telepon'];
+        inputs.forEach(id => {
+            const el = document.getElementById(id);
+            if(el) el.addEventListener('input', enforceNumber);
+        });
     });
     </script>
 
