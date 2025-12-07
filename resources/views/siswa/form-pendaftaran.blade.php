@@ -4,93 +4,128 @@
 
 @section('content')
 
-<div x-data="{ step: 1, konfirmasi: false, showModal: false }" class="max-w-full mx-auto bg-white shadow-2xl rounded-xl p-4 sm:p-8 my-6 sm:my-10 border border-gray-200 relative">
-    
-    <h1 class="text-2xl md:text-3xl font-bold mb-2 text-center text-gray-800">Formulir Pendaftaran Siswa Baru</h1>
-    <p class="text-center text-gray-500 mb-8 px-4 sm:px-0">Silakan lengkapi semua data dengan benar.</p>
+{{-- LOGIKA PENGUNCIAN (Jika status Diterima/Ditolak) --}}
+@php
+    $isLocked = in_array($siswa->status_pendaftaran, ['Diterima', 'Ditolak']);
+@endphp
 
+<div x-data="{ step: 1, konfirmasi: false, showModal: false }" class="max-w-5xl mx-auto mb-16">
+    
+    {{-- Header --}}
+    <div class="text-center mb-10" data-aos="fade-down">
+        <span class="inline-block py-1 px-3 rounded-full bg-primary-50 border border-primary-100 text-primary-600 text-xs font-bold tracking-wider uppercase mb-3">
+            Formulir PPDB
+        </span>
+        <h1 class="text-3xl font-bold text-neutral-900 tracking-tight">Data Diri Siswa</h1>
+        
+        @if($isLocked)
+            <div class="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-yellow-50 text-yellow-700 border border-yellow-200 rounded-lg text-sm font-medium">
+                <i class="fa-solid fa-lock"></i>
+                Data terkunci karena status: <strong>{{ $siswa->status_pendaftaran }}</strong>
+            </div>
+        @else
+            <p class="text-neutral-500 mt-2">Lengkapi data diri Anda dengan benar dan valid.</p>
+        @endif
+    </div>
+
+    {{-- Error Alert --}}
     @if ($errors->any())
-        <div class="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-800 rounded-r-lg" role="alert">
-            <p class="font-bold">Terjadi Kesalahan!</p>
-            <p>Mohon periksa kembali data yang Anda isikan. Terdapat beberapa kolom yang belum diisi dengan benar:</p>
-            <ul class="list-disc list-inside text-sm mt-2">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
+        <div class="mb-8 p-4 bg-rose-50 border border-rose-100 rounded-2xl flex items-start gap-4 shadow-sm" role="alert">
+            <div class="shrink-0 w-10 h-10 rounded-full bg-rose-100 flex items-center justify-center text-rose-600">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <div>
+                <h3 class="font-bold text-rose-700 text-sm">Periksa kembali inputan Anda:</h3>
+                <ul class="mt-1 list-disc list-inside text-sm text-rose-600">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
         </div>
     @endif
 
-    @include('partials.siswa.stepper')
-    
-    <div class="mt-8">
-        <form x-ref="pendaftaranForm" action="{{ route('siswa.formulir.store') }}" method="POST" enctype="multipart/form-data" novalidate>
-            @csrf
-            <fieldset>
-                @include('partials.siswa.step1')
-                @include('partials.siswa.step2')
-                @include('partials.siswa.step3')
-                @include('partials.siswa.step4')
-                @include('partials.siswa.step5')
+    <div class="bg-white rounded-[2rem] border border-neutral-200 shadow-xl shadow-neutral-200/40 overflow-hidden relative">
+        
+        {{-- Stepper --}}
+        <div class="bg-neutral-50/50 border-b border-neutral-100 p-6 md:p-8">
+            @include('partials.siswa.stepper')
+        </div>
+        
+        {{-- Form Content --}}
+        <div class="p-6 md:p-10 relative">
+            <form x-ref="pendaftaranForm" action="{{ route('siswa.formulir.store') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                
+                {{-- Steps --}}
+                @include('partials.siswa.step1', ['isLocked' => $isLocked])
+                @include('partials.siswa.step2', ['isLocked' => $isLocked])
+                @include('partials.siswa.step3', ['isLocked' => $isLocked])
+                @include('partials.siswa.step4', ['isLocked' => $isLocked])
+                @include('partials.siswa.step5', ['isLocked' => $isLocked])
 
-                {{-- Tombol Navigasi --}}
-                <div class="flex justify-between mt-10 pt-6 border-t">
+                {{-- Navigation Buttons --}}
+                <div class="flex items-center justify-between mt-12 pt-8 border-t border-neutral-100">
+                    
+                    {{-- Prev --}}
                     <button type="button"
-                            class="px-4 py-2 sm:px-6 text-sm sm:text-base bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                            class="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-neutral-600 bg-white border border-neutral-200 hover:bg-neutral-50 hover:text-neutral-900 transition-all disabled:opacity-50"
                             @click="if(step > 1) step--"
-                            :disabled="step === 1">
-                        Sebelumnya
+                            :disabled="step === 1"
+                            :class="{ 'opacity-0 pointer-events-none': step === 1 }">
+                        <i class="fa-solid fa-arrow-left"></i>
+                        <span>Sebelumnya</span>
                     </button>
 
+                    {{-- Next --}}
                     <button type="button"
-                            class="px-4 py-2 sm:px-6 text-sm sm:text-base bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300"
+                            class="inline-flex items-center gap-2 px-8 py-3 rounded-xl text-sm font-bold text-white bg-primary-600 hover:bg-primary-700 shadow-lg shadow-primary-500/20 hover:shadow-primary-500/30 transition-all transform hover:-translate-y-0.5"
                             @click="if(step < 5) step++"
                             x-show="step < 5">
-                        Berikutnya
+                        <span>Berikutnya</span>
+                        <i class="fa-solid fa-arrow-right"></i>
                     </button>
 
-                    <button type="button"
-                            @click="showModal = true"
-                            class="px-4 py-2 sm:px-6 text-sm sm:text-base bg-green-600 text-white rounded-lg hover:bg-green-700 transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                            x-show="step === 5"
-                            :disabled="!konfirmasi">
-                        <span>{{ $siswa->orangTuaWali ? 'Simpan Perubahan' : 'Kirim Pendaftaran' }}</span>
-                    </button>
+                    {{-- Submit --}}
+                    @if(!$isLocked)
+                        <button type="button"
+                                @click="showModal = true"
+                                class="inline-flex items-center gap-2 px-8 py-3 rounded-xl text-sm font-bold text-white bg-primary-600 hover:bg-primary-700 shadow-lg shadow-primary-500/20 hover:shadow-primary-500/30 transition-all transform hover:-translate-y-0.5 disabled:opacity-50 disabled:bg-neutral-300 disabled:shadow-none"
+                                x-show="step === 5"
+                                :disabled="!konfirmasi"
+                                x-cloak>
+                            <i class="fa-solid fa-paper-plane"></i>
+                            <span>{{ $siswa && $siswa->alamat ? 'Simpan Perubahan' : 'Kirim Pendaftaran' }}</span>
+                        </button>
+                    @endif
                 </div>
-            </fieldset>
-        </form>
+            </form>
+        </div>
     </div>
 
-    <!-- Modal Konfirmasi -->
-    <div x-show="showModal" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50" style="display: none;">
-        <div @click.away="showModal = false" class="bg-white rounded-lg shadow-xl p-6 sm:p-8 w-11/12 max-w-md mx-auto">
+    {{-- Modal Konfirmasi --}}
+    <div x-show="showModal" 
+         class="fixed inset-0 z-50 flex items-center justify-center px-4" 
+         style="display: none;" x-cloak>
+        <div class="absolute inset-0 bg-neutral-900/60 backdrop-blur-sm" @click="showModal = false"></div>
+        <div class="bg-white rounded-3xl shadow-2xl p-8 max-w-md w-full relative z-10 transform transition-all">
             <div class="text-center">
-                <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-blue-100">
-                    <svg class="h-6 w-6 text-blue-600" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.546-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
+                <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-primary-50 border-4 border-primary-100 mb-6">
+                    <i class="fa-solid fa-check text-2xl text-primary-600"></i>
                 </div>
-                <h3 class="text-lg leading-6 font-medium text-gray-900 mt-5">Konfirmasi Pendaftaran</h3>
-                <div class="mt-2 px-7 py-3">
-                    <p class="text-sm text-gray-500">
-                        Apakah Anda yakin semua data yang diisi sudah benar? Anda masih dapat mengubah data selama pendaftaran belum diverifikasi oleh panitia.
-                    </p>
-                </div>
-                <div class="mt-6 flex justify-center gap-4">
-                    <button type="button" @click="showModal = false" class="px-6 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 transition">
-                        Batal
-                    </button>
-                    <button type="button" @click="$refs.pendaftaranForm.submit()" class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">
-                        Ya, Kirim Sekarang
-                    </button>
+                <h3 class="text-xl font-bold text-neutral-900 mb-2">Kirim Data?</h3>
+                <p class="text-sm text-neutral-500 leading-relaxed mb-8">
+                    Pastikan seluruh data sudah benar. Data akan diverifikasi oleh panitia.
+                </p>
+                <div class="grid grid-cols-2 gap-3">
+                    <button type="button" @click="showModal = false" class="px-5 py-3 rounded-xl border border-neutral-200 text-neutral-600 font-bold hover:bg-neutral-50">Batal</button>
+                    <button type="button" @click="$refs.pendaftaranForm.submit()" class="px-5 py-3 rounded-xl bg-primary-600 text-white font-bold hover:bg-primary-700 shadow-lg">Ya, Kirim</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
 @endsection
-
 @push('scripts')
 <script>
     document.addEventListener('alpine:init', () => {

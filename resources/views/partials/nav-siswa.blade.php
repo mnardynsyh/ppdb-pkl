@@ -1,109 +1,134 @@
-<nav x-data="{ mobileOpen: false, userMenuOpen: false }" 
-         class="bg-white/90 backdrop-blur-md border-b border-gray-200 sticky top-0 z-50 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07)]">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                
-                <div class="flex">
-                    <div class="shrink-0 flex items-center">
-                        <a href="{{ route('siswa.dashboard') }}" class="flex items-center gap-2.5 group">
-                            <span class="font-bold text-xl tracking-tight text-gray-900">PPDB <span class="text-blue-600">Online</span></span>
-                        </a>
+<nav class="bg-white/90 backdrop-blur-md border-b border-neutral-200 sticky top-0 z-50 shadow-sm" x-data="{ mobileOpen: false, profileOpen: false }">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+            
+            {{-- 1. Logo (Kiri) --}}
+            <div class="flex items-center">
+                <a href="{{ route('siswa.dashboard') }}" class="flex-shrink-0 flex items-center gap-2.5 group">
+                    <div class="w-9 h-9 bg-primary-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-primary-200 group-hover:scale-105 transition-transform">
+                        <i class="fa-solid fa-graduation-cap text-sm"></i>
                     </div>
-                </div>
+                    <span class="font-bold text-lg text-neutral-900 tracking-tight ml-1">
+                        PPDB <span class="text-primary-600">Siswa</span>
+                    </span>
+                </a>
+            </div>
 
-                {{-- User Dropdown (Desktop & Mobile Trigger) --}}
-                <div class="hidden sm:flex sm:items-center sm:ml-6">
-                    <div class="relative ml-3">
-                        <div>
-                            <button @click="userMenuOpen = !userMenuOpen" 
-                                    @click.outside="userMenuOpen = false"
-                                    type="button" 
-                                    class="flex text-sm bg-white rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 items-center gap-3 p-1 pr-3 border border-gray-100 hover:bg-gray-50 transition-colors shadow-sm" 
-                                    id="user-menu-button" 
-                                    aria-expanded="false" 
-                                    aria-haspopup="true">
-                                <span class="sr-only">Open user menu</span>
-                                <img class="h-8 w-8 rounded-full object-cover ring-2 ring-white" 
-                                     src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name ?? 'Siswa') }}&background=0D8ABC&color=fff" 
-                                     alt="{{ Auth::user()->name }}">
-                                <div class="text-left hidden md:block leading-tight">
-                                    <p class="text-xs font-semibold text-gray-700">{{ strtok(Auth::user()->name, ' ') }}</p>
-                                    <p class="text-[10px] text-gray-400 font-medium">Calon Siswa</p>
-                                </div>
-                                <svg class="w-4 h-4 text-gray-400" :class="userMenuOpen ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="transition: transform 0.2s"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                            </button>
+            {{-- 2. Menu Navigasi (Tengah - Desktop Only) --}}
+            <div class="hidden md:flex flex-1 items-center justify-center space-x-1">
+                <a href="{{ route('siswa.dashboard') }}" 
+                   class="px-4 py-2 rounded-full text-sm font-bold transition-all duration-200
+                   {{ request()->routeIs('siswa.dashboard') 
+                        ? 'bg-primary-50 text-primary-700' 
+                        : 'text-neutral-500 hover:text-neutral-900 hover:bg-neutral-50' }}">
+                    Dashboard
+                </a>
+
+                <a href="{{ route('siswa.formulir') }}" 
+                   class="px-4 py-2 rounded-full text-sm font-bold transition-all duration-200
+                   {{ request()->routeIs('siswa.formulir*') 
+                        ? 'bg-primary-50 text-primary-700' 
+                        : 'text-neutral-500 hover:text-neutral-900 hover:bg-neutral-50' }}">
+                    Formulir Pendaftaran
+                </a>
+            </div>
+
+            {{-- 3. Profil User (Kanan - Desktop Only) --}}
+            <div class="hidden md:flex items-center">
+                <div class="relative">
+                    <button @click="profileOpen = !profileOpen" @click.outside="profileOpen = false"
+                            class="flex items-center gap-3 pl-1 pr-2 py-1 rounded-full border border-transparent hover:border-neutral-200 hover:bg-neutral-50 transition-all group focus:outline-none">
+                        
+                        <div class="text-right leading-tight hidden lg:block">
+                            <p class="text-xs font-bold text-neutral-800 group-hover:text-primary-700 transition-colors">
+                                {{ strtok(Auth::user()->name, ' ') }}
+                            </p>
+                            <p class="text-[10px] text-neutral-400 font-medium uppercase tracking-wider">Calon Siswa</p>
+                        </div>
+                        
+                        <div class="relative">
+                            <img class="h-9 w-9 rounded-full object-cover border-2 border-white shadow-sm ring-1 ring-neutral-100 group-hover:ring-primary-200 transition-all"
+                                 src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=0d9488&color=ffffff&bold=true" 
+                                 alt="{{ Auth::user()->name }}">
                         </div>
 
-                        {{-- Dropdown Menu --}}
-                        <div x-show="userMenuOpen" 
-                             x-transition:enter="transition ease-out duration-200"
-                             x-transition:enter-start="transform opacity-0 scale-95"
-                             x-transition:enter-end="transform opacity-100 scale-100"
-                             x-transition:leave="transition ease-in duration-75"
-                             x-transition:leave-start="transform opacity-100 scale-100"
-                             x-transition:leave-end="transform opacity-0 scale-95"
-                             class="origin-top-right absolute right-0 mt-2 w-56 rounded-xl shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50" 
-                             role="menu" 
-                             style="display: none;">
-                            <div class="px-4 py-3 border-b border-gray-100 bg-gray-50/50 rounded-t-xl">
-                                <p class="text-sm text-gray-900 font-semibold truncate">{{ Auth::user()->name }}</p>
-                                <p class="text-xs text-gray-500 truncate font-medium">{{ Auth::user()->email }}</p>
-                            </div>
-                            
+                        <i class="fa-solid fa-chevron-down text-[10px] text-neutral-400 group-hover:text-neutral-600 transition-transform duration-200"
+                           :class="profileOpen ? 'rotate-180' : ''"></i>
+                    </button>
+
+                    {{-- Dropdown Menu --}}
+                    <div x-show="profileOpen" 
+                         x-transition.origin.top.right
+                         class="absolute right-0 mt-2 w-56 rounded-2xl shadow-xl py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50 overflow-hidden border border-neutral-100"
+                         style="display: none;">
+                        
+                        <div class="px-5 py-3 border-b border-neutral-100 bg-neutral-50/50">
+                            <p class="text-xs text-neutral-400 font-medium mb-0.5">Masuk sebagai</p>
+                            <p class="text-sm font-bold text-neutral-900 truncate">{{ Auth::user()->email }}</p>
+                        </div>
+
+                        <div class="py-1">
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
-                                <button type="submit" class="w-full text-left block px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 font-medium transition-colors" role="menuitem">
+                                <button type="submit" class="w-full text-left flex items-center gap-3 px-5 py-2.5 text-sm font-medium text-rose-600 hover:bg-rose-50 transition-colors group">
+                                    <div class="w-8 h-8 rounded-lg bg-rose-100 flex items-center justify-center text-rose-600 group-hover:bg-rose-200 transition-colors">
+                                        <i class="fa-solid fa-arrow-right-from-bracket text-xs"></i>
+                                    </div>
                                     Logout
                                 </button>
                             </form>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                {{-- Mobile Menu Button --}}
-                <div class="-mr-2 flex items-center sm:hidden">
-                    <button @click="mobileOpen = !mobileOpen" type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 transition-colors" aria-controls="mobile-menu" aria-expanded="false">
-                        <span class="sr-only">Open main menu</span>
-                        {{-- Icon when menu is closed --}}
-                        <svg x-show="!mobileOpen" class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        </svg>
-                        {{-- Icon when menu is open --}}
-                        <svg x-show="mobileOpen" class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="display: none;">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
+            {{-- 4. Mobile Menu Button --}}
+            <div class="-mr-2 flex items-center md:hidden">
+                <button @click="mobileOpen = !mobileOpen" 
+                        class="inline-flex items-center justify-center p-2 rounded-xl text-neutral-400 hover:text-primary-600 hover:bg-primary-50 focus:outline-none transition-colors">
+                    <i class="fa-solid text-lg" :class="mobileOpen ? 'fa-xmark' : 'fa-bars'"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    {{-- Mobile Menu Dropdown --}}
+    <div x-show="mobileOpen" x-collapse class="md:hidden border-t border-neutral-200 bg-white">
+        <div class="px-4 py-3 space-y-1">
+            <a href="{{ route('siswa.dashboard') }}" 
+               class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-colors
+               {{ request()->routeIs('siswa.dashboard') 
+                    ? 'bg-primary-50 text-primary-700' 
+                    : 'text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900' }}">
+                <i class="fa-solid fa-house w-5 text-center"></i> Dashboard
+            </a>
+            
+            <a href="{{ route('siswa.formulir') }}" 
+               class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-colors
+               {{ request()->routeIs('siswa.formulir.*') 
+                    ? 'bg-primary-50 text-primary-700' 
+                    : 'text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900' }}">
+                <i class="fa-solid fa-file-pen w-5 text-center"></i> Formulir Pendaftaran
+            </a>
+        </div>
+
+        <div class="pt-4 pb-4 border-t border-neutral-200 bg-neutral-50/50">
+            <div class="px-6 flex items-center gap-4 mb-4">
+                <img class="h-10 w-10 rounded-full border border-white shadow-sm" 
+                     src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=0d9488&color=ffffff&bold=true" alt="">
+                <div class="overflow-hidden">
+                    <div class="text-sm font-bold text-neutral-900 truncate">{{ Auth::user()->name }}</div>
+                    <div class="text-xs font-medium text-neutral-500 truncate">{{ Auth::user()->email }}</div>
+                </div>
+            </div>
+            <div class="px-4">
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-bold text-white bg-rose-700 hover:bg-rose-800 shadow-lg shadow-neutral-200 transition-all">
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
                     </button>
-                </div>
+                </form>
             </div>
         </div>
-
-        {{-- Mobile Menu --}}
-        <div x-show="mobileOpen" 
-             x-transition:enter="transition ease-out duration-200"
-             x-transition:enter-start="opacity-0 -translate-y-2"
-             x-transition:enter-end="opacity-100 translate-y-0"
-             class="sm:hidden border-t border-gray-200 bg-white absolute w-full shadow-lg" id="mobile-menu" style="display: none;">
-            <div class="pt-4 pb-4 border-t border-gray-200 bg-gray-50">
-                <div class="flex items-center px-4">
-                    <div class="shrink-0">
-                        <img class="h-10 w-10 rounded-full object-cover border-2 border-white shadow-sm" 
-                             src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name ?? 'Siswa') }}&background=0D8ABC&color=fff" 
-                             alt="{{ Auth::user()->name }}">
-                    </div>
-                    <div class="ml-3">
-                        <div class="text-base font-medium text-gray-800">{{ Auth::user()->name }}</div>
-                        <div class="text-xs font-medium text-gray-500">{{ Auth::user()->email }}</div>
-                    </div>
-                </div>
-                <div class="mt-3 space-y-1 px-2">
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <button type="submit" class="w-full flex items-center gap-2 px-3 py-2 text-base font-medium text-red-600 rounded-md hover:bg-red-50 hover:text-red-800 transition-colors">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
-                            Logout
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </nav>
+    </div>
+</nav>

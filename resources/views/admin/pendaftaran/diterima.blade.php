@@ -105,7 +105,7 @@
                                         <div class="w-6 h-6 rounded-full bg-neutral-100 flex items-center justify-center shrink-0 text-neutral-400">
                                             <i class="fa-solid fa-school text-[10px]"></i>
                                         </div>
-                                        <span class="text-sm font-medium text-neutral-700 truncate max-w-[200px]" title="{{ $siswa->sekolahAsal->nama_sekolah }}">{{ $siswa->sekolahAsal->nama_sekolah ?? '-' }}</span>
+                                        <span class="text-sm font-medium text-neutral-700 truncate max-w-[200px]" title="{{ $siswa->sekolahAsal?->nama_sekolah }}">{{ $siswa->sekolahAsal?->nama_sekolah ?? '-' }}</span>
                                     </div>
                                 </td>
 
