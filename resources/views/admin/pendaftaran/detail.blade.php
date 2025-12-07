@@ -3,14 +3,26 @@
 @section('title', 'Detail Calon Siswa')
 
 @section('content')
-{{-- WRAPPER UTAMA DENGAN ALPINE DATA --}}
-<div x-data="{ activeModal: null }" class="w-full min-h-screen bg-[#F0F2F5] px-4 pt-16 pb-12 sm:px-6 lg:px-8 font-sans text-slate-800">
+
+<div x-data="{ activeModal: null }" class="w-full min-h-screen bg-[#F0F2F5] px-4 pt-4 sm:px-6 lg:px-4 font-sans text-slate-800">
 
     <div class="max-w-7xl mx-auto">
 
-        {{-- 1. HEADER (JUDUL & KEMBALI) --}}
         <div class="flex items-center gap-4 mb-6">
-            <a href="{{ url()->previous() }}" 
+            @php
+                // Logika Redirect Back
+                $backRoute = route('admin.pendaftaran.semua'); // Default
+                
+                if ($siswa->status_pendaftaran == 'Pending') {
+                    $backRoute = route('admin.pendaftaran.masuk');
+                } elseif ($siswa->status_pendaftaran == 'Diterima') {
+                    $backRoute = route('admin.pendaftaran.diterima');
+                } elseif ($siswa->status_pendaftaran == 'Ditolak') {
+                    $backRoute = route('admin.pendaftaran.ditolak');
+                }
+            @endphp
+
+            <a href="{{ $backRoute }}" 
                class="group flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white border border-slate-200 text-slate-500 shadow-sm transition-all hover:border-slate-300 hover:text-slate-900 hover:shadow-md">
                 <i class="fa-solid fa-arrow-left transition-transform group-hover:-translate-x-0.5"></i>
             </a>
