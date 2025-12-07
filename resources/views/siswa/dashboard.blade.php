@@ -7,7 +7,6 @@
     $dataBelumLengkap = !$siswa || empty($siswa->alamat) || empty($siswa->sekolahAsal);
     $status = $dataBelumLengkap ? null : $siswa->status_pendaftaran;
 
-    // KONFIGURASI STATUS (REFACTORED THEME)
     $statusData = [];
 
     // CASE 0: DATA BELUM LENGKAP
@@ -276,7 +275,7 @@
                         <div>
                             <p class="text-[10px] text-neutral-400 uppercase font-bold tracking-wider mb-0.5">Terdaftar Sejak</p>
                             <p class="text-sm font-bold text-neutral-900">
-                                {{ ($siswa && $siswa->created_at) ? $siswa->created_at->format('d M Y') : '-' }}
+                                {{ ($siswa && $siswa->created_at) ? $siswa->created_at->isoFormat('dddd, D MMMM Y') : '-' }}
                             </p>
                         </div>
                     </div>

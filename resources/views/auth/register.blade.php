@@ -22,7 +22,7 @@
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
         [x-cloak] { display: none !important; }
         
-        /* Custom Scrollbar untuk Form Area */
+        /* Custom Scrollbar */
         .custom-scrollbar::-webkit-scrollbar { width: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 20px; }
@@ -64,7 +64,7 @@
 
     <div class="w-full lg:w-1/2 flex flex-col items-center bg-white relative order-1 lg:order-2 h-full">
         
-        <div class="w-full px-4 sm:px-12 lg:px-8 pt-8 shrink-0">
+        <div class="w-full px-8 sm:px-12 lg:px-24 pt-8 shrink-0">
             <a href="{{ route('home') }}" class="inline-flex items-center gap-2 px-4 py-2 text-xs font-bold text-neutral-500 bg-white border border-neutral-200 rounded-full hover:text-primary-700 hover:border-primary-200 hover:bg-primary-50 transition-all group z-20 shadow-sm">
                 <i class="fa-solid fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
                 <span>Beranda</span>
@@ -98,11 +98,11 @@
 
                     {{-- NAMA LENGKAP --}}
                     <div>
-                        <label for="nama_lengkap" class="block text-xs font-bold text-neutral-900 uppercase tracking-wider mb-2">Nama Lengkap</label>
-                        <input id="nama_lengkap" name="nama_lengkap" type="text" required
+                        <label for="name" class="block text-xs font-bold text-neutral-900 uppercase tracking-wider mb-2">Nama Lengkap</label>
+                        <input id="name" name="name" type="text" required
                             class="w-full px-5 py-3.5 border border-neutral-300 rounded-xl focus:ring-2 focus:ring-primary-600 focus:border-primary-600 transition-all outline-none placeholder-neutral-400 bg-neutral-50 focus:bg-white text-sm font-medium"
-                            placeholder="Sesuai Ijazah" value="{{ old('nama_lengkap') }}">
-                        @error('nama_lengkap')
+                            placeholder="Sesuai Ijazah" value="{{ old('name') }}">
+                        @error('name')
                             <p class="mt-1 text-xs text-rose-600 font-medium">{{ $message }}</p>
                         @enderror
                     </div>
@@ -177,7 +177,7 @@
                         <div class="relative">
                             <input :type="show ? 'text' : 'password'" id="password" name="password" required
                                 class="w-full px-5 py-3.5 border border-neutral-300 rounded-xl focus:ring-2 focus:ring-primary-600 focus:border-primary-600 transition-all outline-none placeholder-neutral-400 bg-neutral-50 focus:bg-white pr-24 text-sm font-medium"
-                                placeholder="Minimal 8 karakter">
+                                placeholder="Minimal 6 karakter">
                             <button type="button" @click="show = !show"
                                 class="absolute right-5 top-1/2 transform -translate-y-1/2 text-xs font-bold text-neutral-500 hover:text-neutral-900 transition-colors uppercase tracking-wider">
                                 <span x-text="show ? 'Sembunyikan' : 'Lihat'"></span>
@@ -220,7 +220,7 @@
         </div>
     </div>
 
-    {{-- Script untuk Alert Sukses --}}
+    {{-- Script untuk Alert Sukses (Styled Button) --}}
     @if (session('register_success'))
     <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -228,12 +228,17 @@
             title: 'Registrasi Berhasil!',
             text: 'Akun Anda telah dibuat. Silakan login untuk melanjutkan.',
             icon: 'success',
-            confirmButtonText: 'Lanjut Login',
-            confirmButtonColor: '#0d9488', // primary-600
-            padding: '2em',
+            iconColor: '#0d9488',
+            confirmButtonText: 'Login Sekarang',
+            buttonsStyling: false,
             customClass: {
-                popup: 'rounded-2xl shadow-xl font-sans'
-            }
+                popup: 'rounded-3xl shadow-2xl border border-neutral-100 font-sans p-8',
+                confirmButton: 'bg-primary-600 hover:bg-primary-700 text-white px-8 py-3.5 rounded-xl font-bold text-sm shadow-lg shadow-primary-500/30 transition-all transform hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-primary-100',
+                title: 'text-2xl font-bold text-neutral-900 mb-2',
+                htmlContainer: 'text-neutral-500 text-sm leading-relaxed mb-6'
+            },
+            allowOutsideClick: false,
+            allowEscapeKey: false
         }).then(() => {
             window.location.href = "{{ route('login') }}";
         });
@@ -247,7 +252,7 @@
         const enforceNumber = (e) => {
             e.target.value = e.target.value.replace(/\D/g, '');
         };
-        const inputs = ['nisn', 'nik', 'telepon'];
+        const inputs = ['nisn', 'nik'];
         inputs.forEach(id => {
             const el = document.getElementById(id);
             if(el) el.addEventListener('input', enforceNumber);

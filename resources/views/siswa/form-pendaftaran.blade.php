@@ -13,10 +13,7 @@
     
     {{-- Header --}}
     <div class="text-center mb-10" data-aos="fade-down">
-        <span class="inline-block py-1 px-3 rounded-full bg-primary-50 border border-primary-100 text-primary-600 text-xs font-bold tracking-wider uppercase mb-3">
-            Formulir PPDB
-        </span>
-        <h1 class="text-3xl font-bold text-neutral-900 tracking-tight">Data Diri Siswa</h1>
+        <h1 class="text-3xl font-bold text-neutral-900 tracking-tight">Formulir Pendaftaran Calon Siswa</h1>
         
         @if($isLocked)
             <div class="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-yellow-50 text-yellow-700 border border-yellow-200 rounded-lg text-sm font-medium">
