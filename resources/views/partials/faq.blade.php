@@ -1,51 +1,88 @@
-<section class="bg-gray-50 py-28" id="faq">
-    <div class="max-w-screen-xl mx-auto px-4">
-        <div class="text-center mb-16">
-            <h2 class="text-4xl font-bold text-gray-800">Tanya Jawab</h2>
-            <p class="text-gray-500 mt-2">Temukan jawaban untuk pertanyaan yang sering diajukan.</p>
+{{-- Section FAQ --}}
+<section class="relative bg-neutral-50 py-24 lg:py-24 overflow-hidden" id="faq">
+
+    <div class="absolute top-1/2 left-0 -translate-y-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-primary-100/40 rounded-full blur-3xl -z-10"></div>
+
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+        
+        <div class="text-center max-w-3xl mx-auto mb-20" data-aos="fade-up">
+            <h2 class="text-3xl lg:text-4xl font-extrabold text-neutral-900 tracking-tight mb-4">
+                Pertanyaan Umum
+            </h2>
+            <p class="text-lg text-neutral-500 leading-relaxed">
+                Temukan jawaban cepat untuk pertanyaan yang sering diajukan seputar proses pendaftaran.
+            </p>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
-
-            <div class="lg:col-span-2 space-y-4">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-10 items-start">
+            <div class="lg:col-span-2 space-y-6">
                 
-                {{-- FAQ 1 --}}
-                <div class="border rounded-lg bg-white shadow-sm p-5" data-aos="fade-up">
-                    <h4 class="font-semibold text-gray-900">Kapan pendaftaran dibuka?</h4>
-                    <p class="mt-2 text-gray-600">Pendaftaran dibuka dan ditutup sesuai dengan jadwal yang telah ditetapkan oleh panitia. Silakan kunjungi halaman "Jadwal Pendaftaran" untuk melihat linimasa lengkap kegiatan PPDB tahun ini.</p>
-                </div>
+                @php
+                    $faqs = [
+                        [
+                            'q' => 'Kapan pendaftaran dibuka?',
+                            'a' => 'Pendaftaran dibuka dan ditutup sesuai dengan jadwal yang telah ditetapkan oleh panitia. Silakan kunjungi menu "Jadwal Penting" untuk melihat linimasa lengkap.'
+                        ],
+                        [
+                            'q' => 'Bagaimana jika saya lupa password?',
+                            'a' => 'Gunakan fitur "Lupa Password" di halaman login. Sistem akan meminta email terdaftar untuk proses reset kata sandi akun Anda.'
+                        ],
+                        [
+                            'q' => 'Apakah berkas persyaratan wajib diunggah semua?',
+                            'a' => 'Ya, semua dokumen pada bagian "Dokumen Wajib" harus diunggah. Jika ada kendala (misal SKL belum terbit), silakan hubungi panitia untuk kebijakan khusus.'
+                        ],
+                        [
+                            'q' => 'Bisakah saya mengubah data setelah dikirim?',
+                            'a' => 'Data dapat diubah selama status pendaftaran masih "Pending". Jika sudah diverifikasi atau status berubah, Anda harus menghubungi admin sekolah untuk pembukaan akses edit.'
+                        ],
+                    ];
+                @endphp
 
-                {{-- FAQ 2 --}}
-                <div class="border rounded-lg bg-white shadow-sm p-5" data-aos="fade-up">
-                    <h4 class="font-semibold text-gray-900">Bagaimana jika saya lupa password?</h4>
-                    <p class="mt-2 text-gray-600">Jika Anda lupa password, silakan gunakan fitur "Lupa Password" yang tersedia di halaman login. Anda akan diminta untuk memasukkan alamat email yang terdaftar untuk proses reset password.</p>
-                </div>
+                @foreach ($faqs as $index => $faq)
+                    <div class="group bg-white rounded-2xl p-6 border border-neutral-200 shadow-sm hover:border-primary-200 hover:shadow-md transition-all duration-300" 
+                         data-aos="fade-up" 
+                         data-aos-delay="{{ $index * 100 }}">
+                        
+                        <h4 class="flex items-start gap-4 text-lg font-bold text-neutral-800 group-hover:text-primary-700 transition-colors">
+                            <span class="flex-shrink-0 flex items-center justify-center w-8 h-8 rounded-lg bg-primary-50 text-primary-600 text-sm font-extrabold">Q</span>
+                            <span class="mt-0.5">{{ $faq['q'] }}</span>
+                        </h4>
+                        
+                        <div class="mt-3 pl-[3.25rem] text-neutral-600 leading-relaxed text-sm">
+                            <p class="border-l-2 border-neutral-100 pl-4 py-1">{{ $faq['a'] }}</p>
+                        </div>
+                    </div>
+                @endforeach
 
-                {{-- FAQ 3 --}}
-                <div class="border rounded-lg bg-white shadow-sm p-5" data-aos="fade-up">
-                    <h4 class="font-semibold text-gray-900">Apakah saya bisa mendaftar jika ada berkas yang kurang?</h4>
-                    <p class="mt-2 text-gray-600">Tidak, semua berkas yang tertera di bagian "Persyaratan" bersifat wajib. Anda harus mengunggah semua dokumen secara lengkap agar data pendaftaran Anda dapat diproses oleh panitia verifikasi.</p>
-                </div>
-
-                {{-- FAQ 4 --}}
-                <div class="border rounded-lg bg-white shadow-sm p-5" data-aos="fade-up">
-                    <h4 class="font-semibold text-gray-900">Bagaimana jika saya salah memasukkan data?</h4>
-                    <p class="mt-2 text-gray-600">Anda dapat mengubah data yang telah diisikan selama status pendaftaran Anda masih "Pending" atau belum diverifikasi oleh panitia. Silakan login ke dashboard siswa Anda dan klik tombol "Ubah Data".</p>
-                </div>
             </div>
 
-            {{-- Kolom Kanan: Kontak Bantuan --}}
-            <div class="lg:col-span-1" data-aos="fade-up" data-aos-delay="200">
-                <div class="p-8 bg-blue-600 rounded-lg text-white text-center">
-                    <h3 class="text-2xl font-bold">Masih Punya Pertanyaan?</h3>
-                    <p class="mt-2 mb-6 opacity-80">Jika Anda tidak menemukan jawaban atas pertanyaan Anda, jangan ragu untuk menghubungi tim kami.</p>
-                    <a href="#" class="inline-block px-6 py-3 bg-white text-blue-600 font-semibold rounded-lg shadow-md hover:bg-gray-100 transition">
-                        Hubungi Kami
-                    </a>
+
+            <div class="lg:col-span-1" data-aos="fade-left" data-aos-delay="300">
+                <div class="relative overflow-hidden bg-gradient-to-br from-primary-600 to-primary-800 rounded-3xl p-8 text-center text-white shadow-xl shadow-primary-900/20 group">
+                    
+                    <div class="absolute -top-12 -right-12 w-40 h-40 bg-white/10 rounded-full blur-2xl group-hover:scale-110 transition-transform duration-700"></div>
+                    <div class="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-black/20 to-transparent"></div>
+
+                    <div class="relative z-10 flex flex-col items-center">
+                        <div class="w-16 h-16 bg-white/10 backdrop-blur-md rounded-2xl flex items-center justify-center mb-6 ring-1 ring-white/20">
+                            <i class="fa-solid fa-headset text-3xl text-white"></i>
+                        </div>
+
+                        <h3 class="text-2xl font-bold mb-2">Butuh Bantuan?</h3>
+                        <p class="text-primary-100 text-sm mb-8 leading-relaxed">
+                            Jika pertanyaan Anda tidak tersedia di sini, jangan ragu untuk menghubungi tim support kami.
+                        </p>
+
+                        <a href="{{ route('kontak') }}" 
+                           class="inline-flex items-center gap-2 px-6 py-3.5 bg-white text-primary-700 font-bold rounded-xl shadow-lg hover:bg-primary-50 hover:scale-105 transition-all duration-300 w-full justify-center">
+                            <i class="fa-regular fa-envelope"></i>
+                            Hubungi Kami
+                        </a>
+                        
+                    </div>
                 </div>
             </div>
 
         </div>
     </div>
 </section>
-
