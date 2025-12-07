@@ -20,8 +20,16 @@ class StorePendaftaranRequest extends FormRequest
         return true;
     }
 
+    
+
     public function rules(): array
     {
+        //cek apakah ini update atau create
+        $isUpdate = \App\Models\Siswa::where('user_id', Auth::id())->exists();
+    
+        // jika update, berkas boleh nullable
+        $berkasRule = $isUpdate ? 'nullable|array' : 'required|array';
+
         return [
             'nama_lengkap'   => 'required|string|max:255',
             'nik' => [
@@ -83,7 +91,7 @@ class StorePendaftaranRequest extends FormRequest
             'tahun_lulus'         => 'required|digits:4',
 
             // Berkas
-            'berkas'              => 'required|array',
+            'berkas'              => $berkasRule,
             'berkas.*'            => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ];
     }
