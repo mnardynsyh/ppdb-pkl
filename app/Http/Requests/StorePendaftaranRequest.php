@@ -92,7 +92,7 @@ class StorePendaftaranRequest extends FormRequest
 
             // Berkas
             'berkas'              => $berkasRule,
-            'berkas.*'            => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'berkas.*'            => 'file|mimes:jpg,jpeg,png,pdf|max:2048',
         ];
     }
 }
