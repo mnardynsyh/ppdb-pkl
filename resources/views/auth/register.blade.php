@@ -98,11 +98,11 @@
 
                     {{-- NAMA LENGKAP --}}
                     <div>
-                        <label for="name" class="block text-xs font-bold text-neutral-900 uppercase tracking-wider mb-2">Nama Lengkap</label>
-                        <input id="name" name="name" type="text" required
+                        <label for="nama_lengkap" class="block text-xs font-bold text-neutral-900 uppercase tracking-wider mb-2">Nama Lengkap</label>
+                        <input id="nama_lengkap" name="nama_lengkap" type="text" required
                             class="w-full px-5 py-3.5 border border-neutral-300 rounded-xl focus:ring-2 focus:ring-primary-600 focus:border-primary-600 transition-all outline-none placeholder-neutral-400 bg-neutral-50 focus:bg-white text-sm font-medium"
-                            placeholder="Sesuai Ijazah" value="{{ old('name') }}">
-                        @error('name')
+                            placeholder="Sesuai Ijazah" value="{{ old('nama_lengkap') }}">
+                        @error('nama_lengkap')
                             <p class="mt-1 text-xs text-rose-600 font-medium">{{ $message }}</p>
                         @enderror
                     </div>
