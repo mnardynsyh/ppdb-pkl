@@ -56,12 +56,8 @@ php artisan migrate --seed
 ---
 ### Done.
 
----
-
-Default Admin:
-Email: admin@gmail.com<br>
-Pass: admin123
+Default login Admin:<br>
+- Email: admin@gmail.com<br>
+- Pass: admin123
 
 ---
-
-Hubungi mnardiyn@gmail.com jika ada kendala instalasi.
